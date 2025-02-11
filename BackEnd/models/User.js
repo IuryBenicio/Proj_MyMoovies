@@ -22,7 +22,18 @@ const User = mongoose.model(
         type: String,
         required: true,
       },
-      moovies: { type: Array },
+      moovieLists: [
+        {
+          _id: {
+            type: Schema.Types.ObjectId,
+            ref: "MoovieList",
+          },
+          name: {
+            type: Schema.Types.String,
+            ref: "MoovieList",
+          },
+        },
+      ],
     },
     { timestamps: true }
   )

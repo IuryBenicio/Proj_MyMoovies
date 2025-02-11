@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
+const session = require("express-session");
 
 module.exports = class UserController {
   //register
@@ -77,8 +78,18 @@ module.exports = class UserController {
     })(req, res, next);
   }
 
-  static async logout() {
-    req.logout();
-    res.status(400).json({ message: "Deslogado com sucesso" });
+  //logout
+  static async logoutUser(req, res) {
+    req.logout((err) => {
+      if (err) return next(err);
+      req.session.destroy((err) => {
+        if (err) return next(err);
+        res.clearCookie("connect.sid"); // clear session cookie
+
+        return res.json({ message: "Deslogado com sucesso" });
+      });
+    });
   }
+
+  //edita Usuário
 };

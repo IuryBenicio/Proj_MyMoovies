@@ -1,12 +1,13 @@
 const express = require("express");
 const app = express();
-const UserRoutes = require("../BackEnd/routes/userRoutes");
 const cors = require("cors");
 const port = 8000;
 const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("passport");
 const authConfig = require("./config/auth");
+const UserRoutes = require("./routes/userRoutes");
+const MovieRoutes = require("./routes/moviesRoutes");
 
 authConfig(passport); // Configura Passport
 
@@ -16,8 +17,9 @@ app.use(express.json()); // To parse JSON request bodies
 app.use(
   session({
     secret: "MyMooviesIury",
-    resave: true,
+    resave: false,
     saveUninitialized: true,
+    cookie: { maxAge: 1000 * 36000 },
   })
 );
 
@@ -38,6 +40,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/user", UserRoutes);
+app.use("/movie", MovieRoutes);
 
 try {
   app.listen(port);

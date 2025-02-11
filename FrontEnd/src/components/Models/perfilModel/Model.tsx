@@ -3,7 +3,7 @@ import { PerfilModelContainer } from "./styles";
 import { logout } from "../../../store/reducers/user";
 import axios from "axios";
 import { bancoDeDados } from "../../../helpers/getApi";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RootReducer } from "../../../store";
 
 interface Props {
@@ -27,13 +27,18 @@ export default function PerfilModel({ nome }: Props) {
   }
 
   const logoutPost = async () => {
-    await axios.post(`${bancoDeDados}/user/logout`).then((response) => {
-      handleLogout();
-      if (response.status === 400) {
-        alert("Sessão encerrada com sucesso");
+    await axios
+      .post(`${bancoDeDados}/user/logout`)
+      .then((response) => {
+        handleLogout();
+        alert("Sessão encerrada com sucesso" + response.status);
         navegar("/");
-      }
-    });
+        // }
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Ocorreu um erro ao encerrar a sessão");
+      });
   };
 
   return (
@@ -42,9 +47,9 @@ export default function PerfilModel({ nome }: Props) {
         <>
           <span>
             Olá:{" "}
-            <a className="perfil-button" href="/perfil">
+            <Link className="perfil-button" to="/perfil">
               {retornaUserName(nome!)}
-            </a>
+            </Link>
           </span>
           <a className="perfil-button" href="">
             Configurações
@@ -57,9 +62,9 @@ export default function PerfilModel({ nome }: Props) {
       {user.name.length === 0 && (
         <div className="">
           {/* <span></span> */}
-          <a className="login-button" href="/login">
+          <Link className="login-button" to="/login">
             Faça login
-          </a>
+          </Link>
         </div>
       )}
     </PerfilModelContainer>

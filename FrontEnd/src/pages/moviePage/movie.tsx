@@ -12,6 +12,7 @@ export default function MoviePage() {
   const { user } = useSelector((state: RootReducer) => state.user);
   const [movieData, setMovieData] = useState<moovieType>({});
   const { id } = useParams();
+  const [listData, setListData] = useState([]);
 
   async function getMoovie() {
     await axios

@@ -4,7 +4,7 @@ export type userType = {
   userName: string;
   name: string;
   email: string;
-  password: string;
+  password?: string;
   movies: [];
 };
 
@@ -13,7 +13,7 @@ type stateType = {
     userName: string;
     name: string;
     email: string;
-    password: string;
+    password?: string;
     movies: [];
   };
 };
@@ -41,7 +41,10 @@ const userSlice = createSlice({
       }
     },
     logout(state) {
-      state.user = initialState.user;
+      state.user.name = "";
+      state.user.email = "";
+      state.user.password = "";
+      state.user.movies = [];
     },
   },
 });

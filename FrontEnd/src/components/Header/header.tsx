@@ -57,7 +57,7 @@ export default function Header() {
           </button>
           <div className="collapse navbar-collapse ms-4" id="navbarNav">
             <ul className="navbar-nav">
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <a
                   className={navBar === "Home" ? "nav-item active" : "nav-item"}
                   onClick={() => setNavPage("Home")}
@@ -66,8 +66,8 @@ export default function Header() {
                 >
                   Home
                 </a>
-              </li>
-              <li className="nav-item">
+              </li> */}
+              {/* <li className="nav-item">
                 <a
                   className={
                     navBar === "Perfil"
@@ -92,7 +92,7 @@ export default function Header() {
                 >
                   Amigos
                 </a>
-              </li>
+              </li> */}
             </ul>
           </div>
           <div className="left-side">

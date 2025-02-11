@@ -45,7 +45,7 @@ export default function Results() {
   const { data: moovies, isLoading } = useQuery<moovieType[]>({
     queryKey: ["get-moovies", page, id],
     queryFn: fetchMoovies,
-    replace: true,
+    // replace: true,
   });
 
   // Função para navegar

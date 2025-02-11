@@ -13,34 +13,53 @@ export default function PerfilPage() {
 
   const dispatch = useDispatch();
 
-  function logoutStore() {
+  function handleLogout() {
     dispatch(logout());
   }
 
-  const handleLogout = async () => {
-    await axios.post(`${bancoDeDados}/user/logout`).then((response) => {
-      logoutStore();
-      if (response.status === 400) {
-        alert("Sessão encerrada com sucesso");
+  const logoutPost = async () => {
+    await axios
+      .post(`${bancoDeDados}/user/logout`)
+      .then((response) => {
+        handleLogout();
+        alert("Sessão encerrada com sucesso" + response.status);
         navegar("/");
-      }
-    });
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Ocorreu um erro ao encerrar a sessão");
+      });
   };
 
   return (
     <PerfilComponent>
       <div className="container-perfil">
-        <span className="username">NOME DO USUÁRIO</span>
-        <span className="email">E-mail: iury620@gmail.com {user.email}</span>
+        {user.name.length === 0 && (
+          <>
+            <h3>Faça seu login</h3>
+            <button
+              className="login-button mt-2 btn btn-outline-success"
+              onClick={() => navegar("/login")}
+            >
+              Logar
+            </button>
+          </>
+        )}
+        {user.name.length > 0 && (
+          <>
+            <span className="username">NOME DO USUÁRIO</span>
+            <span className="email">
+              E-mail: iury620@gmail.com {user.email}
+            </span>
 
-        {/* {user.name.length > 0 && ( */}
-        <button
-          className="logout-button btn btn-outline-danger"
-          onClick={() => handleLogout()}
-        >
-          Sair
-        </button>
-        {/* )} */}
+            <button
+              className="logout-button btn btn-outline-danger"
+              onClick={() => logoutPost()}
+            >
+              Sair
+            </button>
+          </>
+        )}
       </div>
     </PerfilComponent>
   );
