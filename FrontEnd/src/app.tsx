@@ -7,7 +7,7 @@ import Header from "./components/Header/header";
 import Login from "./pages/PagesSignIn/Login/Login";
 import Register from "./pages/PagesSignIn/Register/Register";
 import LoginOrRegister from "./pages/PagesSignIn/LoginOrRegister/Page";
-import PerfilPage from "./pages/PerfilPage/Page";
+// import PerfilPage from "./pages/PerfilPage/Page";
 
 export default function App() {
   return (
@@ -21,7 +21,7 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/signup" element={<LoginOrRegister />} />
-          <Route path="/perfil" element={<PerfilPage />} />
+          {/* <Route path="/perfil" element={<PerfilPage />} /> */}
         </Routes>
       </BrowserRouter>
     </>

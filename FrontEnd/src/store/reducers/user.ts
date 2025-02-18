@@ -16,6 +16,7 @@ type stateType = {
     password?: string;
     movies: [];
   };
+  authenticated: boolean;
 };
 
 const initialState: stateType = {
@@ -26,6 +27,7 @@ const initialState: stateType = {
     password: "",
     movies: [],
   },
+  authenticated: false,
 };
 
 const userSlice = createSlice({
@@ -34,6 +36,7 @@ const userSlice = createSlice({
   reducers: {
     addUser(state, action: PayloadAction<userType>) {
       state.user = action.payload;
+      state.authenticated = true;
     },
     addMovieToUser(state, action: PayloadAction<string>) {
       if (action.payload.length > 0) {
@@ -45,6 +48,7 @@ const userSlice = createSlice({
       state.user.email = "";
       state.user.password = "";
       state.user.movies = [];
+      state.authenticated = false;
     },
   },
 });

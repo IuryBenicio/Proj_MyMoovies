@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function PerfilModel({ nome }: Props) {
-  const { user } = useSelector((state: RootReducer) => state.user);
+  const { authenticated } = useSelector((state: RootReducer) => state.user);
   const dispatch = useDispatch();
   const navegar = useNavigate();
 
@@ -33,7 +33,6 @@ export default function PerfilModel({ nome }: Props) {
         handleLogout();
         alert("Sessão encerrada com sucesso" + response.status);
         navegar("/");
-        // }
       })
       .catch((error) => {
         console.log(error);
@@ -43,25 +42,21 @@ export default function PerfilModel({ nome }: Props) {
 
   return (
     <PerfilModelContainer>
-      {user.name.length > 1 && (
+      {authenticated && (
         <>
           <span>
-            Olá:{" "}
+            Olá
             <Link className="perfil-button" to="/perfil">
-              {retornaUserName(nome!)}
+              {"! " + retornaUserName(nome!)}
             </Link>
           </span>
-          <a className="perfil-button" href="">
-            Configurações
-          </a>
           <a className="btn btn-outline-danger" onClick={() => logoutPost()}>
             Sair
           </a>
         </>
       )}
-      {user.name.length === 0 && (
+      {!authenticated && (
         <div className="">
-          {/* <span></span> */}
           <Link className="login-button" to="/login">
             Faça login
           </Link>

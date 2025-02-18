@@ -5,12 +5,14 @@ import axios from "axios";
 import { bancoDeDados } from "../../helpers/getApi";
 import { logout } from "../../store/reducers/user";
 import { useNavigate } from "react-router-dom";
+import EditPerfil from "../../components/Models/editPerfil/EditPerfil";
+import { useState } from "react";
 
 export default function PerfilPage() {
   const { user } = useSelector((state: RootReducer) => state.user);
+  const [editar, setEditar] = useState(true);
 
   const navegar = useNavigate();
-
   const dispatch = useDispatch();
 
   function handleLogout() {
@@ -33,34 +35,41 @@ export default function PerfilPage() {
 
   return (
     <PerfilComponent>
-      <div className="container-perfil">
-        {user.name.length === 0 && (
-          <>
-            <h3>Faça seu login</h3>
-            <button
-              className="login-button mt-2 btn btn-outline-success"
-              onClick={() => navegar("/login")}
-            >
-              Logar
-            </button>
-          </>
-        )}
-        {user.name.length > 0 && (
-          <>
-            <span className="username">NOME DO USUÁRIO</span>
-            <span className="email">
-              E-mail: iury620@gmail.com {user.email}
-            </span>
-
-            <button
-              className="logout-button btn btn-outline-danger"
-              onClick={() => logoutPost()}
-            >
-              Sair
-            </button>
-          </>
-        )}
-      </div>
+      {editar && <EditPerfil />}
+      <>
+        <div className="container-perfil">
+          {user.name.length === 0 && (
+            <>
+              <h3>Faça seu login</h3>
+              <button
+                className="login-button mt-2 btn btn-outline-success"
+                onClick={() => navegar("/login")}
+              >
+                Logar
+              </button>
+            </>
+          )}
+          {user.name.length > 0 && (
+            <>
+              <div className="form-place">
+                <span className="username">{user.userName}</span>
+              </div>
+              <p>Dados pessoais:</p>
+              <span className="name">{user.name}</span>
+              <span className="email">E-mail: {user.email}</span>
+              <div className="buttons">
+                <ul>
+                  <li>
+                    <button className="">Editar Perfil</button>
+                    <button className="">Apagar Conta</button>
+                    <button onClick={logoutPost}>Sair</button>
+                  </li>
+                </ul>
+              </div>
+            </>
+          )}
+        </div>
+      </>
     </PerfilComponent>
   );
 }
