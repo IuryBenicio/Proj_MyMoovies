@@ -1,51 +1,43 @@
-🎬 MyMovies - Sua Biblioteca de Filmes Personalizada
+# 🎬 MyMovies - Sua Biblioteca de Filmes Personalizada
 
-Bem-vindo ao MyMovies, o site ideal para organizar e personalizar suas listas de filmes favoritos! Com ele, você pode criar uma conta, pesquisar títulos e montar coleções personalizadas.
+Bem-vindo ao **MyMovies**, o site ideal para organizar e personalizar suas listas de filmes favoritos! Com ele, você pode criar uma conta, pesquisar títulos e montar coleções personalizadas.
 
-🚀 Funcionalidades
+## 🚀 Funcionalidades
 
-✅ Criar e gerenciar sua conta de usuário
-✅ Pesquisar filmes por nome
-✅ Criar listas personalizadas de filmes
-✅ Adicionar e remover filmes de suas listas
-✅ Interface amigável e responsiva
+✅ Criar e gerenciar sua conta de usuário  
+✅ Pesquisar filmes por nome  
+✅ Criar listas personalizadas de filmes  
+✅ Adicionar e remover filmes de suas listas  
+✅ Interface amigável e responsiva  
 
-🛠️ Tecnologias Utilizadas
+## 🛠️ Tecnologias Utilizadas
 
-Frontend: React.js + BootStrap CSS
+- **Frontend:** React.js + BootStrap  
+- **Backend:** Node.js + Express + Passport.js (Autenticação)  
+- **Banco de Dados:** MongoDB  
+- **API:** Consumo da API [TMDb](https://www.themoviedb.org/) para busca de filmes  
 
-Backend: Node.js + Express + Passport.js (Autenticação)
+## 🔧 Como Rodar o Projeto
 
-Banco de Dados: MongoDB
-
-API: Consumo da API TMDb para busca de filmes
-
-📸 Preview
-
-
-
-🔧 Como Rodar o Projeto
-
-Clone este repositório:
-
-git clone https://github.com/seu-usuario/movielist.git
-
-Instale as dependências do backend e frontend:
-
-cd BackEnd && npm install
-cd FrontEnd && npm install
-
-Configure as variáveis de ambiente:
-
-Execute o servidor backend:
-
-cd backend && npm start
-
-Execute o frontend:
-
-cd frontend && npm start
-
-Acesse o site em: {EM BREVE}
+1. Clone este repositório:
+   ```sh
+   git clone https://github.com/seu-usuario/movielist.git
+   ```
+2. Instale as dependências do backend e frontend:
+   ```sh
+   cd backend && npm install
+   cd ../frontend && npm install
+   ```
+4. Execute o servidor backend:
+   ```sh
+   cd BackEnd && npm start
+   ```
+5. Execute o frontend:
+   ```sh
+   cd FrontEnd && npm start
+   ```
+6. Acesse o site em: `EM BREVE`
 
 
-Em desenvolvimento por Iury Benicio
+Desenvolvido com ❤️ por [Iury Benicio](https://github.com/IuryBenicio)
+
