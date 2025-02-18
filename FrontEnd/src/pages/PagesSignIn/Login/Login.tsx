@@ -6,6 +6,7 @@ import { addUser, userType } from "../../../store/reducers/user";
 import { useFormik } from "formik";
 import { loginSchema } from "../../../helpers/schemas";
 import { useNavigate } from "react-router-dom";
+import { setAlert, stateType } from "../../../store/reducers/alert";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -13,6 +14,18 @@ export default function Login() {
 
   function addUserFunction(user: userType) {
     dispatch(addUser(user));
+  }
+
+  function Alert(
+    message: string,
+    type: " " | "success" | "error" | "secondary"
+  ) {
+    dispatch(
+      setAlert({
+        type: type,
+        messageText: message,
+      })
+    );
   }
 
   const postLogin = (email: string, password: string) => {
@@ -27,16 +40,15 @@ export default function Login() {
           alert("Usuário ou senha inválidos");
           return;
         }
-        alert(response.data.message);
-        console.log(response.data.data);
+        Alert(response.data.message, "success");
         addUserFunction(response.data.data);
         navegar("/");
       })
       .catch((error) => {
         if (error.code === 401) {
-          alert("Usuário ou senha inválidos");
+          Alert("Usuário ou senha inválidos", "error");
         }
-        alert("Email ou senha inválidos: " + error.message);
+        Alert("Email ou senha inválidos: " + error, "error");
       });
   };
 

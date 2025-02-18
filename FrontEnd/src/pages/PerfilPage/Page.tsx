@@ -10,7 +10,7 @@ import { useState } from "react";
 
 export default function PerfilPage() {
   const { user } = useSelector((state: RootReducer) => state.user);
-  const [editar, setEditar] = useState(true);
+  const [editar, setEditar] = useState(false);
 
   const navegar = useNavigate();
   const dispatch = useDispatch();
@@ -35,7 +35,7 @@ export default function PerfilPage() {
 
   return (
     <PerfilComponent>
-      {editar && <EditPerfil />}
+      {editar && <EditPerfil closeModel={() => setEditar(false)} />}
       <>
         <div className="container-perfil">
           {user.name.length === 0 && (
@@ -60,7 +60,9 @@ export default function PerfilPage() {
               <div className="buttons">
                 <ul>
                   <li>
-                    <button className="">Editar Perfil</button>
+                    <button onClick={() => setEditar(true)} className="">
+                      Editar Perfil
+                    </button>
                     <button className="">Apagar Conta</button>
                     <button onClick={logoutPost}>Sair</button>
                   </li>

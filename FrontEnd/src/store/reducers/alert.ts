@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type stateType = {
+export type stateType = {
   type: " " | "success" | "error" | "secondary";
   messageText: string;
-  showMessage: boolean;
+  showMessage?: boolean;
 };
 
 const initialState: stateType = {
@@ -16,9 +16,9 @@ const alertSlice = createSlice({
   name: "alert",
   initialState,
   reducers: {
-    setAlert(state, payload: PayloadAction<stateType>) {
-      state.type = payload.payload.type;
-      state.messageText = payload.payload.messageText;
+    setAlert(state, action: PayloadAction<stateType>) {
+      state.type = action.payload.type;
+      state.messageText = action.payload.messageText;
       state.showMessage = true;
     },
   },

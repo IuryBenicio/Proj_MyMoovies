@@ -25,6 +25,15 @@ export const EditPerfilContainer = styled.div`
     border-radius: 8px;
     display: flex;
     flex-direction: column;
+    position: relative;
+    i {
+      position: absolute;
+      left: 20px;
+      top: 20px;
+      cursor: pointer;
+      font-size: 24px;
+      color: grey;
+    }
     input {
       margin-bottom: 15px;
       padding: 10px;

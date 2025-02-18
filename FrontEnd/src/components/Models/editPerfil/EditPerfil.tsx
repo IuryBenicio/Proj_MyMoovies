@@ -2,12 +2,17 @@ import { useSelector } from "react-redux";
 import { EditPerfilContainer } from "./styles";
 import { RootReducer } from "../../../store";
 
-export default function EditPerfil() {
+type PropsType = {
+  closeModel: () => void;
+};
+
+export default function EditPerfil(props: PropsType) {
   const { user } = useSelector((state: RootReducer) => state.user);
   return (
     <EditPerfilContainer>
       <>
         <div className="container">
+          <i onClick={() => props.closeModel()} className="bi bi-x-circle"></i>
           <h2>Editar informações</h2>
           <form action="">
             <div className="form-group">

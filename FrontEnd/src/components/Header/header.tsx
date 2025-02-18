@@ -13,19 +13,11 @@ export default function Header() {
   const [userExists, setUser] = useState(false);
   const [loginModel, setLoginModel] = useState(false);
 
-  const { navBar } = useSelector((state: RootReducer) => state.navBar);
   const { user } = useSelector((state: RootReducer) => state.user);
 
   useEffect(() => {
     setUser(true);
   }, [user]);
-
-  const dispatch = useDispatch();
-
-  function setNavPage(query: string) {
-    dispatch(changeNavBar(query));
-    setSearch("");
-  }
 
   async function getSearch() {
     if (!search.trim()) return;
@@ -44,56 +36,9 @@ export default function Header() {
           >
             My Moovies
           </a>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
+
           <div className="collapse navbar-collapse ms-4" id="navbarNav">
-            <ul className="navbar-nav">
-              {/* <li className="nav-item">
-                <a
-                  className={navBar === "Home" ? "nav-item active" : "nav-item"}
-                  onClick={() => setNavPage("Home")}
-                  aria-current="page"
-                  href="#"
-                >
-                  Home
-                </a>
-              </li> */}
-              {/* <li className="nav-item">
-                <a
-                  className={
-                    navBar === "Perfil"
-                      ? "nav-item active ms-3"
-                      : "nav-item ms-3"
-                  }
-                  onClick={() => setNavPage("Perfil")}
-                  href="#"
-                >
-                  Perfil
-                </a>
-              </li>
-              <li className="nav-item">
-                <a
-                  className={
-                    navBar === "Amigos"
-                      ? "nav-item active ms-3"
-                      : "nav-item ms-3"
-                  }
-                  onClick={() => setNavPage("Amigos")}
-                  href="#"
-                >
-                  Amigos
-                </a>
-              </li> */}
-            </ul>
+            <ul className="navbar-nav"></ul>
           </div>
           <div className="left-side">
             {user.name.length === 0 && (
