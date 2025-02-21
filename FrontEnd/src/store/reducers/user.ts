@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type userType = {
+  _id: string;
   userName: string;
   name: string;
   email: string;
@@ -10,6 +11,7 @@ export type userType = {
 
 type stateType = {
   user: {
+    _id: string;
     userName: string;
     name: string;
     email: string;
@@ -21,6 +23,7 @@ type stateType = {
 
 const initialState: stateType = {
   user: {
+    _id: "",
     userName: "",
     name: "",
     email: "",
@@ -43,6 +46,18 @@ const userSlice = createSlice({
         state.user.movies.push(action.payload);
       }
     },
+    updateName(state, action: PayloadAction<string>) {
+      state.user.name = action.payload
+        .split("")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+    },
+    updateEmail(state, action: PayloadAction<string>) {
+      state.user.email = action.payload;
+    },
+    updateUsername(state, action: PayloadAction<string>) {
+      state.user.userName = action.payload;
+    },
     logout(state) {
       state.user.name = "";
       state.user.email = "";
@@ -53,5 +68,12 @@ const userSlice = createSlice({
   },
 });
 
-export const { addUser, addMovieToUser, logout } = userSlice.actions;
+export const {
+  addUser,
+  addMovieToUser,
+  updateName,
+  updateEmail,
+  updateUsername,
+  logout,
+} = userSlice.actions;
 export default userSlice.reducer;

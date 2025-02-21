@@ -33,7 +33,23 @@ export const loginSchema = yup.object().shape({
   email: yup
     .string()
     .email("Porfavor coloque um email válido")
-    .min(3, "senha precisa ter pelo menos 3 caracteres")
+    .min(3, "email precisa ter pelo menos 3 caracteres")
     .required("Preenchimento obrigatório"),
   password: yup.string().required("Preenchimento obrigatório"),
+});
+
+export const editPerfilSchema = yup.object().shape({
+  name: yup
+    .string()
+    .min(3, "nome precisa ter pelo menos 3 caracteres")
+    .required("Preenchimento obrigatório"),
+  userName: yup
+    .string()
+    .min(3, "nome de usuário precisa ter pelo menos 3 caracteres")
+    .required("Preenchimento obrigatório"),
+  email: yup
+    .string()
+    .email("Porfavor coloque um email válido")
+    .min(3, "email precisa ter pelo menos 3 caracteres")
+    .required("Preenchimento obrigatório"),
 });

@@ -52,31 +52,36 @@ module.exports = class UserController {
 
   //login
   static async loginUser(req, res, next) {
-    passport.authenticate("local", (err, user, info) => {
-      if (err) {
-        return res.status(500).json({ message: "Erro interno no servidor" });
-      }
-      if (!user) {
-        return res
-          .status(401)
-          .json({ message: info.message || "Usuário ou senha inválidos" });
-      }
-
-      // Faz login do usuário e cria a sessão
-      req.logIn(user, (err) => {
+    try {
+      passport.authenticate("local", (err, user, info) => {
         if (err) {
-          return res.status(500).json({ message: "Falha ao iniciar sessão" });
+          return res.status(500).json({ message: "Erro interno no servidor" });
+        }
+        if (!user) {
+          return res
+            .status(401)
+            .json({ message: info.message || "Usuário ou senha inválidos" });
         }
 
-        // Remove informações sensíveis antes de enviar ao frontend
-        const { password, ...userData } = user.toObject();
+        // Faz login do usuário e cria a sessão
+        req.logIn(user, (err) => {
+          if (err) {
+            return res.status(500).json({ message: "Falha ao iniciar sessão" });
+          }
 
-        return res.json({
-          message: "Login realizado com sucesso",
-          data: userData,
+          // Remove informações sensíveis antes de enviar ao frontend
+          const { password, ...userData } = user.toObject();
+
+          return res.status(200).json({
+            message: "Login realizado com sucesso",
+            data: userData,
+          });
         });
-      });
-    })(req, res, next);
+      })(req, res, next);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Erro ao tentar fazer login" });
+    }
   }
 
   //logout
@@ -116,10 +121,10 @@ module.exports = class UserController {
     return res.status(200).json({ message: "Senha confere com o usuário" });
   }
 
-  //Edita usuário
-  static async editUser(req, res) {
+  //edita nome
+  static async editName(req, res) {
     const { id } = req.params;
-    const { name, email, userName } = req.body;
+    var { name } = req.body;
 
     if (!id) {
       return res.status(400).json({
@@ -127,28 +132,122 @@ module.exports = class UserController {
       });
     }
 
-    // validações
+    const nomeCompleto = name.includes(" ");
 
-    const user = await User.findById({ _id: id });
+    if (!nomeCompleto) {
+      return res
+        .status(400)
+        .json({ message: "Nome precisa ser válido e completo" });
+    }
+
+    function nomeFormatado(nameRaw) {
+      return nameRaw
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+    }
+
+    name = nomeFormatado(name);
+
+    if (name.length < 2 || name.length > 50) {
+      return res
+        .status(400)
+        .json({ message: "Nome precisa ter entre 2 e 50 caracteres" });
+    }
+
+    if (!name) {
+      return res.status(400).json({ message: "Precisamos do nome" });
+    }
+
+    const user = await User.findById(id);
 
     if (!user) {
       return res.status(404).json({ message: "Usuário não encontrado" });
     }
 
-    const userData = {
-      userName: userName || user.userName,
-      name: name || user.name,
-      email: email || user.email,
-    };
+    if (name === user.name) {
+      return res.status(400).json({ message: "Nome já está em uso" });
+    }
 
     try {
-      return await User.findOneAndUpdate(
-        { _id: userId },
-        { $set: userData },
-        { new: true }
-      );
+      await User.findByIdAndUpdate(id, { name: name });
+      res
+        .status(200)
+        .json({ message: "Nome do usuário atualizado com sucesso" });
     } catch (err) {
-      return res.status(500).json({ message: "Erro ao editar usuário" });
+      return res
+        .status(500)
+        .json({ message: "Erro ao editar nome" + err.message });
+    }
+  }
+
+  ///edita nome de usuário
+  static async editUserName(req, res) {
+    const { id } = req.params;
+    const { userName } = req.body;
+
+    if (!id) {
+      return res.status(400).json({
+        message: "não conseguimos achar o id",
+      });
+    }
+
+    if (!userName) {
+      return res.status(400).json({ message: "Precisamos do nome de usuário" });
+    }
+
+    const user = await User.findById(id);
+
+    if (userName === user.userName) {
+      return res
+        .status(400)
+        .json({ message: "Nome de usuário já está em uso" });
+    }
+
+    try {
+      return await User.findByIdAndUpdate(id, { userName: userName }).then(
+        () => {
+          res
+            .status(200)
+            .json({ message: "Nome de usuário atualizado com sucesso" });
+        }
+      );
+    } catch (e) {
+      return res
+        .status(500)
+        .json({ message: "Erro ao editar nome de usuário" });
+    }
+  }
+
+  //edita e-mail
+  static async editEmail(req, res) {
+    const { id } = req.params;
+    const { email } = req.body;
+
+    if (!id) {
+      return res.status(400).json({
+        message: "não conseguimos achar o id",
+      });
+    }
+    if (!email) {
+      return res.status(400).json({ message: "Precisamos do e-mail" });
+    }
+
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "Usuário não encontrado" });
+    }
+
+    if (email === user.email) {
+      return res.status(400).json({ message: "E-mail já está em uso" });
+    }
+
+    try {
+      await User.findByIdAndUpdate(id, { email: email });
+      res.status(200).json({ message: "Email atualizado com sucesso" });
+    } catch (e) {
+      return res.status(500).json({ message: "Erro ao editar e-mail" });
     }
   }
 
@@ -182,14 +281,14 @@ module.exports = class UserController {
     try {
       return await User.findOneAndUpdate(
         { _id: userId },
-        { $set: userData },
-        { new: true }
+        { password: userData }
       );
     } catch (e) {
       return res.status(500).json({ message: "Erro ao editar senha" });
     }
   }
 
+  //deleta usuário
   static async deleteUser(req, res) {
     const { id } = req.params;
 
@@ -197,8 +296,7 @@ module.exports = class UserController {
       await User.findByIdAndDelete(id);
       return res.status(200).json({ message: "Conta deletada com sucesso" });
     } catch (error) {
-      console.error(error);
-      return false;
+      return res.status(500).json({ message: "Erro ao deletar conta" });
     }
   }
 };

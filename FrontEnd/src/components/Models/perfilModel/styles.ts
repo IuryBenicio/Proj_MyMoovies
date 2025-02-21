@@ -5,7 +5,7 @@ export const PerfilModelContainer = styled.div`
   position: absolute;
   width: 150px;
   height: auto;
-  top: 50px;
+  top: 55px;
   left: -90px;
   background-color: white;
   overflow: hidden;

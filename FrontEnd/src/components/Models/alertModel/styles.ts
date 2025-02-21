@@ -6,7 +6,7 @@ export const AlertContainer = styled.div`
   width: 50%;
   height: auto;
   left: 25%;
-  z-index: 3;
+  z-index: 5;
   text-align: center;
   i {
     position: absolute;

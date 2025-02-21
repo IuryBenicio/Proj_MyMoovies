@@ -26,13 +26,52 @@ export const EditPerfilContainer = styled.div`
     display: flex;
     flex-direction: column;
     position: relative;
+    .form-group {
+      position: relative;
+      .relative {
+        position: relative;
+        display: flex;
+        margin-bottom: 32px;
+      }
+      .cancel {
+        margin-left: 12px;
+      }
+      .edit-icon {
+        font-size: 20px;
+      }
+      .disabled {
+        border: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+        background-color: transparent;
+        border-radius: 0;
+      }
+    }
+    .d-flex i {
+      font-size: 18px;
+      margin-left: 5px;
+    }
+    .input-div {
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+    .error-trick {
+      position: absolute;
+      top: 67px;
+      right: 28px;
+    }
     i {
       position: absolute;
-      left: 20px;
-      top: 20px;
+      left: 15px;
+      top: 10px;
       cursor: pointer;
-      font-size: 24px;
+      font-size: 20px;
       color: grey;
+    }
+    .position {
+      position: relative;
+      margin-bottom: 33px;
+      cursor: pointer;
     }
     input {
       margin-bottom: 15px;

@@ -1,7 +1,6 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { HeaderContainer } from "./styles";
 import { RootReducer } from "../../store";
-import { changeNavBar } from "../../store/reducers/navbar";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
