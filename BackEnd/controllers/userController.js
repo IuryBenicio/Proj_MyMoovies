@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const MovieLists = require("../models/UserMoovies");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const session = require("express-session");
@@ -324,8 +325,16 @@ module.exports = class UserController {
   static async deleteUser(req, res) {
     const { id } = req.params;
 
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: "Usuário não encontrado" });
+    }
+
+    const moovielist = user.moovielist;
+
     try {
       await User.findByIdAndDelete(id);
+      await MovieLists.findByIdAndDelete(moovielist);
       return res.status(200).json({ message: "Conta deletada com sucesso" });
     } catch (error) {
       return res.status(500).json({ message: "Erro ao deletar conta" });
