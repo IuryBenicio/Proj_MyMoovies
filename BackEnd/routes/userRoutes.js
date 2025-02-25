@@ -1,8 +1,13 @@
 const router = require("express").Router();
 
 const UserController = require("../controllers/userController");
+const upload = require("../helpers/image-upload");
 
-router.post("/register", UserController.registerUser);
+router.post(
+  "/register",
+  upload.single("profileImage"),
+  UserController.registerUser
+);
 router.post("/login", UserController.loginUser);
 router.post("/logout", UserController.logoutUser);
 router.patch("/editname/:id", UserController.editName);

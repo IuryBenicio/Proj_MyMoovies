@@ -22,6 +22,10 @@ const User = mongoose.model(
         type: String,
         required: true,
       },
+      profileImage: {
+        type: String,
+        required: true,
+      },
       moovieLists: [
         {
           _id: {

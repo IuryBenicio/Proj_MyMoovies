@@ -6,7 +6,25 @@ const session = require("express-session");
 module.exports = class UserController {
   //register
   static async registerUser(req, res) {
-    const { name, userName, email, password } = req.body;
+    const { userName, email, password } = req.body;
+    var { name } = req.body;
+
+    // confere se tem imagem de profile
+    const imageUrl = req.file.path;
+
+    if (!image || image.length === 0) {
+      return res.status(400).json({ message: "Imagem obrigatória" });
+    }
+
+    // formatar nome
+    function nomeFormatado(nameRaw) {
+      return nameRaw
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+    }
+
+    name = nomeFormatado(name);
 
     //VALIDAÇÕES
 
@@ -14,6 +32,12 @@ module.exports = class UserController {
       return res
         .status(400)
         .json({ message: "Todos os campos precisam ser preenchidos" });
+    }
+
+    const nameExists = await User.findOne({ name: name });
+
+    if (nameExists) {
+      return res.status(400).json({ message: "Nome já existe" });
     }
 
     const userNameExists = await User.findOne({ userName: userName });
@@ -38,6 +62,9 @@ module.exports = class UserController {
 
     const user = new User({ name, userName, email, password: hashedPassword });
 
+    // salvar Imagem no usuário
+    user.profileImage = imageUrl;
+
     try {
       await user.save();
       res.status(201).json({
@@ -48,6 +75,11 @@ module.exports = class UserController {
       console.error(error);
       return res.status(400).json({ message: "falha ao registrar" });
     }
+  }
+
+  static async updateprofileimage(req, res) {
+    const { id } = req.params;
+    const { image } = req.files;
   }
 
   //login

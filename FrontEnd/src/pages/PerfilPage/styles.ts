@@ -16,7 +16,7 @@ export const PerfilComponent = styled.div`
   .container-perfil {
     background-color: white;
     box-shadow: ${shadow.sombra};
-    width: 500px;
+    width: 100%;
     margin: 0 auto;
     border: 1px solid gray;
     padding: 32px 0;
