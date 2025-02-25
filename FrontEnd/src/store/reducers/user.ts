@@ -7,6 +7,7 @@ export type userType = {
   email: string;
   password?: string;
   movies: [];
+  profileImageUrl: string;
 };
 
 type stateType = {
@@ -16,7 +17,8 @@ type stateType = {
     name: string;
     email: string;
     password?: string;
-    movies: [];
+    movies: string[];
+    profileImageUrl: string;
   };
   authenticated: boolean;
 };
@@ -29,6 +31,7 @@ const initialState: stateType = {
     email: "",
     password: "",
     movies: [],
+    profileImageUrl: "",
   },
   authenticated: false,
 };
@@ -63,6 +66,8 @@ const userSlice = createSlice({
       state.user.email = "";
       state.user.password = "";
       state.user.movies = [];
+      state.user.userName = "";
+      state.user.profileImageUrl = "";
       state.authenticated = false;
     },
   },
