@@ -4,11 +4,32 @@ import axios from "axios";
 import { useFormik } from "formik";
 import { registerSchema } from "../../../helpers/schemas";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setAlert } from "../../../store/reducers/alert";
 
 export default function Register() {
   const [confirmTerms, setConfirmTerms] = useState(false);
   const [checked, setChecked] = useState(false);
   const navegar = useNavigate();
+  const [image, setImage] = useState<File | null>(null); // Guarda o arquivo
+  const [preview, setPreview] = useState<string | null>(null); // Guarda a URL do preview
+
+  const dispatch = useDispatch();
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    if (file) {
+      setImage(file);
+
+      // Criar preview
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setPreview(reader.result as string);
+      };
+    }
+  };
 
   const handleConfirmTerms = () => {
     if (
@@ -32,13 +53,15 @@ export default function Register() {
     userName: string,
     name: string,
     email: string,
-    password: string
+    password: string,
+    image: File
   ): void => {
     const data = {
       userName,
       name,
       email,
       password,
+      image,
     };
     console.log(data);
     axios
@@ -63,10 +86,26 @@ export default function Register() {
       email: "",
       password: "",
       confirmPassword: "",
+      image: null,
     },
     validationSchema: registerSchema,
     onSubmit: () => {
-      postRegister(values.userName, values.name, values.email, values.password);
+      if (image) {
+        postRegister(
+          values.userName,
+          values.name,
+          values.email,
+          values.password,
+          image
+        );
+      } else {
+        dispatch(
+          setAlert({
+            messageText: "Por favor, escolha uma imagem de perfil.",
+            type: "error",
+          })
+        );
+      }
     },
   });
 
@@ -82,6 +121,38 @@ export default function Register() {
       <div className="container">
         <h2>Registrar-se</h2>
         <form onSubmit={handleSubmit}>
+          <div className="packing">
+            <div className="image-div">
+              <label className="image-card" htmlFor="image">
+                <span>Escolher imagem de perfil</span>
+                <input
+                  id="image"
+                  className="image-input"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                />
+                {preview && (
+                  <>
+                    <img
+                      className="image-preview"
+                      src={preview}
+                      alt="Preview"
+                    />
+                  </>
+                )}
+              </label>
+              {preview && (
+                <i
+                  onClick={() => {
+                    setPreview(null);
+                    setImage(null);
+                  }}
+                  className="bi bi-trash"
+                ></i>
+              )}
+            </div>
+          </div>
           <div className="packing">
             <div className="packing-card mb-3">
               <label htmlFor="exampleInputName1" className="form-label">

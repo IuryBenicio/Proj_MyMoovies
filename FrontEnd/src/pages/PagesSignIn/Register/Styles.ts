@@ -27,6 +27,49 @@ export const RegisterContainer = styled.div`
     .packing {
       display: flex;
       justify-content: space-between;
+      .image-div {
+        margin: 0 auto;
+        margin-bottom: 24px;
+        i {
+          display: flex;
+          font-size: 20px;
+          color: grey;
+          cursor: pointer;
+          margin-top: 8px;
+          justify-content: center;
+        }
+        .image-card {
+          position: relative;
+          .image-preview:hover i {
+            display: block;
+          }
+          .image-preview {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+          margin: 0 auto;
+          width: 200px;
+          height: 150px;
+          aspect-ratio: 16/9;
+          object-fit: cover;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 2px dashed rgba(0, 0, 0, 0.3);
+          color: grey;
+          padding: 8px;
+          text-align: center;
+          border-radius: 8px;
+
+          .image-input {
+            opacity: 0;
+            position: absolute;
+          }
+        }
+      }
       .packing-card:not(:first-child) {
         margin-left: 24px;
       }
