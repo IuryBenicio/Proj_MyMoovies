@@ -48,37 +48,7 @@ export default function Register() {
     }
   };
 
-  //______________ENVIO__________________
-  const postRegister = (
-    userName: string,
-    name: string,
-    email: string,
-    password: string,
-    image: File
-  ): void => {
-    const data = {
-      userName,
-      name,
-      email,
-      password,
-      image,
-    };
-    console.log(data);
-    axios
-      .post("http://localhost:8000/user/register", data)
-      .then(() => {
-        console.log("Registro feito com sucesso!");
-        navegar("/login");
-      })
-      .catch((error) => {
-        console.log(data);
-        console.log(error.request);
-        alert(error.message);
-      });
-  };
-
-  //_________________FORMIK________________________
-
+  // FORMIK
   const { values, errors, handleBlur, handleChange, handleSubmit } = useFormik({
     initialValues: {
       userName: "",
@@ -90,6 +60,7 @@ export default function Register() {
     },
     validationSchema: registerSchema,
     onSubmit: () => {
+      // console.log(image);
       if (image) {
         postRegister(
           values.userName,
@@ -108,6 +79,38 @@ export default function Register() {
       }
     },
   });
+
+  //______________ENVIO__________________
+  const postRegister = (
+    userName: string,
+    name: string,
+    email: string,
+    password: string,
+    image: File
+  ): void => {
+    const data = {
+      userName,
+      name,
+      email,
+      password,
+      image,
+    };
+    // console.log(data);
+    axios
+      .post("http://localhost:8000/user/register", data)
+      .then((response) => {
+        console.log(response);
+        // console.log("Registro feito com sucesso!");
+        // navegar("/login");
+      })
+      .catch((error) => {
+        console.log(data);
+        console.log(error.request);
+        alert(error.message);
+      });
+  };
+
+  //_________________FORMIK________________________
 
   //_________________CHECKBOX______________________
   useEffect(() => {
@@ -128,6 +131,7 @@ export default function Register() {
                 <input
                   id="image"
                   className="image-input"
+                  name="image"
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}

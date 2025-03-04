@@ -2,18 +2,21 @@ const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const cloudinary = require("./cloudinaryConfig");
 
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: async (req) => {
-    return {
-      public_id: `user_ ${req.body.userName}`,
-      folder: "mymovies/user_profile",
-      transformation: [{ width: 500, height: 500, crop: "fill" }],
-      allowed_formats: ["jpg", "png", "jpeg"],
-    };
-  },
-});
+function uploadMiddleware(folderName) {
+  const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+      folder: `${folderName.trim()}`,
+      public_id: (req, file) => {
+        `${file.fieldname} - ${Date.now()}`;
+      },
+      resource_type: "auto",
+    },
+  });
+  return multer({
+    storage: storage,
+    limits: { fileSize: 5 * 1024 * 1024 }, // Limita o tamanho do arquivo para 1MB
+  });
+}
 
-const upload = multer({ storage });
-
-module.exports = upload;
+module.exports = uploadMiddleware;
