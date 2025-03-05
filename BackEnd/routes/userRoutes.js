@@ -1,19 +1,8 @@
 const router = require("express").Router();
-
 const UserController = require("../controllers/userController");
-const uploadMiddleware = require("../helpers/image-upload");
-const upload = uploadMiddleware("mymovies-profile");
+const upload = require("../helpers/image-upload");
 
-router.post(
-  "/register",
-  upload.single("image"),
-  (req, res, next) => {
-    console.log();
-    next();
-  },
-  UserController.registerUser
-);
-// router.patch("/uploadimage/:id");
+router.post("/register", upload.single("image"), UserController.registerUser);
 router.post("/login", UserController.loginUser);
 router.post("/logout", UserController.logoutUser);
 router.patch("/editname/:id", UserController.editName);

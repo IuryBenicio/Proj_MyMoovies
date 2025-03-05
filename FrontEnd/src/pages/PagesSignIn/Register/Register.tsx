@@ -11,7 +11,7 @@ export default function Register() {
   const [confirmTerms, setConfirmTerms] = useState(false);
   const [checked, setChecked] = useState(false);
   const navegar = useNavigate();
-  const [image, setImage] = useState<File | null>(null); // Guarda o arquivo
+  const [imageFile, setImageFile] = useState<File | null>(null); // Guarda o arquivo
   const [preview, setPreview] = useState<string | null>(null); // Guarda a URL do preview
 
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ export default function Register() {
     const file = event.target.files?.[0];
 
     if (file) {
-      setImage(file);
+      setImageFile(file);
 
       // Criar preview
       const reader = new FileReader();
@@ -35,6 +35,7 @@ export default function Register() {
     if (
       !errors.email &&
       values.email.length > 0 &&
+      !errors.image &&
       !errors.password &&
       values.password.length > 5 &&
       values.confirmPassword === values.password &&
@@ -60,14 +61,14 @@ export default function Register() {
     },
     validationSchema: registerSchema,
     onSubmit: () => {
-      // console.log(image);
-      if (image) {
+      // console.log("olha a imagem " + image);
+      if (imageFile) {
         postRegister(
           values.userName,
           values.name,
           values.email,
           values.password,
-          image
+          imageFile
         );
       } else {
         dispatch(
@@ -87,26 +88,29 @@ export default function Register() {
     email: string,
     password: string,
     image: File
-  ): void => {
-    const data = {
-      userName,
-      name,
-      email,
-      password,
-      image,
-    };
-    // console.log(data);
+  ) => {
+    const formData = new FormData(); // FormData auxilia na construção de um objeto próprio para envio HTML
+    formData.append("userName", userName);
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("image", image);
     axios
-      .post("http://localhost:8000/user/register", data)
+      .post("http://localhost:8000/user/register", formData, {
+        headers: {
+          // Para enviar arquivos, a melhor forma é usando esse header
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((response) => {
-        console.log(response);
-        // console.log("Registro feito com sucesso!");
-        // navegar("/login");
+        console.log(response.data.data);
+
+        console.log("Registro feito com sucesso!");
+        navegar("/login");
       })
       .catch((error) => {
-        console.log(data);
-        console.log(error.request);
-        alert(error.message);
+        console.log(error.response);
+        alert(error.response.data.message);
       });
   };
 
@@ -150,7 +154,7 @@ export default function Register() {
                 <i
                   onClick={() => {
                     setPreview(null);
-                    setImage(null);
+                    setImageFile(null);
                   }}
                   className="bi bi-trash"
                 ></i>

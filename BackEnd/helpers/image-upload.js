@@ -2,21 +2,18 @@ const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const cloudinary = require("./cloudinaryConfig");
 
-function uploadMiddleware(folderName) {
-  const storage = new CloudinaryStorage({
-    cloudinary: cloudinary,
-    params: {
-      folder: `${folderName.trim()}`,
-      public_id: (req, file) => {
-        `${file.fieldname} - ${Date.now()}`;
-      },
-      resource_type: "auto",
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "usuarios_profile_picture",
+    allowed_formats: ["jpg", "png", "jpeg"],
+    transformation: [{ width: 500, height: 500, crop: "limit" }],
+    public_id: (req, file) => {
+      return `${Date.now()}-${file.originalname}`;
     },
-  });
-  return multer({
-    storage: storage,
-    limits: { fileSize: 5 * 1024 * 1024 }, // Limita o tamanho do arquivo para 1MB
-  });
-}
+  },
+});
 
-module.exports = uploadMiddleware;
+const upload = multer({ storage });
+
+module.exports = upload;

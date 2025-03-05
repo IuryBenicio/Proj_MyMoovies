@@ -29,7 +29,7 @@ export const RegisterContainer = styled.div`
       justify-content: space-between;
       .image-div {
         margin: 0 auto;
-        margin-bottom: 24px;
+        margin-bottom: 42px;
         i {
           display: flex;
           font-size: 20px;
@@ -37,6 +37,7 @@ export const RegisterContainer = styled.div`
           cursor: pointer;
           margin-top: 8px;
           justify-content: center;
+          position: absolute;
         }
         .image-card {
           position: relative;

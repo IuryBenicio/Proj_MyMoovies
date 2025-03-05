@@ -9,78 +9,80 @@ module.exports = class UserController {
   static async registerUser(req, res) {
     const { userName, email, password } = req.body;
     var { name } = req.body;
+    const image = req.file.path;
 
     if (!req.file) {
-      return res.status(400).json({ message: "ERRO SEM IMAGE" });
+      return res.status(400).json({ message: "ERRO SEM ARQUIVO" });
     }
 
     // confere se tem imagem de profile
-    // const imageUrl = req.file.url;
-    return;
 
-    // if (!image || image.length === 0) {
-    //   return res.status(400).json({ message: "Imagem obrigatória" });
-    // }
+    if (!image || image.length === 0) {
+      return res.status(400).json({ message: "Imagem obrigatória" });
+    }
 
-    // // formatar nome
-    // function nomeFormatado(nameRaw) {
-    //   return nameRaw
-    //     .split(" ")
-    //     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    //     .join(" ");
-    // }
+    // formatar nome
+    function nomeFormatado(nameRaw) {
+      return nameRaw
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+    }
 
-    // name = nomeFormatado(name);
+    name = nomeFormatado(name);
 
-    // //VALIDAÇÕES
+    //VALIDAÇÕES
 
-    // if (!userName || !name || !email || !password) {
-    //   return res
-    //     .status(400)
-    //     .json({ message: "Todos os campos precisam ser preenchidos" });
-    // }
+    if (!userName || !name || !email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Todos os campos precisam ser preenchidos" });
+    }
 
-    // const nameExists = await User.findOne({ name: name });
+    const nameExists = await User.findOne({ name: name });
 
-    // if (nameExists) {
-    //   return res.status(400).json({ message: "Nome já existe" });
-    // }
+    if (nameExists) {
+      return res.status(400).json({ message: "Nome já existe" });
+    }
 
-    // const userNameExists = await User.findOne({ userName: userName });
+    const userNameExists = await User.findOne({ userName: userName });
 
-    // if (userNameExists) {
-    //   return res.status(400).json({ message: "Nome de usuário já existe" });
-    // }
+    if (userNameExists) {
+      return res.status(400).json({ message: "Nome de usuário já existe" });
+    }
 
-    // const userExists = await User.findOne({ email });
+    const userExists = await User.findOne({ email });
 
-    // if (userExists) {
-    //   return res.status(400).json({ message: "E-mail já cadastrado" });
-    // }
+    if (userExists) {
+      return res.status(400).json({ message: "E-mail já cadastrado" });
+    }
 
-    // // encriptar senha
+    // encriptar senha
 
-    // const salt = await bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt(10);
 
-    // const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-    // //Salvar usuário
+    //Salvar usuário
 
-    // const user = new User({ name, userName, email, password: hashedPassword });
+    const user = new User({
+      name,
+      userName,
+      email,
+      password: hashedPassword,
+      profileImage: image,
+    });
 
-    // // salvar Imagem no usuário
-    // user.profileImage = imageUrl;
-
-    // try {
-    //   await user.save();
-    //   res.status(201).json({
-    //     message: "Usuário criado com sucesso",
-    //     data: user,
-    //   });
-    // } catch (e) {
-    //   console.error(error);
-    //   return res.status(400).json({ message: "falha ao registrar" });
-    // }
+    try {
+      await user.save();
+      res.status(201).json({
+        message: "Usuário criado com sucesso",
+        data: user,
+      });
+    } catch (e) {
+      console.error(error);
+      return res.status(400).json({ message: "falha ao registrar" });
+    }
   }
 
   static async updateprofileimage(req, res) {
