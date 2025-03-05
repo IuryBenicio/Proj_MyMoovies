@@ -23,8 +23,14 @@ const User = mongoose.model(
         required: true,
       },
       profileImage: {
-        type: String,
-        required: true,
+        public_id: {
+          type: String,
+          required: true,
+        },
+        path: {
+          type: String,
+          required: true,
+        },
       },
       moovieLists: [
         {

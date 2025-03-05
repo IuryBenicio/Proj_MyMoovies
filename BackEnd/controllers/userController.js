@@ -9,7 +9,7 @@ module.exports = class UserController {
   static async registerUser(req, res) {
     const { userName, email, password } = req.body;
     var { name } = req.body;
-    const image = req.file.path;
+    const { path, filename } = req.file.path;
 
     if (!req.file) {
       return res.status(400).json({ message: "ERRO SEM ARQUIVO" });
@@ -17,7 +17,7 @@ module.exports = class UserController {
 
     // confere se tem imagem de profile
 
-    if (!image || image.length === 0) {
+    if (!path || path.length === 0) {
       return res.status(400).json({ message: "Imagem obrigatória" });
     }
 
@@ -70,7 +70,10 @@ module.exports = class UserController {
       userName,
       email,
       password: hashedPassword,
-      profileImage: image,
+      profileImage: {
+        public_id: filename,
+        path: path,
+      },
     });
 
     try {
@@ -85,9 +88,32 @@ module.exports = class UserController {
     }
   }
 
-  static async updateprofileimage(req, res) {
+  static async updateProfileImage(req, res) {
     const { id } = req.params;
-    const { image } = req.files;
+    const { image } = req.files.patch;
+
+    if (!image) {
+      return res.status(400).json({
+        message:
+          "Para atualizar sua imagem de perfil, você precisa enviar uma imagem",
+      });
+    }
+
+    const user = await User.findOneById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "Usuário não encontrado" });
+    }
+
+    try {
+      User.findByIdAndUpdate(id, { profileImage: image });
+      return res.status(200).json({ message: "Imagem atualizada com sucesso" });
+    } catch (err) {
+      console.error(err);
+      return res
+        .status(500)
+        .json({ message: "Erro ao atualizar imagem de perfil" });
+    }
   }
 
   //login

@@ -9,7 +9,8 @@ const storage = new CloudinaryStorage({
     allowed_formats: ["jpg", "png", "jpeg"],
     transformation: [{ width: 500, height: 500, crop: "limit" }],
     public_id: (req, file) => {
-      return `${Date.now()}-${file.originalname}`;
+      const id = Math.round(Math.random() * 10000000);
+      return `${id} -${Date.now()} -${req.body._id}`;
     },
   },
 });
