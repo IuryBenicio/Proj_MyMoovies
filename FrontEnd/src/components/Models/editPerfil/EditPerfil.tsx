@@ -10,6 +10,7 @@ import {
   updateName,
   updateUsername,
 } from "../../../store/reducers/user";
+import EditSenha from "./editSenha/EditSenha";
 
 type PropsType = {
   closeModel: () => void;
@@ -30,6 +31,13 @@ export default function EditPerfil(props: PropsType) {
   //email States
   const [email, setEmail] = useState(user.email);
   const [editEmail, setEditEmail] = useState(false);
+
+  //editar senha State
+  const [editarSenha, setEditarSenha] = useState(false);
+
+  const closeEditSenha = () => {
+    setEditarSenha(false);
+  };
 
   //RESETA OS INPUTS
   const resetInput = (type: string) => {
@@ -139,8 +147,12 @@ export default function EditPerfil(props: PropsType) {
   return (
     <EditPerfilContainer>
       <>
+        {editarSenha && <EditSenha closeModel={closeEditSenha} />}
         <div className="container">
-          <i onClick={() => props.closeModel()} className="bi bi-x-lg"></i>
+          <i
+            onClick={() => props.closeModel()}
+            className="close bi bi-x-lg"
+          ></i>
           <h2>Editar informações</h2>
           <form>
             <div className="form-group">
@@ -272,6 +284,7 @@ export default function EditPerfil(props: PropsType) {
             <button
               type="button"
               className="w-100 mt-2 p-2 mb-4 btn btn-outline-secondary"
+              onClick={() => setEditarSenha(true)}
             >
               Mudar Senha
             </button>

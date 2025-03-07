@@ -16,6 +16,7 @@ router.patch("/editname/:id", UserController.editName);
 router.patch("/editusername/:id", UserController.editUserName);
 router.patch("/editemail/:id", UserController.editEmail);
 router.patch("/editpassword/:id", UserController.editPassword);
+router.post("/confirmpassword/:id", UserController.confirmPassword);
 router.patch(
   "/uploadprofileimage/:id",
   updateImage,

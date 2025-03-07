@@ -6,6 +6,7 @@ import { registerSchema } from "../../../helpers/schemas";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setAlert } from "../../../store/reducers/alert";
+import AlertModal from "../../../components/Models/alertModel/alert";
 
 export default function Register() {
   const [confirmTerms, setConfirmTerms] = useState(false);
@@ -103,9 +104,9 @@ export default function Register() {
         },
       })
       .then((response) => {
-        console.log(response.data.data);
-
-        console.log("Registro feito com sucesso!");
+        dispatch(
+          setAlert({ messageText: response.data.message, type: "success" })
+        );
         navegar("/login");
       })
       .catch((error) => {
@@ -249,6 +250,7 @@ export default function Register() {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.confirmPassword}
+                autoComplete="off"
               />
               {errors.confirmPassword && (
                 <div className="error-trick form-text">

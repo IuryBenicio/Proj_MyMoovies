@@ -10,7 +10,7 @@ const storage = new CloudinaryStorage({
     transformation: [{ width: 500, height: 500, crop: "limit" }],
     public_id: (req, file) => {
       const id = Math.round(Math.random() * 10000000);
-      return `${id} -${Date.now()} -${req.body._id}`;
+      return `${id} -${Date.now()}`;
     },
   },
 });

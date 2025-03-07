@@ -29,7 +29,10 @@ export default function Login() {
           return;
         }
         dispatch(
-          setAlert({ type: "success", messageText: response.data.message })
+          setAlert({
+            type: "success",
+            messageText: "Usuário logado com sucesso",
+          })
         );
         console.log(response.data.data);
         addUserFunction(response.data.data);

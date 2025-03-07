@@ -7,7 +7,10 @@ export type userType = {
   email: string;
   password?: string;
   movies: [];
-  profileImageUrl: string;
+  profileImage: {
+    public_id: string;
+    path: string;
+  };
 };
 
 type stateType = {
@@ -18,7 +21,10 @@ type stateType = {
     email: string;
     password?: string;
     movies: string[];
-    profileImageUrl: string;
+    profileImage: {
+      public_id: string;
+      path: string;
+    };
   };
   authenticated: boolean;
 };
@@ -31,7 +37,10 @@ const initialState: stateType = {
     email: "",
     password: "",
     movies: [],
-    profileImageUrl: "",
+    profileImage: {
+      public_id: "",
+      path: "",
+    },
   },
   authenticated: false,
 };

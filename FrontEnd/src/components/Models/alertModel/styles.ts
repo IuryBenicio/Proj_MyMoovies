@@ -11,5 +11,6 @@ export const AlertContainer = styled.div`
   i {
     position: absolute;
     left: 20px;
+    cursor: pointer;
   }
 `;

@@ -29,6 +29,20 @@ export const GlobalStyles = createGlobalStyle`
     .bootstrap-select .form-control > div.filter-option > div.filter-option-inner > div.filter-option-inner-inner:focus {
         outline: 0px none #fff !important;
     }
+    .close {
+      z-index: 6;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 20px;
+      font-weight: 100;
+      cursor: pointer;
+      color: black;
+      transition: color 0.3s ease;
+      &:hover {
+        color: red;
+      }
+    }
 }
 
 .container{

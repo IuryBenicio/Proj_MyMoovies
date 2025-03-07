@@ -6,24 +6,57 @@ export const PerfilComponent = styled.div`
   background-color: ${cores.fundo};
   padding: 40px;
   height: calc(100dvh - 58px);
-  /* display: flex;
-  align-items: center;
-  justify-content: center; */
   .form-place {
     display: flex;
     flex-direction: column;
+  }
+  .fixo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   .container-perfil {
     background-color: white;
     box-shadow: ${shadow.sombra};
     width: 100%;
-    margin: 0 auto;
     border: 1px solid gray;
-    padding: 32px 0;
+    padding: 32px 32px;
     border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    .logado {
+      display: flex;
+      width: 100%;
+      .listas {
+        margin-left: 40px;
+        width: 90%;
+        border: 1px solid gray;
+        .add-or-remove {
+          margin-left: 10px;
+          margin-right: 10px;
+          i {
+            font-size: 24px;
+            margin-right: 10px;
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+            &:hover {
+              transform: scale(1.1);
+            }
+          }
+          .bi-plus-circle {
+            color: green;
+          }
+        }
+      }
+      .aside-container {
+        text-align: center;
+        width: 10%;
+        justify-self: start;
+      }
+      .profile-image {
+        width: auto;
+        height: auto;
+        object-fit: cover;
+      }
+    }
 
     .buttons {
       width: 100%;

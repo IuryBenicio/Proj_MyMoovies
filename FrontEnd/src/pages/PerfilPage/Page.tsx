@@ -37,7 +37,7 @@ export default function PerfilPage() {
     <PerfilComponent>
       {editar && <EditPerfil closeModel={() => setEditar(false)} />}
       <>
-        <div className="container-perfil">
+        <div className="container-perfil fixo">
           {user.name.length === 0 && (
             <>
               <h3>Faça seu login</h3>
@@ -50,25 +50,37 @@ export default function PerfilPage() {
             </>
           )}
           {user.name.length > 0 && (
-            <>
-              <div className="form-place">
-                <span className="username">{user.userName}</span>
+            <div className="logado">
+              <aside className="aside-container">
+                <div className="form-place">
+                  <img
+                    className="profile-image"
+                    src={user.profileImage.path}
+                    alt={user.userName}
+                  />
+                  <span className="username">{user.userName}</span>
+                </div>
+                <p>Dados pessoais:</p>
+                <span className="name">{user.name}</span>
+                <span className="email">E-mail: {user.email}</span>
+                <div className="buttons">
+                  <ul>
+                    <li>
+                      <button onClick={() => setEditar(true)} className="">
+                        Editar Perfil
+                      </button>
+                      <button className="">Apagar Conta</button>
+                      <button onClick={logoutPost}>Sair</button>
+                    </li>
+                  </ul>
+                </div>
+              </aside>
+              <div className="listas">
+                <div className="add-or-remove">
+                  <i className="bi bi-plus-circle"></i>
+                </div>
               </div>
-              <p>Dados pessoais:</p>
-              <span className="name">{user.name}</span>
-              <span className="email">E-mail: {user.email}</span>
-              <div className="buttons">
-                <ul>
-                  <li>
-                    <button onClick={() => setEditar(true)} className="">
-                      Editar Perfil
-                    </button>
-                    <button className="">Apagar Conta</button>
-                    <button onClick={logoutPost}>Sair</button>
-                  </li>
-                </ul>
-              </div>
-            </>
+            </div>
           )}
         </div>
       </>

@@ -53,3 +53,18 @@ export const editPerfilSchema = yup.object().shape({
     .min(3, "email precisa ter pelo menos 3 caracteres")
     .required("Preenchimento obrigatório"),
 });
+
+export const editPassword = yup.object().shape({
+  password: yup
+    .string()
+    .min(5, "senha precisa ter pelo menos 5 caracteres")
+    .matches(passwordRules, {
+      message:
+        "mínimo de 5 caracters, pelo menos 1 letra maiúscula, 1 letra minúscula e 1 número",
+    })
+    .required("Preenchimento obrigatório"),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password")], "Senhas precisam ser iguais")
+    .required("Preenchimento obrigatório"),
+});

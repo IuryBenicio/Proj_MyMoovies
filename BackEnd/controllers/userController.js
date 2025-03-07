@@ -9,11 +9,7 @@ module.exports = class UserController {
   static async registerUser(req, res) {
     const { userName, email, password } = req.body;
     var { name } = req.body;
-    const { path, filename } = req.file.path;
-
-    if (!req.file) {
-      return res.status(400).json({ message: "ERRO SEM ARQUIVO" });
-    }
+    const { path, filename } = req.file;
 
     // confere se tem imagem de profile
 
@@ -88,6 +84,7 @@ module.exports = class UserController {
     }
   }
 
+  //update da foto de perfil
   static async updateProfileImage(req, res) {
     const { id } = req.params;
     const { image } = req.files.patch;
