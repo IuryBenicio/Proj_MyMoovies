@@ -34,7 +34,6 @@ export default function Login() {
             messageText: "Usuário logado com sucesso",
           })
         );
-        console.log(response.data.data);
         addUserFunction(response.data.data);
         navegar("/");
       })
@@ -76,7 +75,9 @@ export default function Login() {
               onChange={handleChange}
               value={values.email}
             />
-            {errors.email && <div className="form-text">{errors.email}</div>}
+            {errors.email && (
+              <div className="error-div form-text">{errors.email}</div>
+            )}
           </div>
           <div className="packing-card mb-3 ">
             <label htmlFor="exampleInputPassword1" className="form-label">
@@ -93,7 +94,7 @@ export default function Login() {
               id="exampleInputPassword1"
             />
             {errors.password && (
-              <div className="form-text">{errors.password}</div>
+              <div className="error-div form-text">{errors.password}</div>
             )}
           </div>
           <button type="submit" className="btn btn-primary">

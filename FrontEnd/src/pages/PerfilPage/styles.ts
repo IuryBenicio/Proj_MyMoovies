@@ -58,6 +58,15 @@ export const ListasContainer = styled.div`
   margin: 0 auto;
   margin-top: 40px;
   position: relative;
+  .card {
+    height: 178px;
+    padding: 10px;
+    .card-body {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+  }
   #add-button {
     position: absolute;
     top: -40px;

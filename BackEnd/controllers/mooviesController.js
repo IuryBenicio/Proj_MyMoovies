@@ -164,7 +164,7 @@ module.exports = class MoovieListController {
     const newMovie = {
       movieId: moovieId,
       title: moovieName,
-      poster_path: poster_path,
+      poster_path: `https://image.tmdb.org/t/p/w500${poster_path}`,
     };
 
     list.moovieList.push(newMovie);

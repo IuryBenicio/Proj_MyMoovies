@@ -6,14 +6,15 @@ import { bancoDeDados } from "../../helpers/getApi";
 import { logout } from "../../store/reducers/user";
 import { useNavigate } from "react-router-dom";
 import EditPerfil from "../../components/Models/editPerfil/EditPerfil/EditPerfil";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { returnDescription } from "../../helpers/utils/utilsMovies";
 
-interface ListTypes {
-  userId: string;
+type ListTypes = {
+  _id: string;
   name: string;
   description: string;
-}
+  date: string;
+};
 
 export default function PerfilPage() {
   const { user } = useSelector((state: RootReducer) => state.user);
@@ -54,12 +55,39 @@ export default function PerfilPage() {
     await axios
       .get(`${bancoDeDados}/movie/lists/${user._id}`)
       .then((response) => {
-        setLists(response.data);
+        setLists(response.data.data);
       })
       .catch(() => {
         alert("Ocorreu um erro ao carregar as listas");
       });
   };
+
+  async function removeList(listId: string, index: number): Promise<void> {
+    await axios
+      .post(`${bancoDeDados}/movie/removelist`, {
+        userId: user._id,
+        listId: listId,
+      })
+      .then(() => {
+        const listaFiltrada: ListTypes[] = [];
+
+        lists.forEach((list, i) => {
+          if (i !== index) {
+            listaFiltrada.push(list);
+          }
+        });
+
+        setLists(listaFiltrada);
+      })
+      .catch((err) => {
+        alert("Ocorreu um erro ao remover a lista");
+        console.error(err);
+      });
+  }
+
+  useEffect(() => {
+    handleGetLists();
+  }, []);
 
   return (
     <PerfilComponent>
@@ -111,32 +139,35 @@ export default function PerfilPage() {
               </a>
               <div className="container text-center">
                 <div className="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
-                  {/* {lists.map((list) => (
-                  ))} */}
-                  <>
-                    <div className="col">
-                      <div className="card">
-                        <div className="card">
-                          <div className="card-body">
-                            <h5 className="card-title">
-                              {returnTitle("NOMEEEEEEEEEEEEEEEEEEE")}
-                            </h5>
-                            <p className="card-text">
-                              {returnDescription(
-                                "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint sit, nemo aut ea culpa asperiores! Expedita hic quam consequuntur voluptatibus? Earum facilis ipsa laudantium tempora eveniet eaque saepe asperiores officia."
-                              )}
-                            </p>
-                            <a href="#" className="link-secondary me-3">
-                              acessar lista
-                            </a>
-                            <a href="#" className="link-danger">
-                              apagar lista
-                            </a>
+                  {Array.isArray(lists) &&
+                    lists.map((list, index) => (
+                      <>
+                        <div className="col" key={index}>
+                          <div className="card">
+                            <div className="card-body">
+                              <h5 className="card-title">
+                                {returnTitle(list.name)}
+                              </h5>
+                              <p className="card-text">
+                                {returnDescription(list.description)}
+                              </p>
+                              <div className="links">
+                                <a href="#" className="link-secondary me-3">
+                                  acessar lista
+                                </a>
+                                <a
+                                  onClick={() => removeList(list._id, index)}
+                                  href="#"
+                                  className="link-danger"
+                                >
+                                  apagar lista
+                                </a>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  </>
+                      </>
+                    ))}
                 </div>
               </div>
             </div>

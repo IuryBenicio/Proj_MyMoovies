@@ -33,6 +33,13 @@ export const LoginContainer = styled.div`
         border-style: solid 1px rgb();
         text-align: center;
       }
+      .packing-card {
+        position: relative;
+        .error-div {
+          position: absolute;
+          top: 75px;
+        }
+      }
     }
   }
 `;

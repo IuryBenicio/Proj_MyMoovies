@@ -32,7 +32,6 @@ export default function Results() {
       });
 
       setPageTotal(response.data.total_pages);
-      console.log(pageTotal);
 
       const filmesFiltrados = filterMovies(response.data.results);
       return filmesFiltrados;
@@ -45,7 +44,6 @@ export default function Results() {
   const { data: moovies, isLoading } = useQuery<moovieType[]>({
     queryKey: ["get-moovies", page, id],
     queryFn: fetchMoovies,
-    // replace: true,
   });
 
   // Função para navegar
