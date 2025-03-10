@@ -49,23 +49,12 @@ export default function Header() {
                 ></i>
               </>
             )}
-            {user.name.length > 0 && (
-              <>
-                {userExists && (
-                  <PerfilModel className="model-perfil" nome={user?.userName} />
-                )}
-                <i
-                  onClick={() => setUser(!userExists)}
-                  className="avatar-icon bi bi-door-open"
-                ></i>
-              </>
-            )}
             <label htmlFor="search-button" className="d-flex">
               <input
                 onChange={(e) => setSearch(e.target.value)}
                 value={search}
                 className="form-control me-2 shadow-none"
-                type="search"
+                type="text"
                 placeholder="Search"
                 aria-label="Search"
               />

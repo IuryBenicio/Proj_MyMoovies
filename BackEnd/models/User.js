@@ -42,6 +42,15 @@ const User = mongoose.model(
             type: Schema.Types.String,
             ref: "MoovieList",
           },
+          description: {
+            type: Schema.Types.String,
+            required: "MoovieList",
+          },
+          date: {
+            type: Date,
+            default: Date.now,
+            required: "Date",
+          },
         },
       ],
     },

@@ -5,10 +5,16 @@ module.exports = class MoovieListController {
   // Adiciona lista a um usuário
   static async addListToUser(req, res) {
     const { name, userId } = req.body;
+    var { description } = req.body;
 
     // validações
     if (!name || !userId) {
       return res.status(400).json({ message: "Faltam informações" });
+    }
+
+    if (!description) {
+      const stringVazia = "...";
+      description = stringVazia;
     }
 
     const user = await User.findById({ _id: userId });
@@ -17,7 +23,11 @@ module.exports = class MoovieListController {
       return res.status(404).json({ message: "Usuário não encontrado" });
     }
 
-    const newList = new MoovieList({ userId: userId, name: name });
+    const newList = new MoovieList({
+      userId: userId,
+      description: description,
+      name: name,
+    });
 
     const listMoviesExist = await MoovieList.findOne({
       name: newList.name,
@@ -30,13 +40,22 @@ module.exports = class MoovieListController {
     }
 
     try {
-      newList.save();
+      await newList.save();
+      const idList = newList._id;
       await User.findByIdAndUpdate(
         userId,
-        { $push: { moovieLists: newList } },
+        {
+          $push: {
+            moovieLists: {
+              _id: idList._id,
+              name: newList.name,
+              description: newList.description,
+            },
+          },
+        },
         { new: true }
       );
-      res.json({ message: "Lista de filmes adicionada com sucesso" });
+      return res.json({ message: "Lista de filmes adicionada com sucesso" });
     } catch (err) {
       return res
         .status(500)
@@ -75,20 +94,20 @@ module.exports = class MoovieListController {
 
   // Retorna todas as listas de um usuário
   static async returnAllLists(req, res) {
-    const { userId } = req.body;
+    const { id } = req.params;
 
-    if (!userId) {
+    if (!id) {
       return res.status(400).json({ message: "Faltam informações" });
     }
 
-    const user = await User.findById({ _id: userId });
+    const user = await User.findById({ _id: id });
 
     if (!user) {
       return res.status(404).json({ message: "Usuário não encontrado" });
     }
 
     try {
-      res.json(user.moovieLists);
+      res.json({ data: user.moovieLists });
     } catch (e) {
       return res
         .status(500)
@@ -96,15 +115,37 @@ module.exports = class MoovieListController {
     }
   }
 
-  // Adiciona filme a uma lista de um usuário
-  static async addMoovieToList(req, res) {
-    const { listId, moovieId } = req.body;
+  // Restorna lista do banco de dados da lista
+  static async returnLists(req, res) {
+    const { id } = req.params;
 
-    if (!listId || !moovieId) {
+    if (!id) {
       return res.status(400).json({ message: "Faltam informações" });
     }
 
-    const list = await MoovieList.findById(moovieId);
+    const lists = [];
+
+    try {
+      await lists.push(MoovieList.find({ userId: id }));
+      return res.status(200).json({
+        data: lists,
+      });
+    } catch (err) {
+      return res
+        .status(500)
+        .json({ message: "Erro ao buscar listas de filmes" + err.message });
+    }
+  }
+
+  // Adiciona filme a uma lista de um usuário
+  static async addMoovieToList(req, res) {
+    const { listId, moovieId, moovieName, poster_path } = req.body;
+
+    if (!listId || !moovieId || !moovieName || !poster_path) {
+      return res.status(400).json({ message: "Faltam informações" });
+    }
+
+    const list = await MoovieList.findById(listId);
 
     if (!list) {
       return res
@@ -112,15 +153,30 @@ module.exports = class MoovieListController {
         .json({ message: "Lista de filmes não encontrada" });
     }
 
+    const movie = list.moovieList.filter((item) => item.movieId === moovieId);
+
+    if (movie.length > 0) {
+      return res
+        .status(404)
+        .json({ message: "Filme já pertence a esta lista" });
+    }
+
+    const newMovie = {
+      movieId: moovieId,
+      title: moovieName,
+      poster_path: poster_path,
+    };
+
+    list.moovieList.push(newMovie);
+
     try {
-      await list.findByIdAndUpdate(
-        moovieId,
-        { $push: { movies: moovieId } },
-        { new: true }
-      );
+      await list.save();
+      return res.json({
+        message: "Filme adicionado à lista de filmes com sucesso",
+      });
     } catch (e) {
       return res.status(500).json({
-        message: "Erro ao adicionar filme à lista de filmes" + e.message,
+        message: "Erro ao adicionar filme à lista de filmes " + e.message,
       });
     }
   }

@@ -1,16 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
 import { EditPerfilContainer } from "./styles";
-import { RootReducer } from "../../../store";
-import { setAlert } from "../../../store/reducers/alert";
+import { RootReducer } from "../../../../store";
+import { setAlert } from "../../../../store/reducers/alert";
 import { useState } from "react";
 import axios from "axios";
-import { bancoDeDados } from "../../../helpers/getApi";
+import { bancoDeDados } from "../../../../helpers/getApi";
 import {
   updateEmail,
   updateName,
   updateUsername,
-} from "../../../store/reducers/user";
-import EditSenha from "./editSenha/EditSenha";
+} from "../../../../store/reducers/user";
+import EditSenha from "../editSenha/EditSenha";
 
 type PropsType = {
   closeModel: () => void;

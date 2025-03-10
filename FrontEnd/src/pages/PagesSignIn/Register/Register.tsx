@@ -6,7 +6,6 @@ import { registerSchema } from "../../../helpers/schemas";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setAlert } from "../../../store/reducers/alert";
-import AlertModal from "../../../components/Models/alertModel/alert";
 
 export default function Register() {
   const [confirmTerms, setConfirmTerms] = useState(false);
@@ -82,7 +81,7 @@ export default function Register() {
     },
   });
 
-  //______________ENVIO__________________
+  //_________________ENVIO_________________________
   const postRegister = (
     userName: string,
     name: string,
@@ -122,8 +121,7 @@ export default function Register() {
     handleConfirmTerms();
   }, [checked, values, errors]);
 
-  //_________________CÓDIGO______________________
-
+  //_________________CÓDIGO________________________
   return (
     <RegisterContainer>
       <div className="container">

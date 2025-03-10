@@ -188,7 +188,11 @@ export default function EditSenha(props: propsType) {
                   fetchChangePassword(values.newPassword);
                 }}
               >
-                salvar
+                {isLoading ? (
+                  <ThreeDot color="#000000" size="small" text="" textColor="" />
+                ) : (
+                  "salvar"
+                )}
               </button>
             </form>
           )}

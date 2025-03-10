@@ -1,4 +1,3 @@
-const multer = require("multer");
 const cloudinary = require("./cloudinaryConfig");
 
 const deleteImage = async (oldImagePublicId) => {
@@ -9,7 +8,9 @@ const deleteImage = async (oldImagePublicId) => {
 };
 
 const updateProfileImage = async (req, res, next) => {
-  const oldImagePublicId = req.body.profileImage.public_id;
+  const oldImagePublicId = req.body.public_id;
+
+  console.log(oldImagePublicId);
 
   if (oldImagePublicId) {
     await deleteImage(oldImagePublicId).then(() => {

@@ -7,17 +7,34 @@ const MoovieList = mongoose.model(
   new Schema(
     {
       userId: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: "User",
         required: true,
       },
       name: {
         type: String,
         required: true,
       },
-      moovieList: {
-        type: Array,
-        default: [],
+      description: {
+        type: String,
+        required: true,
       },
+      moovieList: [
+        {
+          movieId: {
+            type: String,
+            required: true,
+          },
+          title: {
+            type: String,
+            required: true,
+          },
+          poster_path: {
+            type: String,
+            required: true,
+          },
+        },
+      ],
     },
     { timestamps: true }
   )
