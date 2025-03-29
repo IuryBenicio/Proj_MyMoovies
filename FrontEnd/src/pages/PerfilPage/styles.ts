@@ -6,6 +6,9 @@ export const PerfilComponent = styled.div`
   background-color: ${cores.fundo};
   padding: 40px;
   min-height: calc(100dvh - 58px);
+  #add-button {
+    position: relative;
+  }
   .fixo {
     display: flex;
     flex-direction: column;

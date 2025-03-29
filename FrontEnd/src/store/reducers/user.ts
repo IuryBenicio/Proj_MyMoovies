@@ -6,7 +6,7 @@ export type userType = {
   name: string;
   email: string;
   password?: string;
-  movies: [];
+  movies: string[];
   profileImage: {
     public_id: string;
     path: string;
@@ -76,7 +76,10 @@ const userSlice = createSlice({
       state.user.password = "";
       state.user.movies = [];
       state.user.userName = "";
-      state.user.profileImageUrl = "";
+      state.user.profileImage = {
+        public_id: "",
+        path: "",
+      };
       state.authenticated = false;
     },
   },

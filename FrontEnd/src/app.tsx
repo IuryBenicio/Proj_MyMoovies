@@ -10,8 +10,12 @@ import { useSelector } from "react-redux";
 import { RootReducer } from "./store";
 import AlertModal from "./components/Models/alertModel/alert";
 import { useState } from "react";
+import ListPage from "./pages/PerfilPage/listPage/Page";
+import ErrorPage from "./pages/ErrorPages/ErrorPost";
 
 export default function App() {
+  const { user } = useSelector((state: RootReducer) => state.user);
+
   const { showMessage, messageText, type } = useSelector(
     (state: RootReducer) => state.alert
   );
@@ -36,6 +40,16 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/signup" element={<LoginOrRegister />} />
+          <Route
+            path="/list/:id"
+            element={
+              user.name.length > 0 ? (
+                <ListPage />
+              ) : (
+                <ErrorPage message="Você não tem permissão para estar aqui" />
+              )
+            }
+          />
         </Routes>
       </BrowserRouter>
     </>

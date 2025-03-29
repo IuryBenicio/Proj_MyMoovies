@@ -33,6 +33,20 @@ const MoovieList = mongoose.model(
             type: String,
             required: true,
           },
+          sinopse: {
+            type: String,
+            required: true,
+          },
+          marqued: {
+            type: String,
+            default: "question",
+            required: true,
+          },
+          order: {
+            type: Number,
+            required: true,
+            unique: true,
+          },
         },
       ],
     },

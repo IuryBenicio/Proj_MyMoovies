@@ -63,6 +63,74 @@ module.exports = class MoovieListController {
     }
   }
 
+  // Edita nome de uma lista de um usuário
+  static async editListName(req, res) {
+    const { listId, newName } = req.body;
+
+    const list = await MoovieList.findByListId(listId);
+
+    if (!newName) {
+      return res.status(400).json({ message: "Faltando nome para editar" });
+    }
+
+    if (!list) {
+      return res
+        .status(404)
+        .json({ message: "Lista de filmes não encontrada" });
+    }
+
+    if (list.name === newName) {
+      return res
+        .status(400)
+        .json({ message: "Nome não pode ser igual ao atual" });
+    }
+
+    try {
+      await MoovieList.findByIdAndUpdate(
+        listId,
+        { name: newName },
+        { new: true }
+      );
+      return res.json({ message: "Nome da lista editada com sucesso" });
+    } catch {
+      return res
+        .status(500)
+        .json({ message: "Erro ao editar nome da lista de filmes" });
+    }
+  }
+
+  // Edita descrição de uma lista de um usuário
+  static async editListDescription(req, res) {
+    const { listId, newDescription } = req.body;
+
+    if (!listId) {
+      return res.status(400).json({ message: "Faltando id para editar" });
+    }
+    if (!newDescription) {
+      return res
+        .status(400)
+        .json({ message: "Faltando descrição para editar" });
+    }
+    const list = await MoovieList.findByListId(listId);
+    if (!list) {
+      return res
+        .status(404)
+        .json({ message: "Lista de filmes não encontrada" });
+    }
+
+    try {
+      await MoovieList.findByIdAndUpdate(
+        listId,
+        { description: newDescription },
+        { new: true }
+      );
+    } catch {
+      return res
+        .status(500)
+        .json({ message: "Erro ao editar descrição da lista de filmes" });
+    }
+  }
+
   // Remove lista de um usuário
   static async removeListfromUser(req, res) {
     const { listId, userId } = req.body;
@@ -116,30 +184,33 @@ module.exports = class MoovieListController {
   }
 
   // Restorna lista do banco de dados da lista
-  static async returnLists(req, res) {
+  static async returnList(req, res) {
     const { id } = req.params;
 
     if (!id) {
       return res.status(400).json({ message: "Faltam informações" });
     }
 
-    const lists = [];
+    const filmes = await MoovieList.findOne({ userId: id });
+
+    if (!filmes) {
+      return res
+        .status(404)
+        .json({ message: "Lista de filmes não encontrada" });
+    }
 
     try {
-      await lists.push(MoovieList.find({ userId: id }));
-      return res.status(200).json({
-        data: lists,
-      });
-    } catch (err) {
+      return res.json(filmes);
+    } catch (e) {
       return res
         .status(500)
-        .json({ message: "Erro ao buscar listas de filmes" + err.message });
+        .json({ message: "Erro ao buscar lista de filmes " + e.message });
     }
   }
 
   // Adiciona filme a uma lista de um usuário
   static async addMoovieToList(req, res) {
-    const { listId, moovieId, moovieName, poster_path } = req.body;
+    const { listId, overview, moovieId, moovieName, poster_path } = req.body;
 
     if (!listId || !moovieId || !moovieName || !poster_path) {
       return res.status(400).json({ message: "Faltam informações" });
@@ -153,18 +224,20 @@ module.exports = class MoovieListController {
         .json({ message: "Lista de filmes não encontrada" });
     }
 
-    const movie = list.moovieList.filter((item) => item.movieId === moovieId);
+    const hasMovie = list.moovieList.some((movie) => movie.movieId == moovieId);
 
-    if (movie.length > 0) {
+    if (hasMovie) {
       return res
-        .status(404)
-        .json({ message: "Filme já pertence a esta lista" });
+        .status(400)
+        .json({ message: "Esse filme já pertence a lista escolhida" });
     }
 
     const newMovie = {
       movieId: moovieId,
       title: moovieName,
       poster_path: `https://image.tmdb.org/t/p/w500${poster_path}`,
+      sinopse: overview,
+      marqued: "question",
     };
 
     list.moovieList.push(newMovie);
@@ -181,9 +254,41 @@ module.exports = class MoovieListController {
     }
   }
 
+  // Marca um filme como marcado ou não marcado em uma lista
+  static async markMovie(req, res) {
+    const { listId, moovieId, mark } = req.body;
+
+    if (!listId) {
+      return res.status(400).json({ message: "Falta list" });
+    }
+    if (!moovieId) {
+      return res.status(400).json({ message: "Falta moovieId " + moovieId });
+    }
+    if (!mark) {
+      return res.status(400).json({ message: "Falta marqued" });
+    }
+
+    const list = await MoovieList.findById(listId);
+
+    if (!list) {
+      return res.status(404).json({ message: "List não encontrada" });
+    }
+
+    try {
+      await MoovieList.findOneAndUpdate(
+        { _id: listId, "moovieList.movieId": moovieId },
+        { $set: { "moovieList.$.marqued": mark } }
+      ).then(() => {
+        return res.json({ message: "Filme marcado com sucesso" });
+      });
+    } catch {
+      return res.json({ message: "Erro ao fazer o update do filme" });
+    }
+  }
+
   // Remove filme de uma lista de um usuário
   static async removeMoovieFromList(req, res) {
-    const { listId, moovieId, userId } = req.body;
+    const { listId, moovieId } = req.body;
 
     if (!listId || !moovieId) {
       return res.status(400).json({ message: "Faltam informações" });
@@ -197,27 +302,74 @@ module.exports = class MoovieListController {
         .json({ message: "Lista de filmes não encontrada" });
     }
 
-    const user = await User.findById(userId);
+    list.moovieList = list.moovieList.filter(
+      (movie) => movie.movieId !== moovieId
+    );
+
+    try {
+      await list.save();
+    } catch (err) {
+      return res.status(500).json({
+        message: "Erro ao remover filme da lista de filmes" + err.message,
+      });
+    }
+  }
+
+  // Retorna as listas em que um filme está presente
+  static async returnListsWhereMovieIsPresent(req, res) {
+    const { moovieId, userId } = req.params;
+
+    if (!moovieId || !userId) {
+      return res.status(400).json({ message: "Faltam informações" });
+    }
+    const user = await User.findById({ _id: userId });
 
     if (!user) {
       return res.status(404).json({ message: "Usuário não encontrado" });
     }
 
     try {
-      await list.findByIdAndUpdate(
-        listId,
-        { $pull: { movies: moovieId } },
-        { new: true }
-      );
-      await User.findByIdAndUpdate(
-        userId,
-        { $pull: { moovieLists: { movies: moovieId } } },
-        { new: true, useFindAndModify: false }
-      );
-    } catch (err) {
-      return res.status(500).json({
-        message: "Erro ao remover filme da lista de filmes" + err.message,
+      const Listas = await MoovieList.find({
+        userId: user,
+        "moovieList.movieId": movieId,
       });
+      return res.json(Listas);
+    } catch (e) {
+      return res.status(500).json({
+        message:
+          "Erro ao buscar listas em que o filme está presente " + e.message,
+      });
+    }
+  }
+
+  // Reordenar filmes na lista
+  static async reorderMovies(req, res) {
+    const { listId, newOrder } = req.body;
+
+    if (!listId || !Array.isArray(newOrder)) {
+      return res
+        .status(400)
+        .json({ message: "Faltam informações ou formato inválido" });
+    }
+
+    const list = await MoovieList.findById(listId);
+
+    newOrder.forEach((movie, index) => {
+      const movieToUpdate = list.moovieList.find(
+        (m) => m.movieId === movie.movieId
+      );
+      if (movieToUpdate) {
+        movieToUpdate.order = index;
+      }
+    });
+
+    try {
+      await list.save();
+      return res
+        .status(200)
+        .json({ message: "Listas reordenadas com sucesso" });
+    } catch {
+      return res.status(500).json({ message: "Erro ao reordenar as listas" });
     }
   }
 };

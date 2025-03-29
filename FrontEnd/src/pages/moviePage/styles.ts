@@ -1,12 +1,15 @@
 import styled from "styled-components";
+import { minHeight } from "../../GlobalStyles";
 
 export const MovieContainer = styled.div`
+  max-height: ${minHeight};
   text-align: center;
+  height: 100%;
+  overflow: hidden;
   .moovie-data {
     h1 {
       font-size: 3rem;
       /* margin-top: 1rem; */
-
       margin-bottom: 1rem;
     }
     display: flex;
@@ -26,7 +29,7 @@ export const MovieContainer = styled.div`
           display: flex;
           flex-direction: column;
           font-size: 20px;
-          height: 76%;
+          height: 87.5%;
         }
         p {
           margin-bottom: 10px;
@@ -34,6 +37,7 @@ export const MovieContainer = styled.div`
         .add-movie {
           display: flex;
           flex-direction: column;
+          position: relative;
         }
       }
     }

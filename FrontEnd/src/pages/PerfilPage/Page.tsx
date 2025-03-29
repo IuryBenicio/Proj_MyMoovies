@@ -4,10 +4,11 @@ import { RootReducer } from "../../store";
 import axios from "axios";
 import { bancoDeDados } from "../../helpers/getApi";
 import { logout } from "../../store/reducers/user";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import EditPerfil from "../../components/Models/editPerfil/EditPerfil/EditPerfil";
 import { useEffect, useState } from "react";
 import { returnDescription } from "../../helpers/utils/utilsMovies";
+import AddListModel from "../../components/Models/addListModel/AddList";
 
 type ListTypes = {
   _id: string;
@@ -20,6 +21,7 @@ export default function PerfilPage() {
   const { user } = useSelector((state: RootReducer) => state.user);
   const [editar, setEditar] = useState(false);
   const [lists, setLists] = useState<ListTypes[]>([]);
+  const [addListModel, setAddListModel] = useState(false);
 
   const navegar = useNavigate();
   const dispatch = useDispatch();
@@ -78,6 +80,7 @@ export default function PerfilPage() {
         });
 
         setLists(listaFiltrada);
+        alert("Listagem removida com sucesso");
       })
       .catch((err) => {
         alert("Ocorreu um erro ao remover a lista");
@@ -91,6 +94,12 @@ export default function PerfilPage() {
 
   return (
     <PerfilComponent>
+      {addListModel && (
+        <AddListModel
+          userId={user._id}
+          closeModel={() => setAddListModel(false)}
+        />
+      )}
       {editar && <EditPerfil closeModel={() => setEditar(false)} />}
       <>
         <div className="container-perfil">
@@ -134,15 +143,19 @@ export default function PerfilPage() {
         {user.name.length > 0 && (
           <ListasContainer>
             <div>
-              <a id="add-button" className="btn btn-light">
+              <a
+                onClick={() => setAddListModel(true)}
+                id="add-button"
+                className="btn btn-light"
+              >
                 <i className="bi fs-3 bi-plus-lg"></i>
               </a>
               <div className="container text-center">
                 <div className="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
                   {Array.isArray(lists) &&
                     lists.map((list, index) => (
-                      <>
-                        <div className="col" key={index}>
+                      <div key={index}>
+                        <div className="col">
                           <div className="card">
                             <div className="card-body">
                               <h5 className="card-title">
@@ -152,13 +165,15 @@ export default function PerfilPage() {
                                 {returnDescription(list.description)}
                               </p>
                               <div className="links">
-                                <a href="#" className="link-secondary me-3">
+                                <Link
+                                  to={`/list/${user._id}`}
+                                  className="link-secondary me-3"
+                                >
                                   acessar lista
-                                </a>
+                                </Link>
                                 <a
                                   onClick={() => removeList(list._id, index)}
-                                  href="#"
-                                  className="link-danger"
+                                  className="link-danger btn"
                                 >
                                   apagar lista
                                 </a>
@@ -166,7 +181,7 @@ export default function PerfilPage() {
                             </div>
                           </div>
                         </div>
-                      </>
+                      </div>
                     ))}
                 </div>
               </div>

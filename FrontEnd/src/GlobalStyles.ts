@@ -58,3 +58,7 @@ export const cores = {
 export const shadow = {
   sombra: "0px 10px 15px rgba(0, 0, 0, 0.3)",
 };
+
+export const minHeight = {
+  minHeight: "calc(100vh - 58px)",
+};
