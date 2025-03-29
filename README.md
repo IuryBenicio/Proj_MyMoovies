@@ -13,7 +13,7 @@ Bem-vindo ao **MyMovies**, o site ideal para organizar e personalizar suas lista
 ## 🛠️ Tecnologias Utilizadas
 
 - **Frontend:** React.js + BootStrap  
-- **Backend:** Node.js + Express + Passport.js (Autenticação)  
+- **Backend:** Node.js + Express + Passport.js (Autenticação) + Cloudinary(Armazenamento de imagens) 
 - **Banco de Dados:** MongoDB  
 - **API:** Consumo da API [TMDb](https://www.themoviedb.org/) para busca de filmes  
 
@@ -25,8 +25,8 @@ Bem-vindo ao **MyMovies**, o site ideal para organizar e personalizar suas lista
    ```
 2. Instale as dependências do backend e frontend:
    ```sh
-   cd backend && npm install
-   cd ../frontend && npm install
+   cd BackEnd && npm install
+   cd ../FrontEnd && npm install
    ```
 4. Execute o servidor backend:
    ```sh
