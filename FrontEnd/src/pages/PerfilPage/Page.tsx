@@ -96,6 +96,7 @@ export default function PerfilPage() {
     <PerfilComponent>
       {addListModel && (
         <AddListModel
+          // atualizaLists={handleGetLists}
           userId={user._id}
           closeModel={() => setAddListModel(false)}
         />
@@ -166,7 +167,7 @@ export default function PerfilPage() {
                               </p>
                               <div className="links">
                                 <Link
-                                  to={`/list/${user._id}`}
+                                  to={`/list/${list._id}`}
                                   className="link-secondary me-3"
                                 >
                                   acessar lista

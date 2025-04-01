@@ -6,12 +6,14 @@ import { useState } from "react";
 type AddListModelProps = {
   closeModel: () => void;
   userId: string;
+  // atualizaLists: () => void; // função para atualizar a lista de listas após adicionar uma nova
 };
 
 export default function AddListModel({
   closeModel,
   userId,
-}: AddListModelProps) {
+}: // atualizaLists,
+AddListModelProps) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
@@ -25,6 +27,7 @@ export default function AddListModel({
       .then(() => {
         setName("");
         setDescription("");
+        // atualizaLists();
         alert("Lista Adicionada com sucesso!");
       })
       .catch((e) => {
@@ -51,7 +54,7 @@ export default function AddListModel({
         value={description}
       />
       <button
-        onClick={() => addList()}
+        onClick={addList}
         className="btn btn-outline-success"
         type="submit"
       >

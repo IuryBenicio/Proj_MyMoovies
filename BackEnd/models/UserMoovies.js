@@ -44,8 +44,6 @@ const MoovieList = mongoose.model(
           },
           order: {
             type: Number,
-            required: true,
-            unique: true,
           },
         },
       ],

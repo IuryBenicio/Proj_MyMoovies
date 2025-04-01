@@ -27,6 +27,7 @@ module.exports = class MoovieListController {
       userId: userId,
       description: description,
       name: name,
+      // moovieList: [],
     });
 
     const listMoviesExist = await MoovieList.findOne({
@@ -57,9 +58,7 @@ module.exports = class MoovieListController {
       );
       return res.json({ message: "Lista de filmes adicionada com sucesso" });
     } catch (err) {
-      return res
-        .status(500)
-        .json({ message: "Erro ao adicionar lista de filmes ao usuário" });
+      return res.status(500).json(err.errmsg);
     }
   }
 
@@ -191,15 +190,14 @@ module.exports = class MoovieListController {
       return res.status(400).json({ message: "Faltam informações" });
     }
 
-    const filmes = await MoovieList.findOne({ userId: id });
-
-    if (!filmes) {
-      return res
-        .status(404)
-        .json({ message: "Lista de filmes não encontrada" });
-    }
-
     try {
+      const filmes = await MoovieList.findById(id);
+
+      if (!filmes) {
+        return res
+          .status(404)
+          .json({ message: "Lista de filmes não encontrada" });
+      }
       return res.json(filmes);
     } catch (e) {
       return res
@@ -238,6 +236,7 @@ module.exports = class MoovieListController {
       poster_path: `https://image.tmdb.org/t/p/w500${poster_path}`,
       sinopse: overview,
       marqued: "question",
+      order: list.moovieList.length,
     };
 
     list.moovieList.push(newMovie);
