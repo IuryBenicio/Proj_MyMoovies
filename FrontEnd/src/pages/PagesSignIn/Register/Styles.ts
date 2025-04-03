@@ -19,6 +19,7 @@ export const RegisterContainer = styled.div`
     margin-bottom: 12px;
   }
   .container {
+    position: absolute;
     border: 1px solid rgba(0, 0, 0, 0.3);
     box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.3);
     background-color: white;
@@ -27,6 +28,7 @@ export const RegisterContainer = styled.div`
     .packing {
       display: flex;
       justify-content: space-between;
+
       .image-div {
         margin: 0 auto;
         margin-bottom: 42px;

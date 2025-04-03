@@ -87,24 +87,34 @@ module.exports = class UserController {
   //update da foto de perfil
   static async updateProfileImage(req, res) {
     const { id } = req.params;
-    const { image } = req.files.patch;
+    const { path, filename } = req.file;
 
-    if (!image) {
+    if (!path) {
       return res.status(400).json({
         message:
           "Para atualizar sua imagem de perfil, você precisa enviar uma imagem",
       });
     }
 
-    const user = await User.findOneById(id);
+    const user = await User.findById(id);
 
     if (!user) {
       return res.status(404).json({ message: "Usuário não encontrado" });
     }
 
+    user.profileImage.public_id = filename;
+    user.profileImage.path = path;
+
+    const imageObj = {
+      public_id: filename,
+      path: path,
+    };
+
     try {
-      User.findByIdAndUpdate(id, { profileImage: image });
-      return res.status(200).json({ message: "Imagem atualizada com sucesso" });
+      await user.save();
+      return res
+        .status(200)
+        .json({ message: "Imagem atualizada com sucesso", data: imageObj });
     } catch (err) {
       console.error(err);
       return res

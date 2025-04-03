@@ -45,6 +45,11 @@ const initialState: stateType = {
   authenticated: false,
 };
 
+type imageType = {
+  public_id: "";
+  path: "";
+};
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -82,6 +87,10 @@ const userSlice = createSlice({
       };
       state.authenticated = false;
     },
+    updateImage(state, action: PayloadAction<imageType>) {
+      state.user.profileImage.path = action.payload.path;
+      state.user.profileImage.public_id = action.payload.public_id;
+    },
   },
 });
 
@@ -92,5 +101,6 @@ export const {
   updateEmail,
   updateUsername,
   logout,
+  updateImage,
 } = userSlice.actions;
 export default userSlice.reducer;

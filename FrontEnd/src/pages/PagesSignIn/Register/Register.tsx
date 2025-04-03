@@ -98,7 +98,7 @@ export default function Register() {
     axios
       .post("http://localhost:8000/user/register", formData, {
         headers: {
-          // Para enviar arquivos, a melhor forma é usando esse header
+          // Para enviar arquivos usando esse header
           "Content-Type": "multipart/form-data",
         },
       })

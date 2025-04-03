@@ -9,6 +9,8 @@ import EditPerfil from "../../components/Models/editPerfil/EditPerfil/EditPerfil
 import { useEffect, useState } from "react";
 import { returnDescription } from "../../helpers/utils/utilsMovies";
 import AddListModel from "../../components/Models/addListModel/AddList";
+import { updateImage } from "../../store/reducers/user";
+import { MoonLoader } from "react-spinners";
 
 type ListTypes = {
   _id: string;
@@ -23,10 +25,70 @@ export default function PerfilPage() {
   const [lists, setLists] = useState<ListTypes[]>([]);
   const [addListModel, setAddListModel] = useState(false);
 
+  const dispath = useDispatch();
+
+  //image states
+
+  const [imageFile, setImageFile] = useState<File | null>(null); // Guarda o arquivo
+  const [preview, setPreview] = useState<string | undefined>(undefined); // Guarda a URL do preview
+
+  const [imageLoad, setImageLoad] = useState(false);
+
   const navegar = useNavigate();
   const dispatch = useDispatch();
 
   const letters = 19;
+
+  async function updateImageProfile() {
+    if (imageFile) {
+      const formData = new FormData();
+
+      formData.append("image", imageFile);
+
+      setImageLoad(true);
+
+      await axios
+        .patch(
+          `${bancoDeDados}/user/uploadprofileimage/${user._id}`,
+          formData,
+          {
+            headers: {
+              // Para enviar arquivos usando esse header
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        )
+        .then((response) => {
+          alert("mudado com sucesso");
+          dispatch(updateImage(response.data.data));
+          setPreview(undefined);
+          setImageLoad(false);
+
+          return;
+        })
+        .catch((err) => {
+          setImageLoad(false);
+          alert("Erro ao atualizar imagem de perfil");
+          console.log(err);
+        });
+    }
+    return;
+  }
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    if (file) {
+      setImageFile(file);
+
+      // Criar preview
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setPreview(reader.result as string);
+      };
+    }
+  };
 
   function returnTitle(title: string) {
     if (title.length > letters) {
@@ -110,10 +172,63 @@ export default function PerfilPage() {
           {user.name.length > 0 && (
             <div className="logado">
               <div className="card-perfil">
-                <img src={user.profileImage.path} alt="" />
+                {/* IMAGE DIV */}
+                <div className="image-div">
+                  {imageLoad ? (
+                    <MoonLoader />
+                  ) : (
+                    <>
+                      <label htmlFor="image-card">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageChange}
+                          id="image-card"
+                        />
+                        <img
+                          src={
+                            preview === undefined
+                              ? user.profileImage.path
+                              : preview
+                          }
+                          alt=""
+                        />
+                        <div className="edit-image">
+                          {preview === undefined ? (
+                            <>
+                              <i className="bi bi-pencil-fill"></i>
+                              <span>editar imagem</span>
+                            </>
+                          ) : (
+                            <>
+                              <i className="bi bi-pencil-fill"></i>
+                              <span>escolher outra imagem</span>
+                            </>
+                          )}
+                        </div>
+                      </label>
+                      {preview !== undefined && (
+                        <div className="confirm-image">
+                          <i
+                            onClick={() => {
+                              setPreview(undefined);
+                              setImageFile(null);
+                            }}
+                            className="bi bi-x-lg"
+                          ></i>
+                          <i
+                            onClick={() => updateImageProfile()}
+                            className="bi bi-check-lg"
+                          ></i>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+                {/*  */}
                 <div className="perfil-data">
                   <h2>{user.name}</h2>
-                  <p>{user.email}</p>
+                  {/* <p>{user.email}</p> */}
                   <div className="buttons">
                     <button
                       className="btn btn-outline-secondary"
