@@ -25,16 +25,16 @@ Bem-vindo ao **MyMovies**, o site ideal para organizar e personalizar suas lista
    ```
 2. Instale as dependências do backend e frontend:
    ```sh
-   cd BackEnd && npm install
-   cd ../FrontEnd && npm install
+   cd backend && npm install
+   cd frontend && npm install
    ```
 4. Execute o servidor backend:
    ```sh
-   cd BackEnd && npm start
+   cd backend && npm run start
    ```
 5. Execute o frontend:
    ```sh
-   cd FrontEnd && npm start
+   cd frontend && npm run dev
    ```
 6. Acesse o site em: `EM BREVE`
 
