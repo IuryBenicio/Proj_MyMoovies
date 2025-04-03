@@ -1,8 +1,7 @@
 import styled from "styled-components";
-
 export const ProgressContainer = styled.div`
-  width: 100dvw;
-  height: 100dvh;
+  width: 100%;
+  height: calc(100dvh - 58px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,51 +14,62 @@ export const ProgressContainer = styled.div`
 `;
 
 export const MovieContainer = styled.div`
-  .pagination ul {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    li:not(:first-child) {
-      margin-left: 15px;
-    }
-  }
   h2 {
     text-align: center;
   }
   .movies_container {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(5, 1fr);
     gap: 20px;
     padding: 20px;
+
     .movie_card {
       height: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
+
       .card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+
         img {
           width: 100%;
           height: 350px;
           border-radius: 8px;
           object-fit: cover;
         }
-        .card_body {
+
+        .card-body {
           display: flex;
           flex-direction: column;
+          flex-grow: 1;
           justify-content: space-between;
           align-items: center;
-          p {
-            text-justify: distribute-all-lines;
-          }
-          .btn {
-          }
+        }
+
+        a.btn {
+          margin-top: auto;
+          width: 100%;
         }
       }
-      .movie-title {
-        font-size: 1.3rem;
-        margin-top: 10px;
+    }
+  }
+`;
+
+export const PaginationContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  .pagination {
+    ul {
+      display: flex;
+      li:not(:first-child) {
+        margin-left: 8px;
       }
     }
+    justify-content: center;
   }
 `;

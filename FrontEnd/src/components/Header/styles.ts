@@ -28,5 +28,8 @@ export const HeaderContainer = styled.div`
     .avatar-icon:hover .model-perfil {
       opacity: 100;
     }
+    form {
+      display: flex;
+    }
   }
 `;

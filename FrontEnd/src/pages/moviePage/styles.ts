@@ -15,8 +15,12 @@ export const MovieContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    img {
+      height: 750px;
+    }
     .data {
-      max-height: 100%;
+      max-height: 750px;
+      height: 100%;
       /* max-width: 100%; */
       display: flex;
       .movie-details {
@@ -29,7 +33,7 @@ export const MovieContainer = styled.div`
           display: flex;
           flex-direction: column;
           font-size: 20px;
-          height: 87.5%;
+          height: 92.2%;
         }
         p {
           margin-bottom: 10px;

@@ -1,11 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { bancoDeDados } from "../../../helpers/getApi";
 import { useEffect, useState } from "react";
 import { EditContainer, ListContainer } from "./styles";
 import ConfirmModel from "../../../components/Models/confirmModel/confirmModel";
-import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import sadCat from "../../../assets/sad-cat-11.png";
 
 import MovieItem from "../../../components/movieListItem/MovieItem";
@@ -86,9 +84,6 @@ export default function ListPage() {
 
   // Marca o filme com sim ou não
   async function setMark(mark: string, movieId: string) {
-    // return console.log(mark);
-    //Seta o loading
-
     const isLoading = loading.find((i) => i.isLoading === true);
     if (isLoading) {
       return;
@@ -132,6 +127,7 @@ export default function ListPage() {
 
   // Função para buscar lista com filmes pelo id do usuário
   const getList = async () => {
+    console.log("ATUALIZEI EM");
     await axios
       .get(`${bancoDeDados}/movie/listmovies/${id}`)
       .then((response) => {
@@ -151,57 +147,68 @@ export default function ListPage() {
         moovieId: moovieId,
       })
       .then(() => {
+        console.log("deletou");
+        setMovieModelDelete(false);
         setMovies(movies.filter((movie) => movie.movieId !== moovieId));
+        getList();
+      })
+      .catch((e) => {
+        alert("Deu merdda");
+        console.log(e);
       });
   };
 
   // Reorganiza no banco de dados
-  const reorderList = async (updatedMovies: movieType[]) => {
-    await axios
-      .post(`${bancoDeDados}/movie/reorderlist`, {
-        listId: listId,
-        newOrder: updatedMovies.map((movie, index) => ({
-          moovieId: movie.movieId,
-          order: index,
-        })),
-      })
-      .then(() => {
-        console.log("deu certo");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  // const reorderList = async (updatedMovies: movieType[]) => {
+  //   await axios
+  //     .post(`${bancoDeDados}/movie/reorderlist`, {
+  //       listId: listId,
+  //       newOrder: updatedMovies.map((movie, index) => ({
+  //         movieId: movie.movieId,
+  //         order: index,
+  //       })),
+  //     })
+  //     .then((response) => {
+  //       // setMovies();
+  //       console.log(response.data.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
 
-  //Dnd
-  function reorder<T>(List: T[], startIndex: number, endIndex: number) {
-    const result = Array.from(List);
+  // //Dnd
+  // function reorder<T>(List: T[], startIndex: number, endIndex: number) {
+  //   const result = Array.from(List);
 
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
+  //   const [removed] = result.splice(startIndex, 1);
+  //   result.splice(endIndex, 0, removed);
 
-    return result;
-  }
+  //   return result;
+  // }
 
-  function onDragEnd(result: any) {
-    if (!result.destination) {
-      return;
-    }
+  // async function onDragEnd(result: any) {
+  //   if (!result.destination) {
+  //     return;
+  //   }
 
-    const reorderedMovies = reorder(
-      movies,
-      result.source.index,
-      result.destination.index
-    );
-    setMovies(reorderedMovies);
+  //   const reorderedMovies = reorder(
+  //     movies,
+  //     result.source.index,
+  //     result.destination.index
+  //   );
 
-    reorderList(reorderedMovies);
-  }
+  //   try {
+  //     await reorderList(reorderedMovies);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }
 
   // Carrega a lista assim que o componente é renderizado
   useEffect(() => {
     getList();
-  }, [movies]);
+  }, []);
 
   return (
     <ListContainer ModelDelete={movieModelDelete}>
@@ -269,32 +276,22 @@ export default function ListPage() {
       <div className="container-movies">
         {movies.length > 0 && (
           <div className="tabela">
-            <DragDropContext onDragEnd={onDragEnd}>
-              <Droppable droppableId="movies" type="list" direction="vertical">
-                {(provided) => (
-                  <div ref={provided.innerRef} {...provided.droppableProps}>
-                    {movies.map((movie, index) => (
-                      <div className="item" key={index}>
-                        <MovieItem
-                          index={index}
-                          Mark={setMark}
-                          deleteModel={setMovieModelDelete}
-                          movie={movie}
-                        />
-                        {movieModelDelete === true && (
-                          <ConfirmModel
-                            closeModel={() => setMovieModelDelete(false)}
-                            text={"Deseja apagar o filme " + movie.title}
-                            confirm={() => deleteMovie(movie.movieId)}
-                          />
-                        )}
-                      </div>
-                    ))}
-                    {provided.placeholder}
-                  </div>
+            {movies.map((movie, index) => (
+              <div className="item" key={index}>
+                <MovieItem
+                  Mark={setMark}
+                  deleteModel={setMovieModelDelete}
+                  movie={movie}
+                />
+                {movieModelDelete === true && (
+                  <ConfirmModel
+                    closeModel={() => setMovieModelDelete(false)}
+                    text={"Deseja apagar o filme " + movie.title}
+                    confirm={() => deleteMovie(movie.movieId)}
+                  />
                 )}
-              </Droppable>
-            </DragDropContext>
+              </div>
+            ))}
           </div>
         )}
         {movies.length === 0 && (

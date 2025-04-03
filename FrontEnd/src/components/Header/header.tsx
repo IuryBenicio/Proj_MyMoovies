@@ -18,7 +18,8 @@ export default function Header() {
     setUser(true);
   }, [user]);
 
-  async function getSearch() {
+  async function getSearch(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     if (!search.trim()) return;
     setSearch("");
     navegar(`results/${search}`, { replace: true });
@@ -49,7 +50,7 @@ export default function Header() {
                 ></i>
               </>
             )}
-            <label htmlFor="search-button" className="d-flex">
+            <form onSubmit={(e) => getSearch(e)}>
               <input
                 onChange={(e) => setSearch(e.target.value)}
                 value={search}
@@ -57,16 +58,16 @@ export default function Header() {
                 type="text"
                 placeholder="Search"
                 aria-label="Search"
+                id="search-button"
               />
               <button
                 id="search-button"
                 className="btn btn-outline-secondary "
-                onClick={() => getSearch()}
-                type="button"
+                type="submit"
               >
                 <i className="bi bi-search"></i>
               </button>
-            </label>
+            </form>
           </div>
         </div>
       </nav>

@@ -29,7 +29,7 @@ router.post("/removemovie", MooviesController.removeMoovieFromList);
 router.post("/markmovie", MooviesController.markMovie);
 
 // retorna as listas em que um filme está presente
-router.get("/movieinlists", MooviesController.returnListsWhereMovieIsPresent);
+router.post("/movieinlists", MooviesController.returnListsWhereMovieIsPresent);
 
 // reorderna lista de filmes
 router.post("/reorderlist", MooviesController.reorderMovies);

@@ -64,22 +64,14 @@ export default function PerfilPage() {
       });
   };
 
-  async function removeList(listId: string, index: number): Promise<void> {
+  async function removeList(listId: string): Promise<void> {
     await axios
       .post(`${bancoDeDados}/movie/removelist`, {
-        userId: user._id,
         listId: listId,
+        userId: user._id,
       })
       .then(() => {
-        const listaFiltrada: ListTypes[] = [];
-
-        lists.forEach((list, i) => {
-          if (i !== index) {
-            listaFiltrada.push(list);
-          }
-        });
-
-        setLists(listaFiltrada);
+        handleGetLists();
         alert("Listagem removida com sucesso");
       })
       .catch((err) => {
@@ -96,7 +88,7 @@ export default function PerfilPage() {
     <PerfilComponent>
       {addListModel && (
         <AddListModel
-          // atualizaLists={handleGetLists}
+          atualizaLists={handleGetLists}
           userId={user._id}
           closeModel={() => setAddListModel(false)}
         />
@@ -173,7 +165,7 @@ export default function PerfilPage() {
                                   acessar lista
                                 </Link>
                                 <a
-                                  onClick={() => removeList(list._id, index)}
+                                  onClick={() => removeList(list._id)}
                                   className="link-danger btn"
                                 >
                                   apagar lista

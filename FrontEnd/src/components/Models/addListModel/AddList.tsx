@@ -6,18 +6,21 @@ import { useState } from "react";
 type AddListModelProps = {
   closeModel: () => void;
   userId: string;
-  // atualizaLists: () => void; // função para atualizar a lista de listas após adicionar uma nova
+  atualizaLists: () => void; // função para atualizar a lista de listas após adicionar uma nova
 };
 
 export default function AddListModel({
   closeModel,
   userId,
+  atualizaLists,
 }: // atualizaLists,
 AddListModelProps) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function addList() {
+    setLoading(true);
     await axios
       .post(`${bancoDeDados}/movie/addlist`, {
         name: name,
@@ -27,11 +30,14 @@ AddListModelProps) {
       .then(() => {
         setName("");
         setDescription("");
+        setLoading(false);
         // atualizaLists();
         alert("Lista Adicionada com sucesso!");
+        atualizaLists();
       })
       .catch((e) => {
         console.error(e);
+        setLoading(false);
         alert("Não foi possível adicionar a lista.");
       });
   }
@@ -57,6 +63,7 @@ AddListModelProps) {
         onClick={addList}
         className="btn btn-outline-success"
         type="submit"
+        disabled={loading}
       >
         Criar lista
       </button>
@@ -64,6 +71,7 @@ AddListModelProps) {
         onClick={() => closeModel()}
         className="btn btn-outline-danger"
         type="button"
+        disabled={loading}
       >
         Cancelar
       </button>

@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { apiKeyNumber, bancoDeDados, urlDefault } from "../../helpers/getApi";
 import { moovieType } from "../../store/reducers/search";
-// import Header from "../../components/Header/header";
 import { useSelector } from "react-redux";
 import { RootReducer } from "../../store";
 import ListModel from "../../components/Models/ListModel/List";
@@ -24,6 +23,50 @@ export default function MoviePage() {
   // State List Model
   const [listModel, setListModel] = useState(false);
 
+  // Lists do usuário
+  const [lists, setLists] = useState<ListType[]>([]);
+  const [listsMovieIn, setListsMovieIn] = useState<ListType[]>([]);
+
+  async function getLists() {
+    await axios
+      .get(`${bancoDeDados}/movie/lists/${user._id}`)
+      .then((response) => {
+        setLists(response.data.data);
+      })
+      .catch((error) => console.log(error));
+  }
+
+  async function getListsthaMovieIsPresent() {
+    await axios
+      .post(`${bancoDeDados}/movie/movieinlists`, {
+        moovieId: movieData.id,
+        userId: user._id,
+      })
+      .then((response) => {
+        console.log(response);
+        setListsMovieIn(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  async function getMovieEn() {
+    await axios
+      .get(`${urlDefault}/movie/${id}`, {
+        params: {
+          api_key: apiKeyNumber,
+          language: "en-US",
+        },
+      })
+      .then((response) => {
+        setMovieData(response.data);
+      })
+      .catch(() => {
+        alert("Erro ao requisitar filme");
+      });
+  }
+
   async function getMoovie() {
     await axios
       .get(`${urlDefault}/movie/${id}`, {
@@ -33,13 +76,27 @@ export default function MoviePage() {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        if (response.data.overview.length === 0) {
+          getMovieEn();
+          return;
+        }
         setMovieData(response.data);
+      })
+      .catch(() => {
+        alert(
+          "Tivemos um erro ao buscar o filme no banco de dados, por favor, tente novamente mais tarde"
+        );
       });
+  }
+
+  function abreModel(boolean: boolean) {
+    setListModel(boolean);
+    getListsthaMovieIsPresent();
   }
 
   useEffect(() => {
     getMoovie();
+    getLists();
   }, []);
 
   return (
@@ -60,7 +117,7 @@ export default function MoviePage() {
                 <>
                   <div className="add-movie">
                     <button
-                      onClick={() => setListModel(true)}
+                      onClick={() => abreModel(!listModel)}
                       type="button"
                       className="btn btn-outline-secondary"
                     >
@@ -68,7 +125,9 @@ export default function MoviePage() {
                     </button>
                     {listModel && (
                       <ListModel
-                        user={user}
+                        atualizaList={getListsthaMovieIsPresent}
+                        listsThatMovieIn={listsMovieIn}
+                        lists={lists}
                         movie={movieData}
                         closeModal={() => setListModel(false)}
                       />

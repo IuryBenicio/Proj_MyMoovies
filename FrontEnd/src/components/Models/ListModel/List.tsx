@@ -1,59 +1,40 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ListType } from "../../../pages/moviePage/movie";
 import { ContainerListModel } from "./styles";
 import { moovieType } from "../../../store/reducers/search";
 import { bancoDeDados } from "../../../helpers/getApi";
 import axios from "axios";
-import { userType } from "../../../store/reducers/user";
 
 type Props = {
   closeModal: () => void;
   movie: moovieType;
-  user: userType;
+  lists: ListType[];
+  listsThatMovieIn?: ListType[];
+  atualizaList: () => void;
 };
 
-export default function ListModel({ closeModal, movie, user }: Props) {
-  // const [addPlayList, setAddPlayList] = useState(false);
+export default function ListModel({
+  closeModal,
+  movie,
+  lists,
+  listsThatMovieIn,
+  atualizaList,
+}: Props) {
   const [loadingAdd, setLoadingAdd] = useState(false);
 
-  // State List Model
-  const [lists, setLists] = useState<ListType[]>([]);
-  const [listsMovieIn, setListsMovieIn] = useState<ListType[]>([]);
+  // retorna descrição formatada
 
-  async function getLists() {
-    await axios
-      .get(`${bancoDeDados}/movie/lists/${user._id}`)
-      .then((response) => {
-        console.log(response.data);
-        setLists(response.data.data);
-      })
-      .catch((error) => console.log(error));
-  }
-
-  async function getListsthaMovieIsPresent() {
-    await axios
-      .get(`${bancoDeDados}/movie/movieinlists`, {
-        params: {
-          moovieId: movie.id,
-          userId: user._id,
-        },
-      })
-      .then((response) => {
-        setListsMovieIn(response.data);
-      });
-  }
-
-  // OUTRAS
   function returnDescription(description: string) {
     return description.slice(0, 50) + " ...";
   }
 
+  // add filme a uma list do usuário
   async function addMovieToPlaylist(
     e: React.ChangeEvent<HTMLInputElement>,
     listId: string,
     movie: moovieType
   ) {
-    // return console.log(e);
+    //se não estiver marcado e eu clicar, ele irá adicionar o filme
     if (e.target.checked === true) {
       setLoadingAdd(true);
       await axios
@@ -67,6 +48,7 @@ export default function ListModel({ closeModal, movie, user }: Props) {
         .then(() => {
           setLoadingAdd(false);
           console.log("Filme adicionado com sucesso");
+          atualizaList();
         })
         .catch((e) => {
           alert("Não conseguimos adicionar seu filme a sua lista");
@@ -74,6 +56,7 @@ export default function ListModel({ closeModal, movie, user }: Props) {
         });
       return;
     }
+    //se estiver já marcado e eu clicar, ele irá remover o filme
     if (e.target.checked === false) {
       await axios
         .post(`${bancoDeDados}/movie/removemovie`, {
@@ -82,6 +65,7 @@ export default function ListModel({ closeModal, movie, user }: Props) {
         })
         .then(() => {
           console.log("Filme removido com sucesso");
+          atualizaList();
           return;
         })
         .catch((error) => {
@@ -92,27 +76,12 @@ export default function ListModel({ closeModal, movie, user }: Props) {
     }
   }
 
-  function searchListMovieInLists(listId: string) {
-    const movieIsIn = [];
-    // Filtra as listas em que o filme está incluso
-    for (let i = 0; i < listsMovieIn.length; i++) {
-      if (listsMovieIn[i]._id === listId) {
-        movieIsIn.push(listsMovieIn[i]);
-      }
+  function searchListMovieInLists(listId: string): boolean {
+    if (!listsThatMovieIn || listsThatMovieIn.length === 0) {
+      return false; // Retorna falso se a lista estiver vazia
     }
-
-    if (movieIsIn.length > 0) {
-      return true;
-    }
-    if (movieIsIn.length === 0) {
-      return false;
-    }
+    return listsThatMovieIn.some((list) => list._id === listId);
   }
-
-  useEffect(() => {
-    getLists();
-    getListsthaMovieIsPresent();
-  }, []);
 
   return (
     <ContainerListModel>
@@ -127,11 +96,11 @@ export default function ListModel({ closeModal, movie, user }: Props) {
                 className="btn-check"
                 autoComplete="off"
                 name=""
-                id="add1"
+                id={list._id}
                 onChange={(e) => addMovieToPlaylist(e, list._id, movie)}
                 checked={searchListMovieInLists(list._id)}
               />
-              <label className="btn" htmlFor="add1">
+              <label className="btn" htmlFor={list._id}>
                 <div className="data">
                   <h4>{list.name}</h4>
                   <p className="m-0">{returnDescription(list.description)}</p>

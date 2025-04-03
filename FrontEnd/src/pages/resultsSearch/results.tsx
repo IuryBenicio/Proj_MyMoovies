@@ -5,7 +5,11 @@ import { useState } from "react";
 import { moovieType } from "../../store/reducers/search";
 import { useNavigate } from "react-router-dom";
 import { OrbitProgress } from "react-loading-indicators";
-import { MovieContainer, ProgressContainer } from "./styles";
+import {
+  MovieContainer,
+  PaginationContainer,
+  ProgressContainer,
+} from "./styles";
 import {
   filterMovies,
   returnDescription,
@@ -37,6 +41,7 @@ export default function Results() {
       return filmesFiltrados;
     } catch (error) {
       alert("Error:" + error);
+      return [];
     }
   }
 
@@ -70,86 +75,88 @@ export default function Results() {
         </div>
       </ProgressContainer>
     );
-  }
-  //------------------------------
-  return (
-    <>
-      {/* <Header /> */}
-      <MovieContainer className="container">
-        <h2>Results</h2>
-        <ul>
-          <div className="movies_container">
-            {moovies?.map((movie: moovieType) => (
-              <li className="movie_card" key={movie.id}>
-                <div
-                  className="card "
-                  style={{
-                    width: "18rem",
-                    height: "100%",
-                  }}
-                >
-                  <img
-                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                    className="card-img-top"
-                  />
-                  <div className="card-body">
-                    <h5 className="card-title">{returnTitle(movie.title)}</h5>
-                    <p className="card-text">
-                      {returnDescription(movie.overview)}
-                    </p>
-                    <a
-                      onClick={() => navigateToMovie(movie.id)}
-                      className="btn btn-primary"
-                    >
-                      Ver mais sobre o filme
-                    </a>
+  } else {
+    return (
+      <>
+        <MovieContainer className="container">
+          <h2>
+            Resultados para: <span>{id}</span>
+          </h2>
+          <ul>
+            <div className="movies_container">
+              {moovies!.map((movie: moovieType) => (
+                <li className="movie_card" key={movie.id}>
+                  <div
+                    className="card "
+                    style={{
+                      width: "18rem",
+                      height: "100%",
+                    }}
+                  >
+                    <img
+                      src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                      className="card-img-top"
+                    />
+                    <div className="card-body">
+                      <h5 className="card-title">{returnTitle(movie.title)}</h5>
+                      <p className="card-text">
+                        {returnDescription(movie.overview)}
+                      </p>
+                      <a
+                        onClick={() => navigateToMovie(movie.id)}
+                        className="btn btn-primary"
+                      >
+                        Ver mais sobre o filme
+                      </a>
+                    </div>
                   </div>
-                </div>
-              </li>
-            ))}
-          </div>
-        </ul>
-
+                </li>
+              ))}
+            </div>
+          </ul>
+        </MovieContainer>
         {/* Paginação */}
 
-        {pageTotal > 1 && pageTotal != 1 && (
-          <nav className="pagination">
-            <ul>
-              {page > 1 && (
-                <li className="previous-page">
-                  <button
-                    onClick={() => setPage((old) => Math.max(old - 1, 1))}
-                    type="button"
-                    className="btn btn-outline-secondary"
-                  >
-                    Página Anterior
-                  </button>
-                </li>
-              )}
+        <PaginationContainer>
+          {pageTotal > 1 && pageTotal != 1 && (
+            <nav className="pagination">
+              <ul>
+                {page > 1 && (
+                  <li className="previous-page">
+                    <button
+                      onClick={() => setPage((old) => Math.max(old - 1, 1))}
+                      type="button"
+                      className="btn btn-outline-secondary"
+                    >
+                      Página Anterior
+                    </button>
+                  </li>
+                )}
 
-              <li className="actual-page">
-                <div className="btn btn-outline-secondary">
-                  {page} de {pageTotal}
-                </div>
-              </li>
-              {page !== pageTotal && (
-                <li className="next-page">
-                  <button
-                    onClick={() => setPage(page + 1)}
-                    type="button"
-                    className="btn btn-outline-secondary"
-                  >
-                    Página Posterior
-                  </button>
+                <li className="actual-page">
+                  <div className="btn btn-outline-secondary">
+                    {page} de {pageTotal}
+                  </div>
                 </li>
-              )}
-            </ul>
-          </nav>
-        )}
-
+                {page !== pageTotal && (
+                  <li className="next-page">
+                    <button
+                      onClick={() => setPage(page + 1)}
+                      type="button"
+                      className="btn btn-outline-secondary"
+                    >
+                      Página Posterior
+                    </button>
+                  </li>
+                )}
+              </ul>
+            </nav>
+          )}
+        </PaginationContainer>
         <footer></footer>
-      </MovieContainer>
-    </>
-  );
+      </>
+    );
+  }
+  //------------------------------
 }
 //-----------------

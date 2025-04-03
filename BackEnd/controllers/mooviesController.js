@@ -66,7 +66,7 @@ module.exports = class MoovieListController {
   static async editListName(req, res) {
     const { listId, newName } = req.body;
 
-    const list = await MoovieList.findByListId(listId);
+    const list = await MoovieList.findById(listId);
 
     if (!newName) {
       return res.status(400).json({ message: "Faltando nome para editar" });
@@ -110,7 +110,7 @@ module.exports = class MoovieListController {
         .status(400)
         .json({ message: "Faltando descrição para editar" });
     }
-    const list = await MoovieList.findByListId(listId);
+    const list = await MoovieList.findById(listId);
     if (!list) {
       return res
         .status(404)
@@ -139,23 +139,32 @@ module.exports = class MoovieListController {
       return res.status(400).json({ message: "Faltam informações" });
     }
 
-    const user = await User.findById({ _id: userId });
+    const user = await User.findById(userId);
+
     if (!user) {
       return res.status(404).json({ message: "Usuário não encontrado" });
     }
 
-    // const list = MoovieList.findById({ _id: listId });
+    const UserWithOutList = user.moovieLists.filter(
+      (list) => list._id.toString() != listId
+    );
+
+    if (user.moovieLists.length === UserWithOutList.length) {
+      return res
+        .status(404)
+        .json({ message: "Usuário não possui essa lista de filmes" });
+    }
+
+    user.moovieLists = UserWithOutList;
 
     try {
-      User.findByIdAndUpdate(
-        userId,
-        { $pull: { moovieLists: listId } }, // apagar lista
-        { new: true, useFindAndModify: false }
-      );
+      await MoovieList.findByIdAndDelete(listId);
+
+      await user.save();
+
+      return res.json({ message: "Lista de filmes removida com sucesso" });
     } catch (error) {
-      return res
-        .status(500)
-        .json({ message: "Erro ao remover lista de filmes do usuário" });
+      return res.status(500).json(error.message);
     }
   }
 
@@ -301,12 +310,21 @@ module.exports = class MoovieListController {
         .json({ message: "Lista de filmes não encontrada" });
     }
 
-    list.moovieList = list.moovieList.filter(
-      (movie) => movie.movieId !== moovieId
+    const FilmeRetirado = list.moovieList.filter(
+      (movie) => movie.movieId != moovieId
     );
+
+    if (FilmeRetirado.length === list.moovieList.length) {
+      return res.status(404).json({ message: "DEU ALGUMA MERDA AE" });
+    }
+
+    list.moovieList = FilmeRetirado;
 
     try {
       await list.save();
+      return res.status(200).json({
+        message: "Filme apagado com sucesso",
+      });
     } catch (err) {
       return res.status(500).json({
         message: "Erro ao remover filme da lista de filmes" + err.message,
@@ -316,10 +334,14 @@ module.exports = class MoovieListController {
 
   // Retorna as listas em que um filme está presente
   static async returnListsWhereMovieIsPresent(req, res) {
-    const { moovieId, userId } = req.params;
+    const { moovieId, userId } = req.body;
 
     if (!moovieId || !userId) {
-      return res.status(400).json({ message: "Faltam informações" });
+      return res.status(400).json({
+        message: `esse é o moovie: ${String(
+          moovieId
+        )}, e esse é o user: ${String(userId)}`,
+      });
     }
     const user = await User.findById({ _id: userId });
 
@@ -328,11 +350,15 @@ module.exports = class MoovieListController {
     }
 
     try {
-      const Listas = await MoovieList.find({
-        userId: user,
-        "moovieList.movieId": movieId,
-      });
-      return res.json(Listas);
+      const listasDoUsuario = await MoovieList.find({ userId: user._id });
+
+      const listasComOFilme = listasDoUsuario.filter((list) =>
+        list.moovieList.some(
+          (movie) => String(movie.movieId) === String(moovieId)
+        )
+      );
+
+      return res.status(200).json(listasComOFilme);
     } catch (e) {
       return res.status(500).json({
         message:
@@ -351,22 +377,31 @@ module.exports = class MoovieListController {
         .json({ message: "Faltam informações ou formato inválido" });
     }
 
-    const list = await MoovieList.findById(listId);
-
-    newOrder.forEach((movie, index) => {
-      const movieToUpdate = list.moovieList.find(
-        (m) => m.movieId === movie.movieId
-      );
-      if (movieToUpdate) {
-        movieToUpdate.order = index;
-      }
-    });
-
     try {
+      const list = await MoovieList.findById(listId);
+
+      if (!list) {
+        return res.status(404).json({ message: "Lista não encontrada" });
+      }
+
+      const updatedList = newOrder
+        .map((movie, index) => {
+          const movieToUpdate = list.moovieList.find(
+            (m) => String(m.movieId) === String(movie.movieId)
+          );
+          if (movieToUpdate) {
+            return { ...movieToUpdate.toObject(), order: index };
+          }
+          return null;
+        })
+        .filter(Boolean); // remove os valores que são nulos e que o não foram achandos no find corrigindo assim o array
+
+      list.moovieList = updatedList;
+
       await list.save();
       return res
         .status(200)
-        .json({ message: "Listas reordenadas com sucesso" });
+        .json({ message: "Listas reordenadas com sucesso", data: updatedList });
     } catch {
       return res.status(500).json({ message: "Erro ao reordenar as listas" });
     }

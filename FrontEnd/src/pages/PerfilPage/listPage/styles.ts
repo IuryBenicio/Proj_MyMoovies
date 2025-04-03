@@ -10,7 +10,7 @@ export const ListContainer = styled.div<propsListContainer>`
   height: ${(props) => (props.ModelDelete ? `${minHeight}` : "100%")};
   overflow-y: ${(props) => (props.ModelDelete ? "hidden" : "auto")};
   background-color: ${cores.fundo};
-  min-height: ${minHeight.minHeight};
+  min-height: calc(${minHeight.minHeight} + 2px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -68,14 +68,38 @@ export const ListContainer = styled.div<propsListContainer>`
   }
   .container-movies {
     margin: 0 auto;
+
     width: 80%;
-    height: 90%;
+    height: 650px;
+    overflow-y: scroll;
     background-color: white;
     box-shadow: ${shadow.sombra};
     border-radius: 8px;
     border: 1px solid ${shadow.sombra};
     padding: 30px;
     margin-bottom: 38px;
+
+    // customização da barra de scroll
+
+    &::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px rgba(105, 105, 105, 0.3);
+      border-radius: 10px;
+      background-color: #f5f5f5;
+    }
+
+    &::-webkit-scrollbar {
+      width: 8px;
+      border-radius: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      -webkit-box-shadow: inset 0 0 6px rgba(148, 148, 148, 0.53);
+      background-color: #727272;
+    }
+
+    //
+
     .tabela {
       width: 100%;
       .item:not(:last-child) {
@@ -87,8 +111,9 @@ export const ListContainer = styled.div<propsListContainer>`
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 100%;
     img {
-      width: 100px;
+      width: 200px;
     }
     .text {
       display: flex;
@@ -96,11 +121,12 @@ export const ListContainer = styled.div<propsListContainer>`
       align-items: center;
       justify-content: center;
       span {
-        font-size: 2em;
+        font-size: 4em;
         margin: 0;
         padding: 0;
       }
       p {
+        font-size: 2em;
         margin: 0;
         padding: 0;
       }
