@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { addUser, userType } from "../../../store/reducers/user";
 import { useFormik } from "formik";
 import { loginSchema } from "../../../helpers/schemas";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { setAlert } from "../../../store/reducers/alert";
 import { bancoDeDados } from "../../../helpers/getApi";
 
@@ -104,7 +104,7 @@ export default function Login() {
         </form>
         <br />
         <p>
-          Não possui uma conta? <a href="register">Cadastre-se agora</a>
+          Não possui uma conta? <Link to="register">Cadastre-se agora</Link>
         </p>
       </div>
     </LoginContainer>

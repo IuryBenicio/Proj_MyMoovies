@@ -30,6 +30,7 @@ app.use(passport.session());
 
 app.use(flash());
 
+app.use(cors());
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -40,8 +41,11 @@ app.use((req, res, next) => {
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
   );
-  app.use(cors());
   next();
+});
+
+app.use((req, res, next) => {
+  console.log(`[${req.method}] ${req.url}`);
 });
 
 app.use("/user", UserRoutes);
