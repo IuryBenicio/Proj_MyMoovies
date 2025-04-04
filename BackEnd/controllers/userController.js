@@ -1,6 +1,6 @@
 const User = require("../models/User");
 const MovieLists = require("../models/UserMoovies");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const session = require("express-session");
 
