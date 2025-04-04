@@ -2,21 +2,16 @@ import { useSelector } from "react-redux";
 import { HeaderContainer } from "./styles";
 import { RootReducer } from "../../store";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PerfilModel from "../Models/perfilModel/Model";
 
 export default function Header() {
   const [search, setSearch] = useState("");
   const navegar = useNavigate();
-  const [userExists, setUser] = useState(false);
   const [loginModel, setLoginModel] = useState(false);
 
   const { user } = useSelector((state: RootReducer) => state.user);
-
-  useEffect(() => {
-    setUser(true);
-  }, [user]);
 
   async function getSearch(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -43,7 +38,11 @@ export default function Header() {
           <div className="left-side">
             {user.name.length === 0 && (
               <>
-                {loginModel && <PerfilModel className="model-perfil" />}
+                {loginModel && (
+                  <div className="model-perfil">
+                    <PerfilModel />
+                  </div>
+                )}
                 <i
                   onClick={() => setLoginModel(!loginModel)}
                   className="avatar-icon bi bi-person-circle"

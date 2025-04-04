@@ -1,4 +1,4 @@
-import { useState } from "react";
+// import { useState } from "react";
 import { ListType } from "../../../pages/moviePage/movie";
 import { ContainerListModel } from "./styles";
 import { moovieType } from "../../../store/reducers/search";
@@ -20,7 +20,7 @@ export default function ListModel({
   listsThatMovieIn,
   atualizaList,
 }: Props) {
-  const [loadingAdd, setLoadingAdd] = useState(false);
+  // const [loadingAdd, setLoadingAdd] = useState(false); CARREGAR QUANDO FOR FEITA UMA REQUISIÇÃO
 
   // retorna descrição formatada
 
@@ -36,7 +36,7 @@ export default function ListModel({
   ) {
     //se não estiver marcado e eu clicar, ele irá adicionar o filme
     if (e.target.checked === true) {
-      setLoadingAdd(true);
+      // setLoadingAdd(true);
       await axios
         .post(`${bancoDeDados}/movie/addmovie`, {
           listId: listId,
@@ -46,7 +46,7 @@ export default function ListModel({
           poster_path: movie.poster_path,
         })
         .then(() => {
-          setLoadingAdd(false);
+          // setLoadingAdd(false);
           console.log("Filme adicionado com sucesso");
           atualizaList();
         })
@@ -112,10 +112,10 @@ export default function ListModel({
       ) : (
         <p>Você ainda não possui listas de filmes.</p>
       )}
-      <div className="buttons">
+      {/* <div className="buttons">
         <hr />
         <button className="add-playlist">Criar PlayList</button>
-      </div>
+      </div> */}
     </ContainerListModel>
   );
 }

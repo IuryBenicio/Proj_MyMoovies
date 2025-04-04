@@ -91,11 +91,10 @@ export default function EditSenha(props: propsType) {
       });
   }
 
-  const { values, errors, handleBlur, handleChange, handleSubmit } = useFormik({
+  const { values, errors, handleBlur, handleChange } = useFormik({
     initialValues: { newPassword: "", confirmNewPassword: "" },
     validationSchema: editPassword,
     onSubmit: async (values) => {
-      console.log("indo");
       try {
         await fetchChangePassword(values.newPassword);
       } catch {

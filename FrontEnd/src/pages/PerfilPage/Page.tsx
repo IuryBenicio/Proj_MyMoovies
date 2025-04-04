@@ -25,8 +25,6 @@ export default function PerfilPage() {
   const [lists, setLists] = useState<ListTypes[]>([]);
   const [addListModel, setAddListModel] = useState(false);
 
-  const dispath = useDispatch();
-
   //image states
 
   const [imageFile, setImageFile] = useState<File | null>(null); // Guarda o arquivo
