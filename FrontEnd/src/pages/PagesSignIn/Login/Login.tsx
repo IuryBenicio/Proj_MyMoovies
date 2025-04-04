@@ -7,6 +7,7 @@ import { useFormik } from "formik";
 import { loginSchema } from "../../../helpers/schemas";
 import { useNavigate } from "react-router-dom";
 import { setAlert } from "../../../store/reducers/alert";
+import { bancoDeDados } from "../../../helpers/getApi";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ export default function Login() {
       password,
     };
     axios
-      .post("http://localhost:8000/user/login", data)
+      .post(`${bancoDeDados}/user/login`, data)
       .then((response) => {
         if (response.status === 401) {
           alert("Usuário ou senha inválidos");

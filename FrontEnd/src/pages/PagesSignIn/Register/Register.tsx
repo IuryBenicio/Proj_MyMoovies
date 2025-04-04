@@ -6,6 +6,7 @@ import { registerSchema } from "../../../helpers/schemas";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setAlert } from "../../../store/reducers/alert";
+import { bancoDeDados } from "../../../helpers/getApi";
 
 export default function Register() {
   const [confirmTerms, setConfirmTerms] = useState(false);
@@ -96,7 +97,7 @@ export default function Register() {
     formData.append("password", password);
     formData.append("image", image);
     axios
-      .post("http://localhost:8000/user/register", formData, {
+      .post(`${bancoDeDados}/user/register`, formData, {
         headers: {
           // Para enviar arquivos usando esse header
           "Content-Type": "multipart/form-data",
