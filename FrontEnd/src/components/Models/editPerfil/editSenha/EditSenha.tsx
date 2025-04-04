@@ -13,18 +13,11 @@ type propsType = {
   closeModel: () => void;
 };
 
-type confirmPasswordType = {
-  confirmed: "non confirmed" | "is confirmed";
-};
-
 export default function EditSenha(props: propsType) {
   const [actualPassword, setActualPassword] = useState("");
   const dispatch = useDispatch();
 
-  const [confirmedPassword, setConfirmedPassword] =
-    useState<confirmPasswordType>({
-      confirmed: "non confirmed",
-    });
+  const [confirmedPassword, setConfirmedPassword] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -38,9 +31,7 @@ export default function EditSenha(props: propsType) {
           password: actualPassword,
         })
         .then(() => {
-          setConfirmedPassword({
-            confirmed: "is confirmed",
-          });
+          setConfirmedPassword(true);
           dispatch(
             setAlert({
               messageText: "Senha confirmada com sucesso",
@@ -50,9 +41,7 @@ export default function EditSenha(props: propsType) {
           setIsLoading(false);
         })
         .catch(() => {
-          setConfirmedPassword({
-            confirmed: "non confirmed",
-          });
+          setConfirmedPassword(false);
           alert("senha incorreta");
           dispatch(
             setAlert({
@@ -109,7 +98,7 @@ export default function EditSenha(props: propsType) {
         <i onClick={() => props.closeModel()} className="close bi bi-x-lg"></i>
         <h2>Alterar Senha</h2>
         <div>
-          {confirmedPassword.confirmed === "non confirmed" && (
+          {!confirmedPassword && (
             <>
               <div className="mb-3">
                 <label htmlFor="senhaAtual">Senha Atual</label>
@@ -137,10 +126,7 @@ export default function EditSenha(props: propsType) {
                     setIsLoading(true);
                   }}
                   className="w-100 mt-4 btn btn-outline-secondary"
-                  disabled={
-                    (actualPassword.length === 0 && true) ||
-                    (confirmedPassword.confirmed === "is confirmed" && true)
-                  }
+                  disabled={actualPassword.length === 0 && confirmedPassword}
                 >
                   confirmar senha
                 </button>
@@ -148,7 +134,7 @@ export default function EditSenha(props: propsType) {
             </>
           )}
 
-          {confirmedPassword.confirmed === "is confirmed" && (
+          {confirmedPassword && (
             <form onSubmit={(e) => e.preventDefault}>
               <div className="mb-3">
                 <label htmlFor="novaSenha">Nova Senha</label>
