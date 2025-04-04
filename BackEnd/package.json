@@ -7,7 +7,8 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "node index.js",
+    "build": "echo 'No build step required'",
     "dev": "nodemon index.js",
     "lint": "eslint.",
     "format": "prettier --write.",

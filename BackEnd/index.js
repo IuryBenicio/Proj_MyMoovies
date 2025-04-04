@@ -1,13 +1,14 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const port = 8000;
 const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("passport");
 const authConfig = require("./config/auth");
 const UserRoutes = require("./routes/userRoutes");
 const MovieRoutes = require("./routes/moviesRoutes");
+
+const PORT = process.env.PORT || 5000;
 
 authConfig(passport); // Configura Passport
 
@@ -47,8 +48,9 @@ app.use("/user", UserRoutes);
 app.use("/movie", MovieRoutes);
 
 try {
-  app.listen(port);
-  console.log(`Server running on port ${port}`);
+  app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+  });
 } catch (e) {
   console.error("Error starting server:" + e);
 }
