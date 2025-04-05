@@ -8,7 +8,7 @@ const authConfig = require("./config/auth");
 const UserRoutes = require("./routes/userRoutes");
 const MovieRoutes = require("./routes/moviesRoutes");
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8000;
 
 authConfig(passport); // Configura Passport
 
@@ -46,6 +46,7 @@ app.use((req, res, next) => {
 
 app.use((req, res, next) => {
   console.log(`[${req.method}] ${req.url}`);
+  next();
 });
 
 app.use("/user", UserRoutes);
