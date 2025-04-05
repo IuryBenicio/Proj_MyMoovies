@@ -155,3 +155,29 @@ export const ListasContainer = styled.div`
     display: grid;
   }
 `;
+
+export const ContainerEmpty = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .empty {
+    margin-top: 40px;
+    border: 1px solid grey;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: ${shadow.sombra};
+    padding: 20px;
+    width: 350px;
+    span {
+      font-size: 22px;
+      font-weight: 400;
+    }
+    p {
+      margin: 0;
+      font-weight: 200;
+      font-size: 1.2em;
+    }
+  }
+`;

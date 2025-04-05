@@ -39,6 +39,7 @@ export default function Login() {
         navegar("/");
       })
       .catch((error) => {
+        console.log(error);
         if (error.code === 401) {
           dispatch(setAlert({ type: "error", messageText: error.message }));
         }

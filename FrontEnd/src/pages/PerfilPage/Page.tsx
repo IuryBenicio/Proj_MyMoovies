@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { ListasContainer, PerfilComponent } from "./styles";
+import { ContainerEmpty, ListasContainer, PerfilComponent } from "./styles";
 import { RootReducer } from "../../store";
 import axios from "axios";
 import { bancoDeDados } from "../../helpers/getApi";
@@ -257,6 +257,14 @@ export default function PerfilPage() {
                 <i className="bi fs-3 bi-plus-lg"></i>
               </a>
               <div className="container text-center">
+                {lists.length === 0 && (
+                  <ContainerEmpty>
+                    <div className="empty">
+                      <span>Crie listas e as adicione aqui</span>
+                      <p>basta clicar no +</p>
+                    </div>
+                  </ContainerEmpty>
+                )}
                 <div className="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
                   {Array.isArray(lists) &&
                     lists.map((list, index) => (
