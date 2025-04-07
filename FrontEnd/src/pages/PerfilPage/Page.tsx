@@ -11,7 +11,6 @@ import { returnDescription } from "../../helpers/utils/utilsMovies";
 import AddListModel from "../../components/Models/addListModel/AddList";
 import { updateImage } from "../../store/reducers/user";
 import { MoonLoader } from "react-spinners";
-import { useQuery } from "@tanstack/react-query";
 
 type ListTypes = {
   _id: string;
@@ -141,16 +140,16 @@ export default function PerfilPage() {
       });
   }
 
-  const { isLoading } = useQuery({
-    queryKey: ["listas-usuario"],
-    queryFn: handleGetLists,
-    refetchOnWindowFocus: true,
+  useEffect(() => {
+    handleGetLists();
   });
 
   return (
     <PerfilComponent>
       {addListModel && (
         <AddListModel
+          backgroundColor="white"
+          position={{ top: "40%", left: "43.8%" }}
           atualizaLists={handleGetLists}
           userId={user._id}
           closeModel={() => setAddListModel(false)}

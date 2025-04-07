@@ -7,6 +7,8 @@ import ConfirmModel from "../../../components/Models/confirmModel/confirmModel";
 import sadCat from "../../../assets/sad-cat-11.png";
 
 import MovieItem from "../../../components/movieListItem/MovieItem";
+import { useSelector } from "react-redux";
+import { RootReducer } from "../../../store";
 
 export type movieType = {
   movieId: string;
@@ -24,6 +26,7 @@ type loadingType = {
 
 export default function ListPage() {
   const { id } = useParams();
+  const { user } = useSelector((state: RootReducer) => state.user);
 
   //estado delete filme
   const [movieModelDelete, setMovieModelDelete] = useState(false);
@@ -52,6 +55,7 @@ export default function ListPage() {
       .post(`${bancoDeDados}/movie/editnamelist`, {
         listId: listId,
         newName: name,
+        userId: user._id,
       })
       .then((response) => {
         alert(response.data.message);
@@ -73,6 +77,7 @@ export default function ListPage() {
       .post(`${bancoDeDados}/movie/editdescriptionlist`, {
         listId: listId,
         newDescription: description,
+        userId: user._id,
       })
       .then(() => {
         setEditDescription(false);

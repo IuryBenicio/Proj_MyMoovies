@@ -5,14 +5,23 @@ import { useState } from "react";
 
 type AddListModelProps = {
   closeModel: () => void;
-  userId: string;
-  atualizaLists: () => void; // função para atualizar a lista de listas após adicionar uma nova
+  position: {
+    top: string;
+    left: string;
+  };
+  backgroundColor: string;
+  inputBorder?: string;
+  userId?: string;
+  atualizaLists?: () => void; // função para atualizar a lista de listas após adicionar uma nova
 };
 
 export default function AddListModel({
   closeModel,
   userId,
   atualizaLists,
+  position,
+  backgroundColor,
+  inputBorder,
 }: // atualizaLists,
 AddListModelProps) {
   const [name, setName] = useState("");
@@ -33,7 +42,9 @@ AddListModelProps) {
         setLoading(false);
         // atualizaLists();
         alert("Lista Adicionada com sucesso!");
-        atualizaLists();
+        if (atualizaLists) {
+          atualizaLists();
+        }
       })
       .catch((e) => {
         console.error(e);
@@ -43,9 +54,13 @@ AddListModelProps) {
   }
 
   return (
-    <ListContainer>
+    <ListContainer backgroundColor={backgroundColor} position={position}>
       <h3>Crie uma lista</h3>
       <input
+        style={{
+          backgroundColor: backgroundColor,
+          border: `1px solid ${inputBorder}`,
+        }}
         onChange={(e) => setName(e.target.value)}
         value={name}
         className="form-control"
@@ -53,6 +68,10 @@ AddListModelProps) {
         placeholder="Nome da lista"
       />
       <input
+        style={{
+          backgroundColor: backgroundColor,
+          border: `1px solid ${inputBorder}`,
+        }}
         className="form-control"
         type="text"
         placeholder="Descrição da lista"

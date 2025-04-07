@@ -88,7 +88,7 @@ module.exports = class MoovieListController {
       const user = await User.findById(userId);
 
       user.moovieLists = user.moovieLists.map((l) =>
-        String(l._id) === String(listId) ? { ...l._doc, name: newName } : l
+        l._id === listId ? { ...l._doc, name: newName } : l
       );
 
       await user.save();
@@ -107,7 +107,7 @@ module.exports = class MoovieListController {
 
   // Edita descrição de uma lista de um usuário
   static async editListDescription(req, res) {
-    const { listId, newDescription } = req.body;
+    const { listId, newDescription, userId } = req.body;
 
     if (!listId) {
       return res.status(400).json({ message: "Faltando id para editar" });
@@ -123,8 +123,18 @@ module.exports = class MoovieListController {
         .status(404)
         .json({ message: "Lista de filmes não encontrada" });
     }
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(400).json({ message: "Usuário não encontrado" });
+    }
 
     try {
+      user.moovieLists.map(
+        (l) => (l._id = listId ? { ...l._doc, description: newDescription } : l)
+      );
+
+      await user.save();
       await MoovieList.findByIdAndUpdate(
         listId,
         { description: newDescription },

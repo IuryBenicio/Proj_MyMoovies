@@ -11,6 +11,7 @@ type Props = {
   lists: ListType[];
   listsThatMovieIn?: ListType[];
   atualizaList: () => void;
+  openCriarLIst: () => void;
 };
 
 export default function ListModel({
@@ -19,9 +20,8 @@ export default function ListModel({
   lists,
   listsThatMovieIn,
   atualizaList,
+  openCriarLIst,
 }: Props) {
-  // const [loadingAdd, setLoadingAdd] = useState(false); CARREGAR QUANDO FOR FEITA UMA REQUISIÇÃO
-
   // retorna descrição formatada
 
   function returnDescription(description: string) {
@@ -76,6 +76,7 @@ export default function ListModel({
     }
   }
 
+  // compara listas com a lista que o filme perce (se o filme pertencer)
   function searchListMovieInLists(listId: string): boolean {
     if (!listsThatMovieIn || listsThatMovieIn.length === 0) {
       return false; // Retorna falso se a lista estiver vazia
@@ -112,10 +113,12 @@ export default function ListModel({
       ) : (
         <p>Você ainda não possui listas de filmes.</p>
       )}
-      {/* <div className="buttons">
+      <div className="buttons">
         <hr />
-        <button className="add-playlist">Criar PlayList</button>
-      </div> */}
+        <button className="add-playlist" onClick={openCriarLIst}>
+          Criar PlayList
+        </button>
+      </div>
     </ContainerListModel>
   );
 }

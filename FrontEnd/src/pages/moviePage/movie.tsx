@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { RootReducer } from "../../store";
 import ListModel from "../../components/Models/ListModel/List";
 import noImage from "../../assets/ChatGPT Image 5_04_2025, 11_55_25.png";
+import AddListModel from "../../components/Models/addListModel/AddList";
 
 export type ListType = {
   date: string;
@@ -21,6 +22,9 @@ export default function MoviePage() {
   const [movieData, setMovieData] = useState<moovieType>({});
   const { id } = useParams();
 
+  //State addList Model
+  const [addPlayList, setAddPlayList] = useState(true);
+
   // State List Model
   const [listModel, setListModel] = useState(false);
 
@@ -28,6 +32,7 @@ export default function MoviePage() {
   const [lists, setLists] = useState<ListType[]>([]);
   const [listsMovieIn, setListsMovieIn] = useState<ListType[]>([]);
 
+  //pega as listas do backend
   async function getLists() {
     await axios
       .get(`${bancoDeDados}/movie/lists/${user._id}`)
@@ -37,6 +42,7 @@ export default function MoviePage() {
       .catch((error) => console.log(error));
   }
 
+  //pega listas em que o filme está
   async function getListsthaMovieIsPresent() {
     await axios
       .post(`${bancoDeDados}/movie/movieinlists`, {
@@ -95,6 +101,12 @@ export default function MoviePage() {
   }
 
   useEffect(() => {
+    if (listModel === false) {
+      setAddPlayList(false);
+    }
+  }, [listModel]);
+
+  useEffect(() => {
     getMoovie();
     getLists();
   }, []);
@@ -119,9 +131,20 @@ export default function MoviePage() {
               <div className="details-numbers"></div>
               {user.name.length > 1 ? (
                 <>
+                  {addPlayList && (
+                    <AddListModel
+                      backgroundColor="rgba(0, 0, 0, 0.25)"
+                      position={{ left: "76.6%", top: "52.5%" }}
+                      closeModel={() => setAddPlayList(false)}
+                      inputBorder="grey"
+                      userId={user._id}
+                    />
+                  )}
                   <div className="add-movie">
                     <button
-                      onClick={() => abreModel(!listModel)}
+                      onClick={() => {
+                        abreModel(!listModel);
+                      }}
                       type="button"
                       className="btn btn-outline-secondary"
                     >
@@ -133,7 +156,11 @@ export default function MoviePage() {
                         listsThatMovieIn={listsMovieIn}
                         lists={lists}
                         movie={movieData}
-                        closeModal={() => setListModel(false)}
+                        closeModal={() => {
+                          setListModel(false);
+                          setAddPlayList(false);
+                        }}
+                        openCriarLIst={() => setAddPlayList(!addPlayList)}
                       />
                     )}
                   </div>
