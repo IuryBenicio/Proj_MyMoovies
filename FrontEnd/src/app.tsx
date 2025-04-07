@@ -8,31 +8,31 @@ import Register from "./pages/PagesSignIn/Register/Register";
 import LoginOrRegister from "./pages/PagesSignIn/LoginOrRegister/Page";
 import { useSelector } from "react-redux";
 import { RootReducer } from "./store";
-import AlertModal from "./components/Models/alertModel/alert";
-import { useState } from "react";
+// import AlertModal from "./components/Models/alertModel/alert";
+// import { useState } from "react";
 import ListPage from "./pages/PerfilPage/listPage/Page";
 import ErrorPage from "./pages/ErrorPages/ErrorPost";
 
 export default function App() {
   const { user } = useSelector((state: RootReducer) => state.user);
 
-  const { showMessage, messageText, type } = useSelector(
-    (state: RootReducer) => state.alert
-  );
+  // const { showMessage, messageText, type } = useSelector(
+  //   (state: RootReducer) => state.alert
+  // );
 
-  const [alert, setAlert] = useState(showMessage);
+  // const [alert, setAlert] = useState(showMessage);
 
   return (
     <>
       <BrowserRouter>
         <Header />
-        {alert && (
+        {/* {alert && (
           <AlertModal
             closeAlert={() => setAlert(false)}
             type={type}
             messageText={messageText}
           />
-        )}
+        )} */}
         <Routes>
           <Route path="/" index element={<Home />} />
           <Route path="/results/:id" element={<Results />} />

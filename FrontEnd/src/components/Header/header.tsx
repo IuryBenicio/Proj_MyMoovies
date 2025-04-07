@@ -26,7 +26,7 @@ export default function Header() {
         <div className="container-fluid container ">
           <a
             style={{ cursor: "pointer" }}
-            onClick={() => navegar("/")}
+            onClick={() => navegar("/", { state: { atualizou: true } })}
             className="navbar-brand"
           >
             My Moovies

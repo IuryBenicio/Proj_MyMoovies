@@ -62,7 +62,6 @@ export default function Register() {
     },
     validationSchema: registerSchema,
     onSubmit: () => {
-      // console.log("olha a imagem " + image);
       if (imageFile) {
         postRegister(
           values.userName,

@@ -7,6 +7,7 @@ import { moovieType } from "../../store/reducers/search";
 import { useSelector } from "react-redux";
 import { RootReducer } from "../../store";
 import ListModel from "../../components/Models/ListModel/List";
+import noImage from "../../assets/ChatGPT Image 5_04_2025, 11_55_25.png";
 
 export type ListType = {
   date: string;
@@ -43,7 +44,6 @@ export default function MoviePage() {
         userId: user._id,
       })
       .then((response) => {
-        console.log(response);
         setListsMovieIn(response.data);
       })
       .catch((error) => {
@@ -106,7 +106,11 @@ export default function MoviePage() {
         <h1>{movieData.title}</h1>
         <div className="data">
           <img
-            src={`https://image.tmdb.org/t/p/w500${movieData.poster_path!}`}
+            src={
+              movieData.poster_path
+                ? `https://image.tmdb.org/t/p/w500${movieData.poster_path!}`
+                : noImage
+            }
             alt={movieData.title}
           />
           <div className="movie-details">

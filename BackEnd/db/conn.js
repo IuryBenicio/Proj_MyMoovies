@@ -13,3 +13,6 @@ async function main() {
 main();
 
 module.exports = mongoose;
+
+//mongodb://127.0.0.1:27017/mymoovies
+// process.env.MONGO_URI

@@ -40,6 +40,9 @@ export const LoginContainer = styled.div`
           top: 75px;
         }
       }
+      .loading {
+        width: 10px;
+      }
     }
   }
 `;

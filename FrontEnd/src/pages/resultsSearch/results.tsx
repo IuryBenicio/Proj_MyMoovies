@@ -16,6 +16,7 @@ import {
   returnTitle,
 } from "../../helpers/utils/utilsMovies";
 import { useQuery } from "@tanstack/react-query";
+import imageMovieNotFounded from "../../assets/ChatGPT Image 5_04_2025, 11_55_25.png";
 //
 
 export default function Results() {
@@ -37,6 +38,8 @@ export default function Results() {
 
       setPageTotal(response.data.total_pages);
 
+      // const filmesArray = response.data.results;
+
       const filmesFiltrados = filterMovies(response.data.results);
       return filmesFiltrados;
     } catch (error) {
@@ -54,7 +57,6 @@ export default function Results() {
   // Função para navegar
   function navigateToMovie(IdNumber?: number) {
     const StringId = String(IdNumber);
-    console.log(StringId);
     navegar(`/movie/${StringId}`);
   }
   //--------------------
@@ -94,7 +96,11 @@ export default function Results() {
                     }}
                   >
                     <img
-                      src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                      src={
+                        movie.poster_path
+                          ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                          : imageMovieNotFounded
+                      }
                       className="card-img-top"
                     />
                     <div className="card-body">

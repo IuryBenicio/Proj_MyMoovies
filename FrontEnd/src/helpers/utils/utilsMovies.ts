@@ -2,7 +2,7 @@ import { moovieType } from "../../store/reducers/search";
 
 export function filterMovies(moviesUnprocessed: moovieType[]) {
   return moviesUnprocessed.filter(
-    (m) => m.overview!.length > 0 && m.poster_path?.length === undefined
+    (m) => m.overview!.length > 0 && m.poster_path?.length
   );
 }
 

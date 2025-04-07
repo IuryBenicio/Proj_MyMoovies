@@ -8,8 +8,11 @@ import { loginSchema } from "../../../helpers/schemas";
 import { Link, useNavigate } from "react-router-dom";
 import { setAlert } from "../../../store/reducers/alert";
 import { bancoDeDados } from "../../../helpers/getApi";
+import { useState } from "react";
 
 export default function Login() {
+  const [loading, setLoading] = useState(false);
+
   const dispatch = useDispatch();
   const navegar = useNavigate();
 
@@ -18,6 +21,7 @@ export default function Login() {
   }
 
   const postLogin = (email: string, password: string) => {
+    setLoading(true);
     const data = {
       email,
       password,
@@ -36,10 +40,13 @@ export default function Login() {
           })
         );
         addUserFunction(response.data.data);
+        setLoading(false);
         navegar("/");
       })
       .catch((error) => {
         console.log(error);
+        setLoading(false);
+        alert(error);
         if (error.code === 401) {
           dispatch(setAlert({ type: "error", messageText: error.message }));
         }
@@ -99,13 +106,21 @@ export default function Login() {
               <div className="error-div form-text">{errors.password}</div>
             )}
           </div>
-          <button type="submit" className="btn btn-primary">
-            Submit
+          <button
+            type="submit"
+            className={
+              loading
+                ? "btn btn-secondary d-flex justify-content-center"
+                : "btn btn-primary d-flex justify-content-center"
+            }
+            disabled={loading}
+          >
+            Enviar
           </button>
         </form>
         <br />
         <p>
-          Não possui uma conta? <Link to="register">Cadastre-se agora</Link>
+          Não possui uma conta? <Link to="/register">Cadastre-se agora</Link>
         </p>
       </div>
     </LoginContainer>

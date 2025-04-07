@@ -9,7 +9,6 @@ export const MovieContainer = styled.div`
   .moovie-data {
     h1 {
       font-size: 3rem;
-      /* margin-top: 1rem; */
       margin-bottom: 1rem;
     }
     display: flex;
@@ -21,7 +20,6 @@ export const MovieContainer = styled.div`
     .data {
       max-height: 750px;
       height: 100%;
-      /* max-width: 100%; */
       display: flex;
       .movie-details {
         width: 500px;

@@ -64,7 +64,7 @@ module.exports = class MoovieListController {
 
   // Edita nome de uma lista de um usuário
   static async editListName(req, res) {
-    const { listId, newName } = req.body;
+    const { listId, newName, userId } = req.body;
 
     const list = await MoovieList.findById(listId);
 
@@ -85,6 +85,13 @@ module.exports = class MoovieListController {
     }
 
     try {
+      const user = await User.findById(userId);
+
+      user.moovieLists = user.moovieLists.map((l) =>
+        String(l._id) === String(listId) ? { ...l._doc, name: newName } : l
+      );
+
+      await user.save();
       await MoovieList.findByIdAndUpdate(
         listId,
         { name: newName },

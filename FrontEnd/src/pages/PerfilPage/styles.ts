@@ -163,7 +163,7 @@ export const ContainerEmpty = styled.div`
   justify-content: center;
   align-items: center;
   .empty {
-    margin-top: 40px;
+    margin-top: 15px;
     border: 1px solid grey;
     background-color: white;
     border-radius: 8px;

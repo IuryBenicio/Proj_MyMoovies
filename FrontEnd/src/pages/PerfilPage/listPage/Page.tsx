@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { bancoDeDados } from "../../../helpers/getApi";
 import { useEffect, useState } from "react";
 import { EditContainer, ListContainer } from "./styles";
@@ -63,6 +63,8 @@ export default function ListPage() {
         setLoadinName(false);
       });
   }
+
+  const navegar = useNavigate();
 
   // Edita a descrição da lista
   async function postDescriptionList() {
@@ -206,6 +208,7 @@ export default function ListPage() {
   // }
 
   // Carrega a lista assim que o componente é renderizado
+
   useEffect(() => {
     getList();
   }, []);

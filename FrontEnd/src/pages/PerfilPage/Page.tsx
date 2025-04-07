@@ -11,6 +11,7 @@ import { returnDescription } from "../../helpers/utils/utilsMovies";
 import AddListModel from "../../components/Models/addListModel/AddList";
 import { updateImage } from "../../store/reducers/user";
 import { MoonLoader } from "react-spinners";
+import { useQuery } from "@tanstack/react-query";
 
 type ListTypes = {
   _id: string;
@@ -140,9 +141,11 @@ export default function PerfilPage() {
       });
   }
 
-  useEffect(() => {
-    handleGetLists();
-  }, []);
+  const { isLoading } = useQuery({
+    queryKey: ["listas-usuario"],
+    queryFn: handleGetLists,
+    refetchOnWindowFocus: true,
+  });
 
   return (
     <PerfilComponent>
@@ -226,7 +229,7 @@ export default function PerfilPage() {
                 {/*  */}
                 <div className="perfil-data">
                   <h2>{user.name}</h2>
-                  {/* <p>{user.email}</p> */}
+                  <p>@{user.userName}</p>
                   <div className="buttons">
                     <button
                       className="btn btn-outline-secondary"
