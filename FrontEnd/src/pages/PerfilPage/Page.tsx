@@ -142,7 +142,7 @@ export default function PerfilPage() {
 
   useEffect(() => {
     handleGetLists();
-  });
+  }, []);
 
   return (
     <PerfilComponent>
