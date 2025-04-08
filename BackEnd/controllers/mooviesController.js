@@ -123,13 +123,14 @@ module.exports = class MoovieListController {
         .status(404)
         .json({ message: "Lista de filmes não encontrada" });
     }
-    const user = await User.findById(userId);
-
-    if (!user) {
-      return res.status(400).json({ message: "Usuário não encontrado" });
-    }
 
     try {
+      const user = await User.findById(userId);
+
+      if (!user) {
+        return res.status(400).json({ message: "Usuário não encontrado" });
+      }
+
       user.moovieLists.map(
         (l) => (l._id = listId ? { ...l._doc, description: newDescription } : l)
       );
@@ -140,6 +141,7 @@ module.exports = class MoovieListController {
         { description: newDescription },
         { new: true }
       );
+      return res.status(200).json({ message: "Descrição atualizada" });
     } catch {
       return res
         .status(500)

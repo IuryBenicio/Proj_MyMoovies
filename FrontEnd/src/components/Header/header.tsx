@@ -11,7 +11,7 @@ export default function Header() {
   const navegar = useNavigate();
   const [loginModel, setLoginModel] = useState(false);
 
-  const { user } = useSelector((state: RootReducer) => state.user);
+  const { user, mode } = useSelector((state: RootReducer) => state.user);
 
   async function getSearch(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -36,6 +36,19 @@ export default function Header() {
             <ul className="navbar-nav"></ul>
           </div>
           <div className="left-side">
+            <input
+              type="checkbox"
+              className="btn-check"
+              id="btn-check-5"
+              // autocomplete="off"
+            />
+            <label className="btn me-4" htmlFor="btn-check-5">
+              {mode === "night" ? (
+                <i className="bi bi-moon-fill"></i>
+              ) : (
+                <i className="bi bi-moon"></i>
+              )}
+            </label>
             {user.name.length === 0 && (
               <>
                 {loginModel && (

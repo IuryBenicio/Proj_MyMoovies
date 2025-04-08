@@ -27,6 +27,12 @@ type stateType = {
     };
   };
   authenticated: boolean;
+  mode: string;
+};
+
+type imageType = {
+  public_id: "";
+  path: "";
 };
 
 const initialState: stateType = {
@@ -43,17 +49,16 @@ const initialState: stateType = {
     },
   },
   authenticated: false,
-};
-
-type imageType = {
-  public_id: "";
-  path: "";
+  mode: "day",
 };
 
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
+    changeMode(state, action: PayloadAction<string>) {
+      state.mode = action.payload;
+    },
     addUser(state, action: PayloadAction<userType>) {
       state.user = action.payload;
       state.authenticated = true;

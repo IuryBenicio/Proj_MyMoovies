@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { bancoDeDados } from "../../../helpers/getApi";
 import { useEffect, useState } from "react";
 import { EditContainer, ListContainer } from "./styles";
@@ -68,7 +68,7 @@ export default function ListPage() {
       });
   }
 
-  const navegar = useNavigate();
+  // const navegar = useNavigate();
 
   // Edita a descrição da lista
   async function postDescriptionList() {
@@ -138,11 +138,15 @@ export default function ListPage() {
     await axios
       .get(`${bancoDeDados}/movie/listmovies/${id}`)
       .then((response) => {
-        setMovies(response.data.moovieList);
         // info list
         setListId(response.data._id);
         setDescription(response.data.description);
         setName(response.data.name);
+
+        setMovies(response.data.moovieList);
+      })
+      .catch((error) => {
+        console.error(error);
       });
   };
 

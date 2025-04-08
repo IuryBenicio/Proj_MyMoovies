@@ -8,7 +8,7 @@ const authConfig = require("./config/auth");
 const UserRoutes = require("./routes/userRoutes");
 const MovieRoutes = require("./routes/moviesRoutes");
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8000;
 
 authConfig(passport); // Configura Passport
 
