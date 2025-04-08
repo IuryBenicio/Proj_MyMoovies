@@ -91,6 +91,10 @@ module.exports = class MoovieListController {
         String(l._id) === String(listId);
       });
 
+      if (listUpdate.description === newDescription) {
+        return res.status(400).json({ message: "Descrição igual a antiga" });
+      }
+
       if (listUpdate) {
         listUpdate.name = newName;
       }
@@ -138,6 +142,10 @@ module.exports = class MoovieListController {
       const listUpdate = user.moovieLists.find((l) => {
         String(l._id) === String(listId);
       });
+
+      if (listUpdate.description === newDescription) {
+        return res.status(400).json({ message: "Descrição igual a antiga" });
+      }
 
       if (listUpdate) {
         listUpdate.description = newDescription;
