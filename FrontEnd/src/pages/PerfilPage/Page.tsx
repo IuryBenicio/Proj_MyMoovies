@@ -11,6 +11,7 @@ import { returnDescription } from "../../helpers/utils/utilsMovies";
 import AddListModel from "../../components/Models/addListModel/AddList";
 import { updateImage } from "../../store/reducers/user";
 import { MoonLoader } from "react-spinners";
+import { useQuery } from "@tanstack/react-query";
 
 type ListTypes = {
   _id: string;
@@ -114,14 +115,15 @@ export default function PerfilPage() {
   };
 
   const handleGetLists = async () => {
-    await axios
-      .get(`${bancoDeDados}/movie/lists/${user._id}`)
-      .then((response) => {
-        setLists(response.data.data);
-      })
-      .catch(() => {
-        alert("Ocorreu um erro ao carregar as listas");
-      });
+    try {
+      const response = await axios.get(
+        `${bancoDeDados}/movie/lists/${user._id}`
+      );
+
+      return response.data.data;
+    } catch {
+      alert("Ocorreu um erro ao carregar as listas");
+    }
   };
 
   async function removeList(listId: string): Promise<void> {
@@ -139,6 +141,12 @@ export default function PerfilPage() {
         console.error(err);
       });
   }
+
+  const { data } = useQuery<ListTypes[]>({
+    queryKey: ["minhas-listas"],
+    queryFn: handleGetLists,
+    refetchOnWindowFocus: true, // recarrega quando volta para a aba
+  });
 
   useEffect(() => {
     handleGetLists();
@@ -259,7 +267,7 @@ export default function PerfilPage() {
                 <i className="bi fs-3 bi-plus-lg"></i>
               </a>
               <div className="container text-center">
-                {lists.length === 0 && (
+                {data?.length === 0 && (
                   <ContainerEmpty>
                     <div className="empty">
                       <span>Crie listas e as adicione aqui</span>
@@ -268,8 +276,8 @@ export default function PerfilPage() {
                   </ContainerEmpty>
                 )}
                 <div className="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
-                  {Array.isArray(lists) &&
-                    lists.map((list, index) => (
+                  {Array.isArray(data) &&
+                    data.map((list, index) => (
                       <div key={index}>
                         <div className="col">
                           <div className="card">
