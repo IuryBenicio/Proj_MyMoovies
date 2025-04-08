@@ -92,7 +92,9 @@ module.exports = class MoovieListController {
       });
 
       if (listUpdate.description === newDescription) {
-        return res.status(400).json({ message: "Descrição igual a antiga" });
+        return res
+          .status(400)
+          .json({ message: "Descrição antiga igual a nova" });
       }
 
       if (listUpdate) {
