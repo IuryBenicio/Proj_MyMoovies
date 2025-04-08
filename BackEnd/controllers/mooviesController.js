@@ -87,11 +87,13 @@ module.exports = class MoovieListController {
     try {
       const user = await User.findById(userId);
 
-      user.moovieLists = user.moovieLists.map((l) =>
-        String(l._id) === String(listId) ? { ...l._doc, name: newName } : l
-      );
+      const listUpdate = user.moovieLists.find((l) => {
+        String(l._id) === String(listId);
+      });
 
-      console.log(user);
+      if (listUpdate) {
+        listUpdate.name = newName;
+      }
 
       await user.save();
       await MoovieList.findByIdAndUpdate(
@@ -133,11 +135,13 @@ module.exports = class MoovieListController {
         return res.status(400).json({ message: "Usuário não encontrado" });
       }
 
-      user.moovieLists.map((l) =>
-        String(l._id) === String(listId)
-          ? { ...l._doc, description: newDescription }
-          : l
-      );
+      const listUpdate = user.moovieLists.find((l) => {
+        String(l._id) === String(listId);
+      });
+
+      if (listUpdate) {
+        listUpdate.description = newDescription;
+      }
 
       await user.save();
       await MoovieList.findByIdAndUpdate(
