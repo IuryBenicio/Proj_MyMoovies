@@ -63,6 +63,10 @@ export const MovieContainer = styled.div<props>`
           height: 350px;
           border-radius: 8px;
           object-fit: cover;
+          @media screen and (max-width: 431px) {
+            width: 100%;
+            height: 171px;
+          }
         }
 
         .card-body {
@@ -72,7 +76,10 @@ export const MovieContainer = styled.div<props>`
           justify-content: space-between;
           align-items: center;
           @media screen and (max-width: 431px) {
-            height: 334px;
+            height: 174px;
+            p {
+              display: none;
+            }
           }
         }
 

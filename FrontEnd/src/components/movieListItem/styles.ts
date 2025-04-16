@@ -16,7 +16,7 @@ export const ContainerMovie = styled.div<props>`
     cursor: grab;
     @media screen and (max-width: 431px) {
       &:active .bi-trash {
-        width: 10%;
+        width: 30%;
       }
       &:active .table-item {
         width: 70%;

@@ -17,9 +17,9 @@ export function returnDescription(text?: string) {
 
 // Padroniza Título
 export function returnTitle(mobile: number, text?: string) {
-  if (mobile >= 430) {
-    if (text!.length > 32) {
-      return text!.slice(0, 29) + "...";
+  if (mobile <= 431) {
+    if (text!.length > 27) {
+      return text!.slice(0, 25) + "...";
     }
   }
   if (text!.length > 42) {

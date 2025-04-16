@@ -1,7 +1,7 @@
 import axios from "axios";
 import { apiKeyNumber, urlDefault } from "../../helpers/getApi";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { moovieType } from "../../store/reducers/search";
 import { useNavigate } from "react-router-dom";
 import { OrbitProgress } from "react-loading-indicators";
@@ -53,6 +53,10 @@ export default function Results() {
       return [];
     }
   }
+
+  useEffect(() => {
+    console.log(width);
+  }, []);
 
   //DATA
   const { data: moovies, isLoading } = useQuery<moovieType[]>({
