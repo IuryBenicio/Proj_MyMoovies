@@ -1,4 +1,3 @@
-// import { useState } from "react";
 import { LoginContainer } from "./Styles";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,7 +5,6 @@ import { addUser, userType } from "../../../store/reducers/user";
 import { useFormik } from "formik";
 import { loginSchema } from "../../../helpers/schemas";
 import { Link, useNavigate } from "react-router-dom";
-import { setAlert } from "../../../store/reducers/alert";
 import { bancoDeDados } from "../../../helpers/getApi";
 import { useState } from "react";
 import { RootReducer } from "../../../store";
@@ -32,16 +30,6 @@ export default function Login() {
     axios
       .post(`${bancoDeDados}/user/login`, data)
       .then((response) => {
-        if (response.status === 401) {
-          alert("Usuário ou senha inválidos");
-          return;
-        }
-        dispatch(
-          setAlert({
-            type: "success",
-            messageText: "Usuário logado com sucesso",
-          })
-        );
         addUserFunction(response.data.data);
         setLoading(false);
         navegar("/");
@@ -49,11 +37,7 @@ export default function Login() {
       .catch((error) => {
         console.log(error);
         setLoading(false);
-        alert(error);
-        if (error.code === 401) {
-          dispatch(setAlert({ type: "error", messageText: error.message }));
-        }
-        dispatch(setAlert({ type: "error", messageText: error.message }));
+        alert(error.response.data.message);
       });
   };
 
