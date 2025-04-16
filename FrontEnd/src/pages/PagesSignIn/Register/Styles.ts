@@ -11,6 +11,7 @@ export const RegisterContainer = styled.div<props>`
   @media screen and (max-width: 431px) {
     min-height: 100dvh;
     padding: 20px;
+    height: auto;
   }
   display: flex;
   align-items: center;
@@ -55,6 +56,7 @@ export const RegisterContainer = styled.div<props>`
       justify-content: center;
       align-items: center;
       margin-bottom: 24px;
+      padding: 20px;
     }
     position: absolute;
     border: 1px solid rgba(0, 0, 0, 0.3);

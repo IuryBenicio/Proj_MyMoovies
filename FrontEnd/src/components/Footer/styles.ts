@@ -7,7 +7,7 @@ type props = {
 
 export const FooterContainer = styled.div<props>`
   width: 100%;
-  padding: 24px;
+  padding: 14px;
   display: flex;
   justify-content: center;
   background-color: ${(props) => (props.night === true ? cores.card : "white")};

@@ -45,7 +45,7 @@ export default function Header() {
   return (
     <HeaderContainer night={night}>
       <nav className="navbar navbar-expand-lg ">
-        <div className="container-fluid container ">
+        <div className="container-fluid container">
           <a
             style={{ cursor: "pointer" }}
             onClick={() => navegar("/", { state: { atualizou: true } })}

@@ -365,16 +365,30 @@ module.exports = class UserController {
   static async deleteUser(req, res) {
     const { id } = req.params;
 
+    if (!id) {
+      return res.status(404).json({
+        message: "NÂO FOI FORNECIDO O ID",
+      });
+    }
+
     const user = await User.findById(id);
     if (!user) {
       return res.status(404).json({ message: "Usuário não encontrado" });
     }
 
-    const moovielist = user.moovielist._id;
-
     try {
+      const listasUser = await MovieLists.find({ userId: user._id });
+
+      await Promise.all(
+        listasUser.map((lista) => MovieLists.findByIdAndDelete(lista._id))
+      );
+
       await User.findByIdAndDelete(id);
-      await MovieLists.findByIdAndDelete(moovielist);
+
+      req.logout(() => {
+        req.session.destroy();
+      });
+
       return res.status(200).json({ message: "Conta deletada com sucesso" });
     } catch (error) {
       return res.status(500).json({ message: "Erro ao deletar conta" });

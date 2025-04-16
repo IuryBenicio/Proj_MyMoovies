@@ -6,11 +6,13 @@ import { useState } from "react";
 import axios from "axios";
 import { bancoDeDados } from "../../../../helpers/getApi";
 import {
+  logout,
   updateEmail,
   updateName,
   updateUsername,
 } from "../../../../store/reducers/user";
 import EditSenha from "../editSenha/EditSenha";
+import ConfirmModel from "../../confirmModel/confirmModel";
 
 export type PropsType = {
   closeModel: () => void;
@@ -36,9 +38,26 @@ export default function EditPerfil(props: PropsType) {
   //editar senha State
   const [editarSenha, setEditarSenha] = useState(false);
 
+  //apagar conta
+  const [confirmRemoveUser, setConfirmRemoveUser] = useState(false);
+
   const closeEditSenha = () => {
     setEditarSenha(false);
   };
+
+  //APAGA USUÁRIO
+  async function fetchRemoveUser() {
+    await axios
+      .delete(`${bancoDeDados}/user/deleteuser/${user._id}`)
+      .then(() => {
+        alert("USUÁRIO APAGADO COM SUCESSO");
+        dispatch(logout());
+      })
+      .catch((e) => {
+        alert("Erro ao apagar sua conta");
+        console.error(e);
+      });
+  }
 
   //RESETA OS INPUTS
   const resetInput = (type: string) => {
@@ -54,6 +73,7 @@ export default function EditPerfil(props: PropsType) {
     }
   };
 
+  //FETCH USER NAME
   const submitNome = async (props: string) => {
     if (props === user.name) {
       setEditName(false);
@@ -284,10 +304,24 @@ export default function EditPerfil(props: PropsType) {
 
             <button
               type="button"
-              className="w-100 mt-2 p-2 mb-4 btn btn-outline-secondary"
+              className="w-100 mt-2 p-2 mb-1 btn btn-outline-secondary"
               onClick={() => setEditarSenha(true)}
             >
               Mudar Senha
+            </button>
+            {confirmRemoveUser && (
+              <ConfirmModel
+                closeModel={() => setConfirmRemoveUser(false)}
+                confirm={fetchRemoveUser}
+                text={"você deseja mesmo apagar sua conta?"}
+              />
+            )}
+            <button
+              type="button"
+              className="w-100 mt-2 p-2 mb-4 btn btn-outline-danger"
+              onClick={() => setConfirmRemoveUser(true)}
+            >
+              Apagar conta
             </button>
             <button
               type="submit"

@@ -56,8 +56,14 @@ export const HeaderContainer = styled.div<props>`
     }
     form {
       display: flex;
+
+      @media screen and (max-width: 431px) {
+        width: 220px;
+        justify-content: end;
+      }
       @media screen and (max-width: 430px) {
         input {
+          width: 50%;
         }
       }
     }
