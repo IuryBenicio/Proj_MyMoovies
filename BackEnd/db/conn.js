@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 // Conctando ao mongoose
 async function main() {
   await mongoose
-    .connect("mongodb://127.0.0.1:27017/mymoovies")
+    .connect(process.env.MONGO_URI)
     .then(() => {
       console.log("Connected to MongoDB");
     })
@@ -15,4 +15,4 @@ main();
 module.exports = mongoose;
 
 //mongodb://127.0.0.1:27017/mymoovies
-// process.env.MONGO_URI
+process.env.MONGO_URI;
