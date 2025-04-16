@@ -20,11 +20,19 @@ type props = {
 
 export const MovieContainer = styled.div<props>`
   width: 100%;
+  ul {
+    @media screen and (max-width: 431px) {
+      padding: 0;
+    }
+  }
   h2 {
     margin-top: 24px;
     text-align: center;
   }
   .movies_container {
+    @media screen and (max-width: 431px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 20px;
@@ -42,7 +50,13 @@ export const MovieContainer = styled.div<props>`
         color: ${(props) => (props.night ? "white" : "black")};
         display: flex;
         flex-direction: column;
+        width: 18rem;
         height: 100%;
+        /* height: 100%; */
+        @media screen and (max-width: 431px) {
+          width: auto;
+          height: auto;
+        }
 
         img {
           width: 100%;
@@ -57,6 +71,9 @@ export const MovieContainer = styled.div<props>`
           flex-grow: 1;
           justify-content: space-between;
           align-items: center;
+          @media screen and (max-width: 431px) {
+            height: 334px;
+          }
         }
 
         a.btn {
@@ -74,6 +91,9 @@ export const PaginationContainer = styled.div`
   justify-content: space-around;
   .pagination {
     ul {
+      @media screen and (max-width: 431px) {
+        padding: 0;
+      }
       display: flex;
       li:not(:first-child) {
         margin-left: 8px;

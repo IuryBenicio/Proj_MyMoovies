@@ -18,6 +18,11 @@ export const ContainerListModel = styled.div`
   width: 500px;
   height: 375px;
   z-index: 2;
+  @media screen and (max-width: 431px) {
+    position: relative;
+    top: 0;
+    width: 100%;
+  }
   .close {
     transition: all 0.3s ease-in-out;
     position: absolute;

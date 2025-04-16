@@ -23,7 +23,10 @@ export const ListContainer = styled.div<propsListContainer>`
     border-radius: 8px;
     box-shadow: ${shadow.sombra};
     padding: 20px;
-    width: 80%;
+    width: 90%;
+    @media screen and (max-width: 431px) {
+      width: 100%;
+    }
     text-align: center;
     .name {
       display: flex;
@@ -71,6 +74,9 @@ export const ListContainer = styled.div<propsListContainer>`
   .container-movies {
     margin: 0 auto;
     width: 90%;
+    @media screen and (max-width: 431px) {
+      width: 100%;
+    }
     height: 650px;
     overflow-y: scroll;
     background-color: ${(props) => (props.night ? cores.card : "white")};
@@ -139,6 +145,9 @@ export const ListContainer = styled.div<propsListContainer>`
 export const EditContainer = styled.div<propsListContainer>`
   align-items: center;
   display: flex;
+  @media screen and (max-width: 431px) {
+    width: 100%;
+  }
   .relative {
     margin-left: 8px;
     font-size: 20px;
@@ -169,6 +178,9 @@ export const EditContainer = styled.div<propsListContainer>`
   }
   input {
     text-align: center;
+    @media screen and (max-width: 431px) {
+      width: 100%;
+    }
     border: none;
     border-bottom: 1px solid
       ${(props) => (props.night === true ? "white" : "grey")};
@@ -181,6 +193,10 @@ export const EditContainer = styled.div<propsListContainer>`
     border-bottom: 1px solid
       ${(props) => (props.night === true ? "white" : "grey")};
     width: auto;
+    height: auto;
     resize: none;
+    @media screen and (max-width: 431px) {
+      width: 100%;
+    }
   }
 `;

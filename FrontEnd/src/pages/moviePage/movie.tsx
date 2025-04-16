@@ -128,11 +128,11 @@ export default function MoviePage() {
           <div className="movie-details">
             <p className="description">{movieData.overview}</p>
             <div className="details-down">
-              <div className="details-numbers"></div>
               {user.name.length > 1 ? (
                 <>
                   {addPlayList && (
                     <AddListModel
+                      colorText="black"
                       backgroundColor="rgba(0, 0, 0, 0.25)"
                       position={{ left: "76.6%", top: "52.5%" }}
                       closeModel={() => setAddPlayList(false)}

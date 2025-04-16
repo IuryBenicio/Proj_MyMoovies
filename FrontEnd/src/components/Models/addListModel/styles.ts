@@ -22,6 +22,9 @@ export const ListContainer = styled.div<propsCss>`
   left: ${(props: propsCss) => props.position.left};
   z-index: 5;
   color: ${(props: propsCss) => props.colorText};
+  @media screen and (max-width: 431px) {
+    left: 17.2%;
+  }
   input {
     margin: 10px 0;
     color: black;
@@ -41,6 +44,12 @@ export const ListContainer = styled.div<propsCss>`
     justify-content: space-between;
     margin-top: 8px;
     button {
+      width: 50%;
+      @media screen and (max-width: 431px) {
+        height: 68px;
+        padding: 5px;
+        text-align: center;
+      }
       margin: 0;
     }
   }

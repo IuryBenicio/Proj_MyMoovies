@@ -29,6 +29,8 @@ export default function Results() {
 
   const { night } = useSelector((state: RootReducer) => state.navBar);
 
+  const { innerWidth: width } = window;
+
   async function fetchMoovies() {
     try {
       const response = await axios.get(`${urlDefault}/search/movie`, {
@@ -92,13 +94,7 @@ export default function Results() {
             <div className="movies_container">
               {moovies!.map((movie: moovieType) => (
                 <li className="movie_card" key={movie.id}>
-                  <div
-                    className="card "
-                    style={{
-                      width: "18rem",
-                      height: "100%",
-                    }}
-                  >
+                  <div className="card ">
                     <img
                       src={
                         movie.poster_path
@@ -108,7 +104,9 @@ export default function Results() {
                       className="card-img-top"
                     />
                     <div className="card-body">
-                      <h5 className="card-title">{returnTitle(movie.title)}</h5>
+                      <h5 className="card-title">
+                        {returnTitle(width, movie.title)}
+                      </h5>
                       <p className="card-text">
                         {returnDescription(movie.overview)}
                       </p>
@@ -163,7 +161,6 @@ export default function Results() {
             </nav>
           )}
         </PaginationContainer>
-        <footer></footer>
       </>
     );
   }

@@ -8,15 +8,20 @@ export function filterMovies(moviesUnprocessed: moovieType[]) {
 
 // Padroniza descrição
 export function returnDescription(text?: string) {
-  if (text!.length > 100) {
-    return text!.slice(0, 80) + " ...";
+  if (text!.length > 81) {
+    return text!.slice(0, 77) + " ...";
   }
   return text;
 }
 //--------------------
 
 // Padroniza Título
-export function returnTitle(text?: string) {
+export function returnTitle(mobile: number, text?: string) {
+  if (mobile >= 430) {
+    if (text!.length > 32) {
+      return text!.slice(0, 29) + "...";
+    }
+  }
   if (text!.length > 42) {
     return text!.slice(0, 38) + "...";
   }

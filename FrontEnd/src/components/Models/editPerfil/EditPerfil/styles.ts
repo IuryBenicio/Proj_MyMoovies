@@ -33,6 +33,9 @@ export const EditPerfilContainer = styled.div<props>`
     display: flex;
     flex-direction: column;
     position: relative;
+    @media screen and (max-width: 431px) {
+      width: 90%;
+    }
     .form-group {
       position: relative;
       .relative {
