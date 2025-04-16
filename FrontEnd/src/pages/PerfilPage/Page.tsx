@@ -6,12 +6,13 @@ import { bancoDeDados } from "../../helpers/getApi";
 import { logout } from "../../store/reducers/user";
 import { Link, useNavigate } from "react-router-dom";
 import EditPerfil from "../../components/Models/editPerfil/EditPerfil/EditPerfil";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { returnDescription } from "../../helpers/utils/utilsMovies";
 import AddListModel from "../../components/Models/addListModel/AddList";
 import { updateImage } from "../../store/reducers/user";
 import { MoonLoader } from "react-spinners";
 import { useQuery } from "@tanstack/react-query";
+import { cores } from "../../GlobalStyles";
 
 type ListTypes = {
   _id: string;
@@ -22,8 +23,8 @@ type ListTypes = {
 
 export default function PerfilPage() {
   const { user } = useSelector((state: RootReducer) => state.user);
+  const { night } = useSelector((state: RootReducer) => state.navBar);
   const [editar, setEditar] = useState(false);
-  const [lists, setLists] = useState<ListTypes[]>([]);
   const [addListModel, setAddListModel] = useState(false);
 
   //image states
@@ -52,7 +53,6 @@ export default function PerfilPage() {
           formData,
           {
             headers: {
-              // Para enviar arquivos usando esse header
               "Content-Type": "multipart/form-data",
             },
           }
@@ -103,13 +103,12 @@ export default function PerfilPage() {
   const logoutPost = async () => {
     await axios
       .post(`${bancoDeDados}/user/logout`)
-      .then((response) => {
+      .then(() => {
         handleLogout();
-        alert("Sessão encerrada com sucesso" + response.status);
         navegar("/");
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
         alert("Ocorreu um erro ao encerrar a sessão");
       });
   };
@@ -133,8 +132,8 @@ export default function PerfilPage() {
         userId: user._id,
       })
       .then(() => {
-        handleGetLists();
-        alert("Listagem removida com sucesso");
+        // alert("Listagem removida com sucesso");
+        refetch();
       })
       .catch((err) => {
         alert("Ocorreu um erro ao remover a lista");
@@ -142,23 +141,20 @@ export default function PerfilPage() {
       });
   }
 
-  const { data } = useQuery<ListTypes[]>({
+  const { data, refetch } = useQuery<ListTypes[]>({
     queryKey: ["minhas-listas"],
     queryFn: handleGetLists,
     refetchOnWindowFocus: true, // recarrega quando volta para a aba
   });
 
-  useEffect(() => {
-    handleGetLists();
-  }, []);
-
   return (
-    <PerfilComponent>
+    <PerfilComponent night={night}>
       {addListModel && (
         <AddListModel
-          backgroundColor="white"
+          colorText={night ? "white" : "black"}
+          backgroundColor={night ? cores.card : "white"}
           position={{ top: "40%", left: "43.8%" }}
-          atualizaLists={handleGetLists}
+          atualizaLists={refetch}
           userId={user._id}
           closeModel={() => setAddListModel(false)}
         />
@@ -166,106 +162,99 @@ export default function PerfilPage() {
       {editar && <EditPerfil closeModel={() => setEditar(false)} />}
       <>
         <div className="container-perfil">
-          {user.name.length === 0 && (
-            <div className="fixo">
-              <h3>Faça seu login</h3>
-              <button
-                className="login-button mt-2 btn btn-outline-success"
-                onClick={() => navegar("/login")}
-              >
-                Logar
-              </button>
-            </div>
-          )}
-          {user.name.length > 0 && (
-            <div className="logado">
-              <div className="card-perfil">
-                {/* IMAGE DIV */}
-                <div className="image-div">
-                  {imageLoad ? (
-                    <MoonLoader />
-                  ) : (
-                    <>
-                      <label htmlFor="image-card">
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={handleImageChange}
-                          id="image-card"
-                        />
-                        <img
-                          src={
-                            preview === undefined
-                              ? user.profileImage.path
-                              : preview
-                          }
-                          alt=""
-                        />
-                        <div className="edit-image">
-                          {preview === undefined ? (
-                            <>
-                              <i className="bi bi-pencil-fill"></i>
-                              <span>editar imagem</span>
-                            </>
-                          ) : (
-                            <>
-                              <i className="bi bi-pencil-fill"></i>
-                              <span>escolher outra imagem</span>
-                            </>
-                          )}
-                        </div>
-                      </label>
-                      {preview !== undefined && (
-                        <div className="confirm-image">
-                          <i
-                            onClick={() => {
-                              setPreview(undefined);
-                              setImageFile(null);
-                            }}
-                            className="bi bi-x-lg"
-                          ></i>
-                          <i
-                            onClick={() => updateImageProfile()}
-                            className="bi bi-check-lg"
-                          ></i>
-                        </div>
-                      )}
-                    </>
-                  )}
-                </div>
-                {/*  */}
-                <div className="perfil-data">
-                  <h2>{user.name}</h2>
-                  <p>@{user.userName}</p>
-                  <div className="buttons">
-                    <button
-                      className="btn btn-outline-secondary"
-                      onClick={() => setEditar(true)}
-                    >
-                      Editar perfil
-                    </button>
-                    <button
-                      className="btn btn-outline-danger"
-                      onClick={() => logoutPost()}
-                    >
-                      Sair
-                    </button>
-                  </div>
+          <div className="logado ">
+            <div className="card-perfil">
+              {/* IMAGE DIV */}
+              <div className="image-div">
+                {imageLoad ? (
+                  <MoonLoader />
+                ) : (
+                  <>
+                    <label htmlFor="image-card">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        id="image-card"
+                      />
+                      <img
+                        src={
+                          preview === undefined
+                            ? user.profileImage.path
+                            : preview
+                        }
+                        alt=""
+                      />
+                      <div className="edit-image">
+                        {preview === undefined ? (
+                          <>
+                            <i className="bi bi-pencil-fill"></i>
+                            <span>editar imagem</span>
+                          </>
+                        ) : (
+                          <>
+                            <i className="bi bi-pencil-fill"></i>
+                            <span>escolher outra imagem</span>
+                          </>
+                        )}
+                      </div>
+                    </label>
+                    {preview !== undefined && (
+                      <div className="confirm-image">
+                        <i
+                          onClick={() => {
+                            setPreview(undefined);
+                            setImageFile(null);
+                          }}
+                          className="bi bi-x-lg"
+                        ></i>
+                        <i
+                          onClick={() => updateImageProfile()}
+                          className="bi bi-check-lg"
+                        ></i>
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+              {/*  */}
+              <div className="perfil-data">
+                <h2>{user.name}</h2>
+                <p>@{user.userName}</p>
+                <div className="buttons">
+                  <button
+                    className="btn btn-outline-secondary"
+                    onClick={() => setEditar(true)}
+                  >
+                    Editar perfil
+                  </button>
+                  <button
+                    className="btn btn-outline-danger"
+                    onClick={() => logoutPost()}
+                  >
+                    Sair
+                  </button>
                 </div>
               </div>
             </div>
-          )}
+          </div>
         </div>
         {user.name.length > 0 && (
-          <ListasContainer>
+          <ListasContainer night={night}>
             <div>
-              <a
-                onClick={() => setAddListModel(true)}
-                id="add-button"
-                className="btn btn-light"
-              >
-                <i className="bi fs-3 bi-plus-lg"></i>
-              </a>
+              <div className="add-div">
+                <a
+                  onClick={() => setAddListModel(true)}
+                  id="add-button"
+                  className="btn btn"
+                  style={{ backgroundColor: night ? cores.card : "white" }}
+                >
+                  <i
+                    style={{ color: night ? "white" : "black" }}
+                    className="add-list-i bi fs-3 bi-plus-lg"
+                  ></i>
+                </a>
+              </div>
               <div className="container text-center">
                 {data?.length === 0 && (
                   <ContainerEmpty>
@@ -275,39 +264,41 @@ export default function PerfilPage() {
                     </div>
                   </ContainerEmpty>
                 )}
-                <div className="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
+                <ul>
                   {Array.isArray(data) &&
                     data.map((list, index) => (
-                      <div key={index}>
-                        <div className="col">
-                          <div className="card">
-                            <div className="card-body">
-                              <h5 className="card-title">
-                                {returnTitle(list.name)}
-                              </h5>
-                              <p className="card-text">
-                                {returnDescription(list.description)}
-                              </p>
-                              <div className="links">
-                                <Link
-                                  to={`/list/${list._id}`}
-                                  className="link-secondary me-3"
-                                >
-                                  acessar lista
-                                </Link>
-                                <a
-                                  onClick={() => removeList(list._id)}
-                                  className="link-danger btn"
-                                >
-                                  apagar lista
-                                </a>
+                      <li key={index}>
+                        <div>
+                          <div className="col">
+                            <div className="card">
+                              <div className="card-body">
+                                <h5 className="card-title">
+                                  {returnTitle(list.name)}
+                                </h5>
+                                <p className="card-text">
+                                  {returnDescription(list.description)}
+                                </p>
+                                <div className="links">
+                                  <Link
+                                    to={`/list/${list._id}`}
+                                    className="link-secondary me-3"
+                                  >
+                                    acessar lista
+                                  </Link>
+                                  <a
+                                    onClick={() => removeList(list._id)}
+                                    className="link-danger btn"
+                                  >
+                                    apagar lista
+                                  </a>
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </li>
                     ))}
-                </div>
+                </ul>
               </div>
             </div>
           </ListasContainer>

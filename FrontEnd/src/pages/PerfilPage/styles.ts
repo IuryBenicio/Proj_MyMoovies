@@ -1,11 +1,16 @@
 import styled from "styled-components";
 import { cores, shadow } from "../../GlobalStyles";
 
-export const PerfilComponent = styled.div`
+type props = {
+  night: boolean;
+};
+
+export const PerfilComponent = styled.div<props>`
   width: 100%;
-  background-color: ${cores.fundo};
+  background-color: ${(props) =>
+    props.night === true ? cores.fundo : cores.fundoGray};
   padding: 40px;
-  min-height: calc(100dvh - 58px);
+  min-height: calc(100dvh - 56px);
   position: relative;
   #add-button {
     position: relative;
@@ -16,16 +21,25 @@ export const PerfilComponent = styled.div`
     align-items: center;
   }
   .container-perfil {
-    background-color: white;
+    background-color: ${(props) =>
+      props.night === true ? cores.card : "white"};
+    color: ${(props) => (props.night === true ? "white" : "black")};
     box-shadow: ${shadow.sombra};
     width: 60%;
     margin: 0 auto;
-    border: 1px solid gray;
     padding: 28px 28px;
     border-radius: 8px;
+    @media screen and (max-width: 431px) {
+      width: 100%;
+    }
     .logado {
       width: 100%;
       .card-perfil {
+        @media screen and (max-width: 431px) {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+        }
         margin: 0 auto;
         width: 80%;
         display: flex;
@@ -44,8 +58,12 @@ export const PerfilComponent = styled.div`
           z-index: 3;
         }
         .image-div {
+          border: ${(props) =>
+            props.night === true ? "1px solid white" : "transparent"};
           position: relative;
+          border-radius: 50%;
           input {
+            width: 100%;
             position: absolute;
             opacity: 0;
           }
@@ -102,6 +120,10 @@ export const PerfilComponent = styled.div`
             }
           }
           img {
+            @media screen and (max-width: 431px) {
+              width: 200px;
+              height: 200px;
+            }
             width: 300px;
             height: 300px;
             object-fit: cover;
@@ -118,8 +140,29 @@ export const PerfilComponent = styled.div`
             display: flex;
             justify-content: center;
             align-items: center;
+            button {
+              color: ${(props) => props.night && "white"};
+            }
             button:not(:first-child) {
               margin-left: 8px;
+            }
+            .btn-outline-secondary {
+              background-color: ${(props) =>
+                props.night === true ? "white" : "transparent"};
+              color: ${(props) => props.night === true && "black"};
+              &:hover {
+                background-color: grey;
+                color: white;
+              }
+            }
+            .btn-outline-danger {
+              background-color: ${(props) =>
+                props.night === true ? "white" : "transparent"};
+              color: ${(props) => props.night === true && "red"};
+              &:hover {
+                background-color: red;
+                color: white;
+              }
             }
           }
         }
@@ -128,7 +171,7 @@ export const PerfilComponent = styled.div`
   }
 `;
 
-export const ListasContainer = styled.div`
+export const ListasContainer = styled.div<props>`
   width: 90%;
   margin: 0 auto;
   margin-top: 40px;
@@ -136,23 +179,41 @@ export const ListasContainer = styled.div`
   .card {
     height: 178px;
     padding: 10px;
+    background-color: ${(props) =>
+      props.night === true ? cores.card : "white"};
+    color: ${(props) => (props.night === true ? "white" : "black")};
     .card-body {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
   }
-  #add-button {
+  .add-div {
     position: absolute;
     top: -40px;
-    left: 49%;
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    box-shadow: ${shadow.sombra};
-    z-index: 2;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    #add-button {
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      box-shadow: ${shadow.sombra};
+      z-index: 2;
+    }
   }
   ul {
     padding: 0;
     display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    @media screen and (max-width: 431px) {
+      display: flex;
+      flex-direction: column;
+      li:not(:first-child) {
+        margin-top: 16px;
+      }
+    }
+    li {
+      margin: 0 auto;
+    }
   }
 `;
 

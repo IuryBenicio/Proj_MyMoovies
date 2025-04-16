@@ -1,13 +1,18 @@
 import styled from "styled-components";
+import { cores } from "../../../GlobalStyles";
 
-export const PerfilModelContainer = styled.div`
+type props = {
+  night: boolean;
+};
+
+export const PerfilModelContainer = styled.div<props>`
   z-index: 3;
   position: absolute;
   width: 150px;
   height: auto;
   top: 55px;
-  left: -90px;
-  background-color: white;
+  left: -50px;
+  background-color: ${(props) => (props.night === true ? cores.card : "white")};
   overflow: hidden;
   border: solid 1px rgba(0, 0, 0, 0.5);
   border-radius: 8px;
@@ -22,7 +27,7 @@ export const PerfilModelContainer = styled.div`
     display: flex;
   }
   .login-button {
-    color: grey;
+    color: ${(props) => (props.night === true ? "white" : "black")};
     font-size: 16px;
     border: none;
     margin-bottom: 8px;

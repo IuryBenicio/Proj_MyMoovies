@@ -27,7 +27,6 @@ type stateType = {
     };
   };
   authenticated: boolean;
-  mode: string;
 };
 
 type imageType = {
@@ -49,16 +48,12 @@ const initialState: stateType = {
     },
   },
   authenticated: false,
-  mode: "day",
 };
 
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    changeMode(state, action: PayloadAction<string>) {
-      state.mode = action.payload;
-    },
     addUser(state, action: PayloadAction<userType>) {
       state.user = action.payload;
       state.authenticated = true;

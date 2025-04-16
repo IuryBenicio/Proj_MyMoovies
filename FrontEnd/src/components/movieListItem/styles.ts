@@ -1,7 +1,12 @@
 import styled from "styled-components";
 
-export const ContainerMovie = styled.div`
+type props = {
+  night: boolean;
+};
+
+export const ContainerMovie = styled.div<props>`
   pointer-events: all;
+
   i {
     z-index: 6;
   }
@@ -9,6 +14,14 @@ export const ContainerMovie = styled.div`
     display: flex;
     align-items: center;
     cursor: grab;
+    @media screen and (max-width: 431px) {
+      &:active .bi-trash {
+        width: 10%;
+      }
+      &:active .table-item {
+        width: 70%;
+      }
+    }
     &:hover .bi-trash {
       width: 4%;
     }
@@ -25,6 +38,21 @@ export const ContainerMovie = styled.div`
     }
 
     .table-item {
+      @media screen and (max-width: 431px) {
+        display: flex;
+        #sinopse {
+          display: none;
+        }
+        #poster {
+          width: 30%;
+        }
+        #title {
+          width: 40%;
+        }
+        #acoes {
+          width: 30%;
+        }
+      }
       &:active {
         cursor: grabbing;
       }
@@ -32,19 +60,24 @@ export const ContainerMovie = styled.div`
       width: 100%;
       margin: 0 auto;
       border-radius: 8px;
-      border: black solid 1px;
+      border: ${(props) => (props.night ? "white" : "black")} solid 1px;
       display: flex;
       align-items: center;
       #poster {
+        @media screen and (max-width: 431px) {
+          width: 30%;
+        }
         width: 10%;
         position: relative;
+
         .img {
           width: 100%;
-          height: 150px;
+          height: 100%;
           object-fit: cover;
           border-top-left-radius: 8px;
           border-bottom-left-radius: 8px;
-          border-right: solid 1px black;
+          border-right: solid 1px
+            ${(props) => (props.night ? "white" : "black")};
           cursor: zoom-in;
         }
         .img:active .img_zoom {
@@ -54,15 +87,21 @@ export const ContainerMovie = styled.div`
           object-fit: contain;
           cursor: zoom-out;
         }
-        .img_zoom {
+        /* .img_zoom {
           display: none;
           position: absolute;
           width: 200px;
           bottom: -50%;
           left: -8px;
-        }
+        } */
       }
       #title {
+        @media screen and (max-width: 431px) {
+          width: 50%;
+          h3 {
+            font-size: 1em;
+          }
+        }
         width: 20%;
         padding: 8px;
         text-align: center;
@@ -83,11 +122,21 @@ export const ContainerMovie = styled.div`
         }
       }
       #acoes {
+        @media screen and (max-width: 431px) {
+          width: 20%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
         width: 10%;
         display: flex;
         justify-content: center;
-        border-left: 1px solid black;
+        border-left: 1px solid ${(props) => (props.night ? "white" : "black")};
         i {
+          @media screen and (max-width: 431px) {
+            font-size: 28px;
+          }
           transition: all 0.6s ease-in-out;
           font-size: 40px;
         }

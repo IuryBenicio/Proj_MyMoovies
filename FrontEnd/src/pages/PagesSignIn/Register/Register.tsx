@@ -4,9 +4,10 @@ import axios from "axios";
 import { useFormik } from "formik";
 import { registerSchema } from "../../../helpers/schemas";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setAlert } from "../../../store/reducers/alert";
 import { bancoDeDados } from "../../../helpers/getApi";
+import { RootReducer } from "../../../store";
 
 export default function Register() {
   const [confirmTerms, setConfirmTerms] = useState(false);
@@ -14,6 +15,8 @@ export default function Register() {
   const navegar = useNavigate();
   const [imageFile, setImageFile] = useState<File | null>(null); // Guarda o arquivo
   const [preview, setPreview] = useState<string | null>(null); // Guarda a URL do preview
+
+  const { night } = useSelector((state: RootReducer) => state.navBar);
 
   const dispatch = useDispatch();
 
@@ -123,7 +126,7 @@ export default function Register() {
 
   //_________________CÓDIGO________________________
   return (
-    <RegisterContainer>
+    <RegisterContainer night={night}>
       <div className="container">
         <h2>Registrar-se</h2>
         <form onSubmit={handleSubmit}>

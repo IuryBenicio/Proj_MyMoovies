@@ -5,9 +5,10 @@ type MovieItemProps = {
   movie: movieType;
   deleteModel: (state: boolean) => void;
   Mark: (mark: string, movieId: string) => Promise<void>;
+  night: boolean;
 };
 
-const MovieItem = ({ movie, deleteModel, Mark }: MovieItemProps) => {
+const MovieItem = ({ movie, deleteModel, Mark, night }: MovieItemProps) => {
   //Return Description
   function returnDescription(description: string) {
     // if (description.length > 100) {
@@ -17,7 +18,7 @@ const MovieItem = ({ movie, deleteModel, Mark }: MovieItemProps) => {
   }
 
   return (
-    <ContainerMovie>
+    <ContainerMovie night={night}>
       <i
         onClick={(e) => {
           e.stopPropagation();
@@ -42,9 +43,10 @@ const MovieItem = ({ movie, deleteModel, Mark }: MovieItemProps) => {
           <p className="sinopse">{returnDescription(movie.sinopse)}</p>
         </div>
 
+        {/* Ações */}
         <div id="acoes">
           {movie.marqued === "cancel" ? (
-            <i className="bi bi-bookmark-dash-fill text-success"></i>
+            <i className="bi bi-bookmark-dash-fill text-danger "></i>
           ) : (
             <i
               onClick={(e) => {
@@ -66,7 +68,7 @@ const MovieItem = ({ movie, deleteModel, Mark }: MovieItemProps) => {
             ></i>
           )}
           {movie.marqued === "confirm" ? (
-            <i className="bi bi-bookmark-check-fill text-danger"></i>
+            <i className="bi bi-bookmark-check-fill text-success"></i>
           ) : (
             <i
               onClick={(e) => {

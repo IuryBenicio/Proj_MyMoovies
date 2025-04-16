@@ -1,6 +1,11 @@
 import styled from "styled-components";
+import { cores } from "../../../../GlobalStyles";
 
-export const EditPerfilContainer = styled.div`
+type props = {
+  night: boolean;
+};
+
+export const EditPerfilContainer = styled.div<props>`
   position: absolute;
   top: 0;
   left: 0;
@@ -18,9 +23,11 @@ export const EditPerfilContainer = styled.div`
   .container {
     z-index: 4;
     width: 50%;
-    border: 1px solid white;
+    /* border: 1px solid white; */
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
-    background-color: white;
+    background-color: ${(props) =>
+      props.night === true ? cores.card : "white"};
+    color: ${(props) => (props.night === true ? "white" : "black")};
     padding: 50px;
     border-radius: 8px;
     display: flex;
@@ -44,6 +51,7 @@ export const EditPerfilContainer = styled.div`
         border-bottom: 1px solid rgba(0, 0, 0, 0.2);
         background-color: transparent;
         border-radius: 0;
+        color: ${(props) => (props.night === true ? "white" : "black")};
       }
     }
     .d-flex i {
@@ -79,6 +87,7 @@ export const EditPerfilContainer = styled.div`
       border-radius: 4px;
       border: 1px solid #ccc;
       width: 100%;
+      background-color: white;
     }
     button {
     }

@@ -12,6 +12,7 @@ interface Props {
 
 export default function PerfilModel({ nome }: Props) {
   const { authenticated } = useSelector((state: RootReducer) => state.user);
+  const { night } = useSelector((state: RootReducer) => state.navBar);
   const dispatch = useDispatch();
   const navegar = useNavigate();
 
@@ -41,7 +42,7 @@ export default function PerfilModel({ nome }: Props) {
   };
 
   return (
-    <PerfilModelContainer>
+    <PerfilModelContainer className="fundo-card" night={night}>
       {authenticated && (
         <>
           <span>

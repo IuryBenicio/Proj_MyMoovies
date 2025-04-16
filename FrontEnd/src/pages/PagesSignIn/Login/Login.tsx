@@ -1,7 +1,7 @@
 // import { useState } from "react";
 import { LoginContainer } from "./Styles";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addUser, userType } from "../../../store/reducers/user";
 import { useFormik } from "formik";
 import { loginSchema } from "../../../helpers/schemas";
@@ -9,9 +9,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { setAlert } from "../../../store/reducers/alert";
 import { bancoDeDados } from "../../../helpers/getApi";
 import { useState } from "react";
+import { RootReducer } from "../../../store";
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
+
+  const { night } = useSelector((state: RootReducer) => state.navBar);
 
   const dispatch = useDispatch();
   const navegar = useNavigate();
@@ -66,7 +69,7 @@ export default function Login() {
   });
 
   return (
-    <LoginContainer>
+    <LoginContainer night={night}>
       <div className="container">
         <h2>Login</h2>
         <form method="POST" onSubmit={handleSubmit}>
@@ -111,7 +114,7 @@ export default function Login() {
             className={
               loading
                 ? "btn btn-secondary d-flex justify-content-center"
-                : "btn btn-primary d-flex justify-content-center"
+                : "btn btn-success d-flex justify-content-center"
             }
             disabled={loading}
           >
@@ -120,7 +123,10 @@ export default function Login() {
         </form>
         <br />
         <p>
-          Não possui uma conta? <Link to="/register">Cadastre-se agora</Link>
+          Não possui uma conta?{" "}
+          <Link id="links" to="/register">
+            Cadastre-se agora
+          </Link>
         </p>
       </div>
     </LoginContainer>

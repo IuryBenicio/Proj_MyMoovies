@@ -6,6 +6,7 @@ export const MovieContainer = styled.div`
   text-align: center;
   height: 100%;
   overflow: hidden;
+  padding: 40px;
   .moovie-data {
     h1 {
       font-size: 3rem;

@@ -12,12 +12,13 @@ import {
 } from "../../../../store/reducers/user";
 import EditSenha from "../editSenha/EditSenha";
 
-type PropsType = {
+export type PropsType = {
   closeModel: () => void;
 };
 
 export default function EditPerfil(props: PropsType) {
   const { user } = useSelector((state: RootReducer) => state.user);
+  const { night } = useSelector((state: RootReducer) => state.navBar);
   const dispatch = useDispatch();
 
   //nome States
@@ -145,7 +146,7 @@ export default function EditPerfil(props: PropsType) {
 
   // RETORNO
   return (
-    <EditPerfilContainer>
+    <EditPerfilContainer night={night}>
       <>
         {editarSenha && <EditSenha closeModel={closeEditSenha} />}
         <div className="container">

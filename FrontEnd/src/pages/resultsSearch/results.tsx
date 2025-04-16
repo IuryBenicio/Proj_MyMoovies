@@ -17,6 +17,8 @@ import {
 } from "../../helpers/utils/utilsMovies";
 import { useQuery } from "@tanstack/react-query";
 import imageMovieNotFounded from "../../assets/ChatGPT Image 5_04_2025, 11_55_25.png";
+import { useSelector } from "react-redux";
+import { RootReducer } from "../../store";
 //
 
 export default function Results() {
@@ -24,6 +26,8 @@ export default function Results() {
   const navegar = useNavigate();
   const { id } = useParams();
   const [pageTotal, setPageTotal] = useState(0);
+
+  const { night } = useSelector((state: RootReducer) => state.navBar);
 
   async function fetchMoovies() {
     try {
@@ -80,7 +84,7 @@ export default function Results() {
   } else {
     return (
       <>
-        <MovieContainer className="container">
+        <MovieContainer night={night} className="container">
           <h2>
             Resultados para: <span>{id}</span>
           </h2>
@@ -110,7 +114,7 @@ export default function Results() {
                       </p>
                       <a
                         onClick={() => navigateToMovie(movie.id)}
-                        className="btn btn-primary"
+                        className="btn btn-secondary"
                       >
                         Ver mais sobre o filme
                       </a>

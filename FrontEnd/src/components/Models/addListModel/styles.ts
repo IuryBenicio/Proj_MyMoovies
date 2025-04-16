@@ -7,6 +7,7 @@ type propsCss = {
     left: string;
   };
   backgroundColor: string;
+  colorText: string;
 };
 
 export const ListContainer = styled.div<propsCss>`
@@ -20,8 +21,10 @@ export const ListContainer = styled.div<propsCss>`
   top: ${(props: propsCss) => props.position.top};
   left: ${(props: propsCss) => props.position.left};
   z-index: 5;
+  color: ${(props: propsCss) => props.colorText};
   input {
     margin: 10px 0;
+    color: black;
   }
   h3 {
     margin: 0;
@@ -31,5 +34,14 @@ export const ListContainer = styled.div<propsCss>`
   }
   .btn-outline-danger {
     margin-top: 16px;
+  }
+  .buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+    button {
+      margin: 0;
+    }
   }
 `;

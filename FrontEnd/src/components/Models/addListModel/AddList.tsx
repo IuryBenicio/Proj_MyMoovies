@@ -10,6 +10,7 @@ type AddListModelProps = {
     left: string;
   };
   backgroundColor: string;
+  colorText: string;
   inputBorder?: string;
   userId?: string;
   atualizaLists?: () => void; // função para atualizar a lista de listas após adicionar uma nova
@@ -22,6 +23,7 @@ export default function AddListModel({
   position,
   backgroundColor,
   inputBorder,
+  colorText,
 }: // atualizaLists,
 AddListModelProps) {
   const [name, setName] = useState("");
@@ -53,47 +55,60 @@ AddListModelProps) {
       });
   }
 
+  function FormSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    addList();
+  }
+
   return (
-    <ListContainer backgroundColor={backgroundColor} position={position}>
+    <ListContainer
+      colorText={colorText}
+      backgroundColor={backgroundColor}
+      position={position}
+    >
       <h3>Crie uma lista</h3>
-      <input
-        style={{
-          backgroundColor: backgroundColor,
-          border: `1px solid ${inputBorder}`,
-        }}
-        onChange={(e) => setName(e.target.value)}
-        value={name}
-        className="form-control"
-        type="text"
-        placeholder="Nome da lista"
-      />
-      <input
-        style={{
-          backgroundColor: backgroundColor,
-          border: `1px solid ${inputBorder}`,
-        }}
-        className="form-control"
-        type="text"
-        placeholder="Descrição da lista"
-        onChange={(e) => setDescription(e.target.value)}
-        value={description}
-      />
-      <button
-        onClick={addList}
-        className="btn btn-outline-success"
-        type="submit"
-        disabled={loading}
-      >
-        Criar lista
-      </button>
-      <button
-        onClick={() => closeModel()}
-        className="btn btn-outline-danger"
-        type="button"
-        disabled={loading}
-      >
-        Cancelar
-      </button>
+      <form onSubmit={(e) => FormSubmit(e)}>
+        <input
+          style={{
+            backgroundColor: "white",
+            border: `1px solid ${inputBorder}`,
+          }}
+          onChange={(e) => setName(e.target.value)}
+          value={name}
+          className="form-control"
+          type="text"
+          placeholder="Nome da lista"
+        />
+        <input
+          style={{
+            backgroundColor: "white",
+            border: `1px solid ${inputBorder}`,
+          }}
+          className="form-control"
+          type="text"
+          placeholder="Descrição da lista"
+          onChange={(e) => setDescription(e.target.value)}
+          value={description}
+        />
+        <div className="buttons">
+          <button
+            onClick={addList}
+            className="btn btn-outline-success"
+            type="submit"
+            disabled={loading}
+          >
+            Criar lista
+          </button>
+          <button
+            onClick={() => closeModel()}
+            className="btn btn-outline-danger"
+            type="button"
+            disabled={loading}
+          >
+            Cancelar
+          </button>
+        </div>
+      </form>
     </ListContainer>
   );
 }

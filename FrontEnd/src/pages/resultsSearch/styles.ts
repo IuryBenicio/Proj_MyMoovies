@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { cores } from "../../GlobalStyles";
 export const ProgressContainer = styled.div`
   width: 100%;
   height: calc(100dvh - 58px);
@@ -13,8 +14,14 @@ export const ProgressContainer = styled.div`
   }
 `;
 
-export const MovieContainer = styled.div`
+type props = {
+  night: boolean;
+};
+
+export const MovieContainer = styled.div<props>`
+  width: 100%;
   h2 {
+    margin-top: 24px;
     text-align: center;
   }
   .movies_container {
@@ -31,6 +38,8 @@ export const MovieContainer = styled.div`
       text-align: center;
 
       .card {
+        background-color: ${(props) => (props.night ? cores.card : "white")};
+        color: ${(props) => (props.night ? "white" : "black")};
         display: flex;
         flex-direction: column;
         height: 100%;

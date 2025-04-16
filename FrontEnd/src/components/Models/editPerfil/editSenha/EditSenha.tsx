@@ -22,6 +22,7 @@ export default function EditSenha(props: propsType) {
   const [isLoading, setIsLoading] = useState(false);
 
   const { user } = useSelector((state: RootReducer) => state.user);
+  const { night } = useSelector((state: RootReducer) => state.navBar);
 
   //fetch confirmação da senha
   async function fetchConfirmPassword() {
@@ -93,7 +94,7 @@ export default function EditSenha(props: propsType) {
   });
 
   return (
-    <EditSenhaContainer isLoading={isLoading}>
+    <EditSenhaContainer night={night} isLoading={isLoading}>
       <div className="card-edit">
         <i onClick={() => props.closeModel()} className="close bi bi-x-lg"></i>
         <h2>Alterar Senha</h2>
@@ -112,7 +113,7 @@ export default function EditSenha(props: propsType) {
                   />
                   {isLoading && (
                     <ThreeDot
-                      color="#000000"
+                      color={night ? "white" : "#000000"}
                       size="small"
                       text=""
                       textColor=""

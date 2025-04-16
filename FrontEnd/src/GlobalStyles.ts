@@ -1,6 +1,8 @@
 import { createGlobalStyle } from "styled-components";
-
-export const GlobalStyles = createGlobalStyle`
+type props = {
+  night: boolean;
+};
+export const GlobalStyles = createGlobalStyle<props>`
 *{
     box-sizing: border-box;
     margin: 0;
@@ -44,34 +46,50 @@ export const GlobalStyles = createGlobalStyle`
       }
     }
     &::-webkit-scrollbar-track  {
-      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-      background-color: #F5F5F5;
-      border-top-left-radius: 8px;
-      border-bottom-left-radius: 8px;
+      background-color: ${(props) =>
+        props.night === true ? cores.card : "white"};
+      transition: all 0.4s ease-in-out ;
+      
     }
     
     &::-webkit-scrollbar  {
       width: 12px;
-      background-color: #F5F5F5;
+      background-color: ${(props) =>
+        props.night === true ? "transparent" : cores.fundo};
+      transition: all 0.4s ease-in-out ;
     }
     
     &::-webkit-scrollbar-thumb  {
-      
-      border-top-left-radius: 8px;
-      border-bottom-left-radius: 8px;
+      /* border-radius: 8px; */
+      /* border-bottom-left-radius: 8px; */
       -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-      background-color: #555;
+      background-color: ${(props) =>
+        props.night === true ? "white" : cores.card};
+      transition: all 0.4s ease-in-out ;
     }
-}
+  }
+  .container{
+      max-width: 1600px;
+      width: 100%;
+  }
 
-.container{
-    max-width: 1600px;
-    width: 100%;
-}
-`;
+  /* .background{
+    fundo: ${(props) => (props.night === true ? "rgb(26, 26, 26);" : "white")}
+  } */
+
+    .fundo-card{
+      ${(props) => (props.night === true ? "rgb(36, 36, 36)" : "white")}
+    }
+
+    .Links{
+      background-color: ${(props) => (props.night === true ? "wihte" : "black")}
+    }
+  `;
 
 export const cores = {
-  fundo: "rgba(0, 0, 0, 0.3);",
+  fundo: "rgb(58, 58, 58)",
+  fundoGray: "rgb(145, 145, 145)",
+  card: "rgb(36, 36, 36)",
 };
 
 export const shadow = {

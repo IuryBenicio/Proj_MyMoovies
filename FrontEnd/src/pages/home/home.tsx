@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import Hero from "../../components/HomeHero/Hero";
+import Hero from "../HomeHero/Hero";
 import { RootReducer } from "../../store";
 import PerfilPage from "../PerfilPage/Page";
 

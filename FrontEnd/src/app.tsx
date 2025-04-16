@@ -12,9 +12,12 @@ import { RootReducer } from "./store";
 // import { useState } from "react";
 import ListPage from "./pages/PerfilPage/listPage/Page";
 import ErrorPage from "./pages/ErrorPages/ErrorPost";
+import { GlobalStyles } from "./GlobalStyles";
+import Footer from "./components/Footer/Footer";
 
 export default function App() {
   const { user } = useSelector((state: RootReducer) => state.user);
+  const { night } = useSelector((state: RootReducer) => state.navBar);
 
   // const { showMessage, messageText, type } = useSelector(
   //   (state: RootReducer) => state.alert
@@ -25,6 +28,7 @@ export default function App() {
   return (
     <>
       <BrowserRouter>
+        <GlobalStyles night={night} />
         <Header />
         {/* {alert && (
           <AlertModal
@@ -51,6 +55,7 @@ export default function App() {
             }
           />
         </Routes>
+        <Footer />
       </BrowserRouter>
     </>
   );

@@ -1,11 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type stateType = {
   navBar: "Login&Register" | "Home" | "Perfil" | "Amigos";
+  night: boolean;
 };
 
 const initialState: stateType = {
   navBar: "Home",
+  night: false,
 };
 
 const navBarSlice = createSlice({
@@ -15,8 +17,11 @@ const navBarSlice = createSlice({
     changeNavBar(state, action) {
       state.navBar = action.payload;
     },
+    changeMode(state, action: PayloadAction<boolean>) {
+      state.night = action.payload;
+    },
   },
 });
 
-export const { changeNavBar } = navBarSlice.actions;
+export const { changeNavBar, changeMode } = navBarSlice.actions;
 export default navBarSlice.reducer;

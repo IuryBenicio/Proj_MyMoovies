@@ -2,6 +2,111 @@ const User = require("../models/User");
 const MoovieList = require("../models/UserMoovies");
 
 module.exports = class MoovieListController {
+  // Edita nome de uma lista de um usuário
+  static async editListName(req, res) {
+    const { listId, newName, userId } = req.body;
+
+    const list = await MoovieList.findById(listId);
+
+    if (!newName) {
+      return res.status(400).json({ message: "Faltando nome para editar" });
+    }
+
+    if (!list) {
+      return res
+        .status(404)
+        .json({ message: "Lista de filmes não encontrada" });
+    }
+
+    if (list.name === newName) {
+      return res
+        .status(400)
+        .json({ message: "Nome não pode ser igual ao atual" });
+    }
+
+    try {
+      const user = await User.findById(userId);
+
+      const listUpdate = user.moovieLists.find(
+        (l) => String(l._id) === String(listId)
+      );
+
+      if (listUpdate) {
+        if (listUpdate.name === newName) {
+          return res.status(400).json({ message: "Nome antigo igual ao novo" });
+        }
+      }
+
+      listUpdate.name = newName;
+
+      await user.save();
+      await MoovieList.findByIdAndUpdate(
+        listId,
+        { name: newName },
+        { new: true }
+      );
+      return res
+        .status(200)
+        .json({ message: "Nome da lista editada com sucesso" });
+    } catch {
+      return res
+        .status(500)
+        .json({ message: "Erro ao editar nome da lista de filmes" });
+    }
+  }
+
+  // Edita descrição de uma lista de um usuário
+  static async editListDescription(req, res) {
+    const { listId, newDescription, userId } = req.body;
+
+    if (!listId) {
+      return res.status(400).json({ message: "Faltando id para editar" });
+    }
+    if (!newDescription) {
+      return res
+        .status(400)
+        .json({ message: "Faltando descrição para editar" });
+    }
+    const list = await MoovieList.findById(listId);
+    if (!list) {
+      return res
+        .status(404)
+        .json({ message: "Lista de filmes não encontrada" });
+    }
+
+    try {
+      const user = await User.findById(userId);
+
+      if (!user) {
+        return res.status(400).json({ message: "Usuário não encontrado" });
+      }
+
+      const listUpdate = user.moovieLists.find(
+        (l) => String(l._id) === String(listId)
+      );
+
+      if (listUpdate) {
+        if (listUpdate.description === newDescription) {
+          return res.status(400).json({ message: "Descrição igual a antiga" });
+        }
+      }
+
+      listUpdate.description = newDescription;
+
+      await user.save();
+      await MoovieList.findByIdAndUpdate(
+        listId,
+        { description: newDescription },
+        { new: true }
+      );
+      return res.status(200).json({ message: "Descrição atualizada" });
+    } catch {
+      return res
+        .status(500)
+        .json({ message: "Erro ao editar descrição da lista de filmes" });
+    }
+  }
+
   // Adiciona lista a um usuário
   static async addListToUser(req, res) {
     const { name, userId } = req.body;
@@ -56,114 +161,11 @@ module.exports = class MoovieListController {
         },
         { new: true }
       );
-      return res.json({ message: "Lista de filmes adicionada com sucesso" });
+      return res
+        .status(200)
+        .json({ message: "Lista de filmes adicionada com sucesso" });
     } catch (err) {
       return res.status(500).json(err.errmsg);
-    }
-  }
-
-  // Edita nome de uma lista de um usuário
-  static async editListName(req, res) {
-    const { listId, newName, userId } = req.body;
-
-    const list = await MoovieList.findById(listId);
-
-    if (!newName) {
-      return res.status(400).json({ message: "Faltando nome para editar" });
-    }
-
-    if (!list) {
-      return res
-        .status(404)
-        .json({ message: "Lista de filmes não encontrada" });
-    }
-
-    if (list.name === newName) {
-      return res
-        .status(400)
-        .json({ message: "Nome não pode ser igual ao atual" });
-    }
-
-    try {
-      const user = await User.findById(userId);
-
-      const listUpdate = user.moovieLists.find((l) => {
-        String(l._id) === String(listId);
-      });
-
-      if (listUpdate.description === newDescription) {
-        return res
-          .status(400)
-          .json({ message: "Descrição antiga igual a nova" });
-      }
-
-      if (listUpdate) {
-        listUpdate.name = newName;
-      }
-
-      await user.save();
-      await MoovieList.findByIdAndUpdate(
-        listId,
-        { name: newName },
-        { new: true }
-      );
-      return res.json({ message: "Nome da lista editada com sucesso" });
-    } catch {
-      return res
-        .status(500)
-        .json({ message: "Erro ao editar nome da lista de filmes" });
-    }
-  }
-
-  // Edita descrição de uma lista de um usuário
-  static async editListDescription(req, res) {
-    const { listId, newDescription, userId } = req.body;
-
-    if (!listId) {
-      return res.status(400).json({ message: "Faltando id para editar" });
-    }
-    if (!newDescription) {
-      return res
-        .status(400)
-        .json({ message: "Faltando descrição para editar" });
-    }
-    const list = await MoovieList.findById(listId);
-    if (!list) {
-      return res
-        .status(404)
-        .json({ message: "Lista de filmes não encontrada" });
-    }
-
-    try {
-      const user = await User.findById(userId);
-
-      if (!user) {
-        return res.status(400).json({ message: "Usuário não encontrado" });
-      }
-
-      const listUpdate = user.moovieLists.find((l) => {
-        String(l._id) === String(listId);
-      });
-
-      if (listUpdate.description === newDescription) {
-        return res.status(400).json({ message: "Descrição igual a antiga" });
-      }
-
-      if (listUpdate) {
-        listUpdate.description = newDescription;
-      }
-
-      await user.save();
-      await MoovieList.findByIdAndUpdate(
-        listId,
-        { description: newDescription },
-        { new: true }
-      );
-      return res.status(200).json({ message: "Descrição atualizada" });
-    } catch {
-      return res
-        .status(500)
-        .json({ message: "Erro ao editar descrição da lista de filmes" });
     }
   }
 
@@ -199,7 +201,9 @@ module.exports = class MoovieListController {
 
       await user.save();
 
-      return res.json({ message: "Lista de filmes removida com sucesso" });
+      return res
+        .status(200)
+        .json({ message: "Lista de filmes removida com sucesso" });
     } catch (error) {
       return res.status(500).json(error.message);
     }

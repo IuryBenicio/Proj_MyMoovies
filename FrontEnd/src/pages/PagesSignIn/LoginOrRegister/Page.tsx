@@ -1,9 +1,12 @@
+import { useSelector } from "react-redux";
 import { PageContainer } from "./styles";
 import { Link } from "react-router-dom";
+import { RootReducer } from "../../../store";
 
 export default function LoginOrRegister() {
+  const { night } = useSelector((state: RootReducer) => state.navBar);
   return (
-    <PageContainer>
+    <PageContainer night={night}>
       <div className="container">
         <h2>Não possui conta?</h2>
         <Link

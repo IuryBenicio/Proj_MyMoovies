@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { bancoDeDados } from "../../../helpers/getApi";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { EditContainer, ListContainer } from "./styles";
 import ConfirmModel from "../../../components/Models/confirmModel/confirmModel";
 import sadCat from "../../../assets/sad-cat-11.png";
@@ -9,6 +9,7 @@ import sadCat from "../../../assets/sad-cat-11.png";
 import MovieItem from "../../../components/movieListItem/MovieItem";
 import { useSelector } from "react-redux";
 import { RootReducer } from "../../../store";
+import { useQuery } from "@tanstack/react-query";
 
 export type movieType = {
   movieId: string;
@@ -27,6 +28,7 @@ type loadingType = {
 export default function ListPage() {
   const { id } = useParams();
   const { user } = useSelector((state: RootReducer) => state.user);
+  const { night } = useSelector((state: RootReducer) => state.navBar);
 
   //estado delete filme
   const [movieModelDelete, setMovieModelDelete] = useState(false);
@@ -45,7 +47,6 @@ export default function ListPage() {
   const [description, setDescription] = useState("");
 
   ////estados dos filmes
-  const [movies, setMovies] = useState<movieType[]>([]);
   const [loading, setLoading] = useState<loadingType[]>([]);
 
   // Edita o nome da lista
@@ -57,18 +58,16 @@ export default function ListPage() {
         newName: name,
         userId: user._id,
       })
-      .then((response) => {
-        alert(response.data.message);
+      .then(() => {
         setEditName(false);
         setLoadinName(false);
+        refetch();
       })
-      .catch((error) => {
-        console.error(error);
+      .catch(() => {
+        refetch();
         setLoadinName(false);
       });
   }
-
-  // const navegar = useNavigate();
 
   // Edita a descrição da lista
   async function postDescriptionList() {
@@ -82,9 +81,10 @@ export default function ListPage() {
       .then(() => {
         setEditDescription(false);
         setLoadinDescription(false);
+        refetch();
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
+        refetch();
         setLoadinDescription(false);
       });
   }
@@ -110,12 +110,7 @@ export default function ListPage() {
         mark: mark,
       })
       .then(() => {
-        setMovies((prev) =>
-          prev.map((movie) =>
-            movie.movieId === movieId ? { ...movie, mark } : movie
-          )
-        );
-        getList();
+        refetch();
       })
       .catch((error) => {
         console.log(error);
@@ -134,20 +129,19 @@ export default function ListPage() {
 
   // Função para buscar lista com filmes pelo id do usuário
   const getList = async () => {
-    console.log("ATUALIZEI EM");
-    await axios
-      .get(`${bancoDeDados}/movie/listmovies/${id}`)
-      .then((response) => {
-        // info list
-        setListId(response.data._id);
-        setDescription(response.data.description);
-        setName(response.data.name);
+    try {
+      const response = await axios.get(
+        `${bancoDeDados}/movie/listmovies/${id}`
+      );
+      // info list
+      setListId(response.data._id);
+      setDescription(response.data.description);
+      setName(response.data.name);
 
-        setMovies(response.data.moovieList);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+      return response.data.moovieList;
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // Deleta filme da lista
@@ -160,8 +154,7 @@ export default function ListPage() {
       .then(() => {
         console.log("deletou");
         setMovieModelDelete(false);
-        setMovies(movies.filter((movie) => movie.movieId !== moovieId));
-        getList();
+        refetch();
       })
       .catch((e) => {
         alert("Deu merdda");
@@ -169,61 +162,16 @@ export default function ListPage() {
       });
   };
 
-  // Reorganiza no banco de dados
-  // const reorderList = async (updatedMovies: movieType[]) => {
-  //   await axios
-  //     .post(`${bancoDeDados}/movie/reorderlist`, {
-  //       listId: listId,
-  //       newOrder: updatedMovies.map((movie, index) => ({
-  //         movieId: movie.movieId,
-  //         order: index,
-  //       })),
-  //     })
-  //     .then((response) => {
-  //       // setMovies();
-  //       console.log(response.data.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
-
-  // //Dnd
-  // function reorder<T>(List: T[], startIndex: number, endIndex: number) {
-  //   const result = Array.from(List);
-
-  //   const [removed] = result.splice(startIndex, 1);
-  //   result.splice(endIndex, 0, removed);
-
-  //   return result;
-  // }
-
-  // async function onDragEnd(result: any) {
-  //   if (!result.destination) {
-  //     return;
-  //   }
-
-  //   const reorderedMovies = reorder(
-  //     movies,
-  //     result.source.index,
-  //     result.destination.index
-  //   );
-
-  //   try {
-  //     await reorderList(reorderedMovies);
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // }
-
   // Carrega a lista assim que o componente é renderizado
 
-  useEffect(() => {
-    getList();
-  }, []);
+  const { data, refetch } = useQuery<movieType[]>({
+    queryKey: ["filmes-list"],
+    queryFn: getList,
+    refetchOnWindowFocus: true,
+  });
 
   return (
-    <ListContainer ModelDelete={movieModelDelete}>
+    <ListContainer night={night} ModelDelete={movieModelDelete}>
       <div className="list-data">
         <div className="name">
           {!editName && !loadinName ? (
@@ -232,12 +180,13 @@ export default function ListPage() {
               <i
                 onClick={() => setEditName(true)}
                 className="relative bi bi-pencil"
+                style={{ color: "black" }}
               >
                 editar
               </i>
             </>
           ) : (
-            <EditContainer>
+            <EditContainer night={night}>
               <input
                 onChange={(e) => setName(e.target.value)}
                 className="name-input"
@@ -262,12 +211,13 @@ export default function ListPage() {
               <i
                 onClick={() => setEditDescription(true)}
                 className="relative bi bi-pencil"
+                style={{ color: "black" }}
               >
                 editar
               </i>
             </>
           ) : (
-            <EditContainer>
+            <EditContainer night={night}>
               <textarea
                 onChange={(e) => setDescription(e.target.value)}
                 className="description-input"
@@ -286,11 +236,12 @@ export default function ListPage() {
         </div>
       </div>
       <div className="container-movies">
-        {movies.length > 0 && (
+        {data && (
           <div className="tabela">
-            {movies.map((movie, index) => (
+            {data!.map((movie, index) => (
               <div className="item" key={index}>
                 <MovieItem
+                  night={night}
                   Mark={setMark}
                   deleteModel={setMovieModelDelete}
                   movie={movie}
@@ -306,7 +257,7 @@ export default function ListPage() {
             ))}
           </div>
         )}
-        {movies.length === 0 && (
+        {data === undefined && (
           <div className="empty">
             <img src={sadCat} alt="" />
             <div className="text">

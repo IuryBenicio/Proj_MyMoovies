@@ -2,14 +2,15 @@ import styled from "styled-components";
 import { cores, minHeight, shadow } from "../../../GlobalStyles";
 
 type propsListContainer = {
-  ModelDelete: boolean;
+  ModelDelete?: boolean;
+  night: boolean;
 };
 
 export const ListContainer = styled.div<propsListContainer>`
   width: 100%;
   height: ${(props) => (props.ModelDelete ? `${minHeight}` : "100%")};
   overflow-y: ${(props) => (props.ModelDelete ? "hidden" : "auto")};
-  background-color: ${cores.fundo};
+  background-color: ${(props) => (props.night ? cores.fundo : cores.fundoGray)};
   min-height: calc(${minHeight.minHeight} + 2px);
   display: flex;
   flex-direction: column;
@@ -17,7 +18,8 @@ export const ListContainer = styled.div<propsListContainer>`
   .list-data {
     margin: 38px auto;
     margin-bottom: 24px;
-    background-color: white;
+    background-color: ${(props) => (props.night ? cores.card : "white")};
+    color: ${(props) => (props.night ? "white" : "black")};
     border-radius: 8px;
     box-shadow: ${shadow.sombra};
     padding: 20px;
@@ -68,11 +70,11 @@ export const ListContainer = styled.div<propsListContainer>`
   }
   .container-movies {
     margin: 0 auto;
-
-    width: 80%;
+    width: 90%;
     height: 650px;
     overflow-y: scroll;
-    background-color: white;
+    background-color: ${(props) => (props.night ? cores.card : "white")};
+    color: ${(props) => (props.night ? "white" : "black")};
     box-shadow: ${shadow.sombra};
     border-radius: 8px;
     border: 1px solid ${shadow.sombra};
@@ -134,7 +136,7 @@ export const ListContainer = styled.div<propsListContainer>`
   }
 `;
 
-export const EditContainer = styled.div`
+export const EditContainer = styled.div<propsListContainer>`
   align-items: center;
   display: flex;
   .relative {
@@ -168,14 +170,16 @@ export const EditContainer = styled.div`
   input {
     text-align: center;
     border: none;
-    border-bottom: 1px solid grey;
+    border-bottom: 1px solid
+      ${(props) => (props.night === true ? "white" : "grey")};
     width: auto;
   }
   textarea {
     margin-top: 8px;
     text-align: center;
     border: none;
-    border-bottom: 1px solid grey;
+    border-bottom: 1px solid
+      ${(props) => (props.night === true ? "white" : "grey")};
     width: auto;
     resize: none;
   }
