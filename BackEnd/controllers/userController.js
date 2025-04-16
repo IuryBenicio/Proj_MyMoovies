@@ -370,7 +370,7 @@ module.exports = class UserController {
       return res.status(404).json({ message: "Usuário não encontrado" });
     }
 
-    const moovielist = user.moovielist;
+    const moovielist = user.moovielist._id;
 
     try {
       await User.findByIdAndDelete(id);
