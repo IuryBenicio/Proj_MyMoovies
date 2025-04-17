@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FundoSlide, HeroContainer } from "./styles";
+import { HeroContainer } from "./styles";
 import { useNavigate } from "react-router-dom";
 
 export default function Hero() {
@@ -26,9 +26,6 @@ export default function Hero() {
           </button>
         </div>
       </div>
-      <FundoSlide>
-        <img src="" alt="" />
-      </FundoSlide>
     </HeroContainer>
   );
 }
