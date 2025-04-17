@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { MovieContainer } from "./styles";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -19,6 +19,8 @@ export type ListType = {
 
 export default function MoviePage() {
   const { user } = useSelector((state: RootReducer) => state.user);
+  const { night } = useSelector((state: RootReducer) => state.navBar);
+
   const [movieData, setMovieData] = useState<moovieType>({});
   const { id } = useParams();
 
@@ -112,7 +114,12 @@ export default function MoviePage() {
   }, []);
 
   return (
-    <MovieContainer>
+    <MovieContainer night={night}>
+      <div className="navegacao">
+        <Link to={"/"}>
+          <i className="bi bi-chevron-double-left"></i>Inicio
+        </Link>
+      </div>
       {/* <Header /> */}
       <div className="container moovie-data">
         <h1>{movieData.title}</h1>

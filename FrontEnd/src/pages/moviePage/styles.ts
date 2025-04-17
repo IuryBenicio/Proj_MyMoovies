@@ -1,7 +1,11 @@
 import styled from "styled-components";
-import { minHeight } from "../../GlobalStyles";
+import { cores, minHeight } from "../../GlobalStyles";
 
-export const MovieContainer = styled.div`
+type props = {
+  night: boolean;
+};
+
+export const MovieContainer = styled.div<props>`
   @media screen and (min-width: 1080px) {
     max-height: ${minHeight};
     overflow: hidden;
@@ -9,6 +13,31 @@ export const MovieContainer = styled.div`
   }
   text-align: center;
   padding: 40px;
+  background-color: ${(props) =>
+    props.night === true ? cores.fundo : "white"};
+  color: ${(props) => (props.night === true ? "white" : "black")};
+  .navegacao {
+    /* text-decoration: underline; */
+    position: absolute;
+    top: 58px;
+    left: 10px;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+
+    a {
+      color: ${(props) => (props.night === true ? "white" : "black")};
+      &:hover {
+        color: grey;
+      }
+      &:hover i {
+        color: grey;
+      }
+    }
+    i {
+      font-size: 17px;
+    }
+  }
   .moovie-data {
     display: flex;
     flex-direction: column;
@@ -80,6 +109,8 @@ export const MovieContainer = styled.div`
           }
 
           button {
+            color: ${(props) => (props.night === true ? "white" : "black")};
+            border: ${(props) => props.night === true && "white"} 1px solid;
             width: 80%;
             margin: 0 auto;
             @media screen and (max-width: 431px) {

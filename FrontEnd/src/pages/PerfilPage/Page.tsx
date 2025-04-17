@@ -150,14 +150,16 @@ export default function PerfilPage() {
   return (
     <PerfilComponent night={night}>
       {addListModel && (
-        <AddListModel
-          colorText={night ? "white" : "black"}
-          backgroundColor={night ? cores.card : "white"}
-          position={{ top: "40%", left: "43.8%" }}
-          atualizaLists={refetch}
-          userId={user._id}
-          closeModel={() => setAddListModel(false)}
-        />
+        <div className="fundo">
+          <AddListModel
+            colorText={night ? "white" : "black"}
+            backgroundColor={night ? cores.card : "white"}
+            position={{ top: "40%", left: "43.8%" }}
+            atualizaLists={refetch}
+            userId={user._id}
+            closeModel={() => setAddListModel(false)}
+          />
+        </div>
       )}
       {editar && <EditPerfil closeModel={() => setEditar(false)} />}
       <>
@@ -281,7 +283,7 @@ export default function PerfilPage() {
                                 <div className="links">
                                   <Link
                                     to={`/list/${list._id}`}
-                                    className="link-secondary me-3"
+                                    className="link-secondary btn"
                                   >
                                     acessar lista
                                   </Link>

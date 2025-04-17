@@ -93,7 +93,7 @@ export default function Header() {
                 value={search}
                 className="form-control me-2 shadow-none"
                 type="text"
-                placeholder="Search"
+                placeholder="Buscar filme"
                 aria-label="Search"
                 id="search-button"
               />

@@ -19,6 +19,27 @@ type props = {
 };
 
 export const MovieContainer = styled.div<props>`
+  .navegacao {
+    position: absolute;
+    top: 58px;
+    left: 10px;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+
+    a {
+      color: black;
+      &:hover {
+        color: grey;
+      }
+      &:hover i {
+        color: grey;
+      }
+    }
+    i {
+      font-size: 17px;
+    }
+  }
   width: 100%;
   ul {
     @media screen and (max-width: 431px) {

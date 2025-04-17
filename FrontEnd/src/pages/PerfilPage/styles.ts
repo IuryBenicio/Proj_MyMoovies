@@ -6,6 +6,15 @@ type props = {
 };
 
 export const PerfilComponent = styled.div<props>`
+  .fundo {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 3;
+  }
   width: 100%;
   background-color: ${(props) =>
     props.night === true ? cores.fundo : cores.fundoGray};
@@ -148,8 +157,9 @@ export const PerfilComponent = styled.div<props>`
             }
             .btn-outline-secondary {
               background-color: ${(props) =>
-                props.night === true ? "white" : "transparent"};
-              color: ${(props) => props.night === true && "black"};
+                props.night === true ? "transparent" : "transparent"};
+              border: 1px solid green;
+              color: green;
               &:hover {
                 background-color: grey;
                 color: white;
@@ -157,7 +167,8 @@ export const PerfilComponent = styled.div<props>`
             }
             .btn-outline-danger {
               background-color: ${(props) =>
-                props.night === true ? "white" : "transparent"};
+                props.night === true ? "transparent" : "transparent"};
+              border: 1px solid red;
               color: ${(props) => props.night === true && "red"};
               &:hover {
                 background-color: red;
@@ -186,6 +197,14 @@ export const ListasContainer = styled.div<props>`
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      .links {
+        display: flex;
+        align-items: center;
+        a {
+          margin: 0;
+          text-align: center;
+        }
+      }
     }
   }
   .add-div {

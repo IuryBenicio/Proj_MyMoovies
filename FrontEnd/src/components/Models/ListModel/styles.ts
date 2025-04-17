@@ -9,6 +9,7 @@ export const ContainerListModel = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
   align-items: center;
   position: absolute;
   border-radius: 8px;
@@ -92,6 +93,9 @@ export const ContainerListModel = styled.div`
     padding: 8px 8px 0 8px;
   }
   .buttons {
+    @media screen and (max-width: 431px) {
+      display: none;
+    }
     width: 100%;
     hr {
       margin: 0 auto;

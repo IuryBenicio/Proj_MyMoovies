@@ -111,7 +111,7 @@ export default function ListModel({
           ))}
         </ul>
       ) : (
-        <p>Você ainda não possui listas de filmes.</p>
+        <p className="empty-text">Você ainda não possui listas de filmes.</p>
       )}
       <div className="buttons">
         <hr />

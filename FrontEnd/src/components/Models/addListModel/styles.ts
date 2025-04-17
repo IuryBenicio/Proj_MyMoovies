@@ -45,12 +45,14 @@ export const ListContainer = styled.div<propsCss>`
     margin-top: 8px;
     button {
       width: 50%;
+      margin: 0;
       @media screen and (max-width: 431px) {
         height: 68px;
-        padding: 5px;
+        padding: 0 5px;
         text-align: center;
+        height: 50px;
+        width: 95px;
       }
-      margin: 0;
     }
   }
 `;

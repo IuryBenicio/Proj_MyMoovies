@@ -1,6 +1,6 @@
 import axios from "axios";
 import { apiKeyNumber, urlDefault } from "../../helpers/getApi";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { moovieType } from "../../store/reducers/search";
 import { useNavigate } from "react-router-dom";
@@ -91,6 +91,11 @@ export default function Results() {
     return (
       <>
         <MovieContainer night={night} className="container">
+          <div className="navegacao">
+            <Link to={"/"}>
+              <i className="bi bi-chevron-double-left"></i>Inicio
+            </Link>
+          </div>
           <h2>
             Resultados para: <span>{id}</span>
           </h2>

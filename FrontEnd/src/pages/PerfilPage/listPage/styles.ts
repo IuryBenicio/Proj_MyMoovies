@@ -15,6 +15,27 @@ export const ListContainer = styled.div<propsListContainer>`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  .navegacao {
+    position: absolute;
+    top: 58px;
+    left: 10px;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+
+    a {
+      color: ${(props) => (props.night === true ? "white" : "black")};
+      &:hover {
+        color: grey;
+      }
+      &:hover i {
+        color: grey;
+      }
+    }
+    i {
+      font-size: 17px;
+    }
+  }
   .list-data {
     margin: 38px auto;
     margin-bottom: 24px;
@@ -134,7 +155,8 @@ export const ListContainer = styled.div<propsListContainer>`
         padding: 0;
       }
       p {
-        font-size: 2em;
+        font-size: 1.4em;
+        text-align: center;
         margin: 0;
         padding: 0;
       }

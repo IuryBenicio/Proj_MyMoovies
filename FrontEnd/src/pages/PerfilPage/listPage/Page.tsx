@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { bancoDeDados } from "../../../helpers/getApi";
 import { useState } from "react";
 import { EditContainer, ListContainer } from "./styles";
@@ -172,6 +172,11 @@ export default function ListPage() {
 
   return (
     <ListContainer night={night} ModelDelete={movieModelDelete}>
+      <div className="navegacao">
+        <Link to={"/"}>
+          <i className="bi bi-chevron-double-left"></i>Inicio
+        </Link>
+      </div>
       <div className="list-data">
         <div className="name">
           {!editName && !loadinName ? (
@@ -257,12 +262,12 @@ export default function ListPage() {
             ))}
           </div>
         )}
-        {data === undefined && (
+        {data?.length === 0 && (
           <div className="empty">
             <img src={sadCat} alt="" />
             <div className="text">
               <span className="d-flex justify-content-center">Lista vazia</span>
-              <p>adicione filmes para vê-los aqui</p>
+              <p>adicione filmes, procurando-os na barra de busca</p>
             </div>
           </div>
         )}

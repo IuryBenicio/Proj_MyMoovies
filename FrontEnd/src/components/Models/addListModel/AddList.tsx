@@ -47,6 +47,7 @@ AddListModelProps) {
         if (atualizaLists) {
           atualizaLists();
         }
+        closeModel();
       })
       .catch((e) => {
         console.error(e);
