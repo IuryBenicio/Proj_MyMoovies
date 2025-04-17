@@ -1,16 +1,21 @@
 import { useState } from "react";
 import { HeroContainer } from "./styles";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootReducer } from "../../store";
 
 export default function Hero() {
   const [button, setButton] = useState("light");
+  const { night } = useSelector((state: RootReducer) => state.navBar);
+
   const navegar = useNavigate();
+
   return (
-    <HeroContainer>
+    <HeroContainer night={night}>
       <div className="escuro">
         <div className="text">
-          <h2>VENHA COMPARTILHAR COM SEUS AMIGOS</h2>
-          <h3>E ORGANIZAR OS FILMES QUE VOCÊ DESEJA ASSISTIR</h3>
+          <h2>ORGANIZE SEUS FILMES FAVORITOS OU QUE PRETENDE ASSISTIR</h2>
+          <h3>TUDO ISSO ATRAVÉS DE LISTAS FEITAS DA SUA MANEIRA</h3>
           <button
             type="button"
             onClick={() => navegar("/signup")}

@@ -13,6 +13,7 @@ export const PageContainer = styled.div<props>`
   justify-content: center;
   background-color: ${(props) =>
     props.night === true ? cores.fundo : cores.fundoGray};
+
   h2 {
     margin-bottom: 12px;
   }

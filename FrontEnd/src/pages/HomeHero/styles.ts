@@ -1,10 +1,21 @@
 import styled from "styled-components";
 
-export const HeroContainer = styled.div`
+type props = {
+  night: boolean;
+};
+
+export const HeroContainer = styled.div<props>`
   @media screen and (max-width: 431px) {
-    background-image: url("/images/mobile-hero.png");
+    background-image: ${(props) =>
+      props.night === true
+        ? "url('/images/night-mobile.png')"
+        : 'url("/images/mobile-hero.png")'};
   }
-  background-image: url("/images/pc-hero.png");
+
+  background-image: ${(props) =>
+    props.night === true
+      ? "url('/images/night-pc.png')"
+      : 'url("/images/pc-hero.png")'};
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -17,7 +28,8 @@ export const HeroContainer = styled.div`
 
   .escuro {
     position: absolute;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: ${(props) =>
+      props.night === true ? "none" : "rgba(0, 0, 0, 0.5)"};
     width: 100%;
     height: calc(100dvh - 58px);
     z-index: 2;
