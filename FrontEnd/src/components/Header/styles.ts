@@ -25,7 +25,12 @@ export const HeaderContainer = styled.div<props>`
 
     .gadgets {
       @media screen and (max-width: 431px) {
-        display: none;
+        .btn-check {
+          margin: 0;
+        }
+        .loginModel {
+          display: none;
+        }
       }
       align-items: center;
       display: flex;
@@ -58,12 +63,10 @@ export const HeaderContainer = styled.div<props>`
       display: flex;
 
       @media screen and (max-width: 431px) {
-        width: 220px;
+        width: 170px;
         justify-content: end;
-      }
-      @media screen and (max-width: 430px) {
         input {
-          width: 50%;
+          width: 100%;
         }
       }
     }

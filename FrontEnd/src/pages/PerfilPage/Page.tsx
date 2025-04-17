@@ -257,7 +257,7 @@ export default function PerfilPage() {
               </div>
               <div className="container text-center">
                 {data?.length === 0 && (
-                  <ContainerEmpty>
+                  <ContainerEmpty night={night}>
                     <div className="empty">
                       <span>Crie listas e as adicione aqui</span>
                       <p>basta clicar no +</p>

@@ -143,6 +143,7 @@ export const RegisterContainer = styled.div<props>`
           width: 100%;
           input {
             width: 100%;
+            margin-bottom: 28px;
           }
         }
         position: relative;
@@ -155,7 +156,9 @@ export const RegisterContainer = styled.div<props>`
         }
         .error-trick {
           position: absolute;
-          top: 70px;
+          top: 72px;
+          color: ${(props) => (props.night === true ? "grey" : "black")};
+          text-align: center;
         }
       }
     }
@@ -183,6 +186,7 @@ export const RegisterContainer = styled.div<props>`
       }
       .form-check {
         margin: 0 auto;
+        margin-top: 24px;
         label,
         h4,
         a {

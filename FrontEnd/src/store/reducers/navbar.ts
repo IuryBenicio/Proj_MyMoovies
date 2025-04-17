@@ -7,7 +7,7 @@ type stateType = {
 
 const initialState: stateType = {
   navBar: "Home",
-  night: false,
+  night: true,
 };
 
 const navBarSlice = createSlice({

@@ -36,10 +36,9 @@ export default function Register() {
   };
 
   const handleConfirmTerms = () => {
-    if (
+    const isValid =
       !errors.email &&
       values.email.length > 0 &&
-      !errors.image &&
       !errors.password &&
       values.password.length > 5 &&
       values.confirmPassword === values.password &&
@@ -47,10 +46,9 @@ export default function Register() {
       values.userName.length > 0 &&
       !errors.name &&
       !errors.userName &&
-      checked === true
-    ) {
-      setConfirmTerms(true);
-    }
+      checked === true;
+
+    setConfirmTerms(isValid);
   };
 
   // FORMIK
@@ -239,7 +237,7 @@ export default function Register() {
               )}
             </div>
             <div className="mb-3 packing-card">
-              <label htmlFor="exampleInputPassword1" className="form-label">
+              <label htmlFor="exampleInputPassword2" className="form-label">
                 Confirmar Senha:
               </label>
               <input

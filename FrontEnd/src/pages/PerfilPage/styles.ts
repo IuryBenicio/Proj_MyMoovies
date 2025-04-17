@@ -194,6 +194,7 @@ export const ListasContainer = styled.div<props>`
     width: 100%;
     display: flex;
     justify-content: center;
+
     #add-button {
       border: 1px solid rgba(0, 0, 0, 0.3);
       box-shadow: ${shadow.sombra};
@@ -217,7 +218,7 @@ export const ListasContainer = styled.div<props>`
   }
 `;
 
-export const ContainerEmpty = styled.div`
+export const ContainerEmpty = styled.div<props>`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -225,8 +226,9 @@ export const ContainerEmpty = styled.div`
   align-items: center;
   .empty {
     margin-top: 15px;
-    border: 1px solid grey;
-    background-color: white;
+    background-color: ${(props) =>
+      props.night === true ? cores.card : "white"};
+    color: ${(props) => (props.night === true ? "white" : "black")};
     border-radius: 8px;
     box-shadow: ${shadow.sombra};
     padding: 20px;

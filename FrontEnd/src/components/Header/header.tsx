@@ -74,7 +74,7 @@ export default function Header() {
                 )}
               </label>
               {user.name.length === 0 && (
-                <>
+                <div className="loginModel">
                   {loginModel && (
                     <div className="model-perfil">
                       <PerfilModel />
@@ -84,7 +84,7 @@ export default function Header() {
                     onClick={() => setLoginModel(!loginModel)}
                     className="avatar-icon bi bi-person-circle"
                   ></i>
-                </>
+                </div>
               )}
             </div>
             <form onSubmit={(e) => getSearch(e)}>
