@@ -427,7 +427,7 @@ module.exports = class MoovieListController {
       }
 
       list.moovieList = movieIds.map((id) => {
-        const movieId = mongoose.Types.ObjectId(id);
+        const objId = new mongoose.Types.ObjectId(id);
 
         const old = list.moovieList.find((item) =>
           item.movieId.equals(movieId)
