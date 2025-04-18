@@ -182,19 +182,18 @@ export default function ListPage() {
   // Função de Drag
   function onDragEnd(result: DropResult) {
     const { source, destination } = result;
-    if (!destination) return;
-    if (source.index === destination.index) return;
+    if (!destination || source.index === destination.index) return;
 
     const updated = Array.from(movies);
     const [moved] = updated.splice(source.index, 1);
     updated.splice(destination.index, 0, moved);
-
     setMovies(updated);
 
-    // envia só os IDs pro backend
+    // Só manda os IDs
     const movieIds = updated.map((m) => m.movieId);
+
     axios
-      .put(`${bancoDeDados}/movie//reorderlist/${id}`, { movieIds })
+      .put(`${bancoDeDados}/movie/reorderlist/${id}`, { movieIds })
       .then(() => refetch())
       .catch((err) => console.error("Erro ao reordenar:", err));
   }

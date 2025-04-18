@@ -413,17 +413,28 @@ module.exports = class MoovieListController {
     const { movieIds } = req.body;
     const listId = req.params.id;
 
+    if (!Array.isArray(movieIds)) {
+      return res
+        .status(400)
+        .json({ error: "newOrder precisa ser um array de IDs" });
+    }
+
     try {
-      const list = await List.findById(listId);
-      if (!list) return res.status(404).json({ error: "Lista não encontrada" });
+      const list = await MoovieList.findById(listId);
+      if (!list) {
+        return res.status(404).json({ error: "Lista não encontrada" });
+      }
 
-      list.movies = movieIds; // assume que list.movies é um array de ObjectIds
+      // Recria o moovieList só com base nos IDs recebidos:
+      list.moovieList = movieIds
+        .map((id) => ({ movieId: id }))
+        .filter((item) => item.movieId); // só pra garantir
+
       await list.save();
-
-      res.status(200).json({ success: true });
+      return res.status(200).json({ success: true, data: list.moovieList });
     } catch (err) {
       console.error(err);
-      res.status(500).json({ error: "Erro ao reordenar lista" });
+      return res.status(500).json({ error: "Erro ao reordenar lista" });
     }
   }
 };
