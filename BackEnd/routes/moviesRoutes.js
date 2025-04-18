@@ -31,7 +31,4 @@ router.post("/markmovie", MooviesController.markMovie);
 // retorna as listas em que um filme está presente
 router.post("/movieinlists", MooviesController.returnListsWhereMovieIsPresent);
 
-// reorderna lista de filmes
-router.put("/reorderlist/:id", MooviesController.reorderList);
-
 module.exports = router;

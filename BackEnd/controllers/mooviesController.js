@@ -408,42 +408,4 @@ module.exports = class MoovieListController {
       });
     }
   }
-
-  // Reordenar filmes na lista
-  static async reorderList(req, res) {
-    const { movieIds } = req.body;
-    const listId = req.params.id;
-
-    if (!Array.isArray(movieIds)) {
-      return res
-        .status(400)
-        .json({ error: "movieIds precisa ser um array de IDs" });
-    }
-
-    try {
-      const list = await MoovieList.findById(listId);
-      if (!list) {
-        return res.status(404).json({ error: "Lista não encontrada" });
-      }
-
-      list.moovieList = movieIds.map((id) => {
-        const objId = new mongoose.Types.ObjectId(id);
-
-        const old = list.moovieList.find((item) =>
-          item.movieId.equals(movieId)
-        );
-        return old
-          ? { ...old.toObject() } // preserva `mark`, etc
-          : { movieId };
-      });
-
-      await list.save();
-      return res.status(200).json({ success: true, data: list.moovieList });
-    } catch (err) {
-      console.error("Erro em reorderList:", err);
-      return res
-        .status(500)
-        .json({ error: "Erro ao reordenar lista", details: err.message });
-    }
-  }
 };

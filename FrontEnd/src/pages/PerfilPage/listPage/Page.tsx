@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import { bancoDeDados } from "../../../helpers/getApi";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { EditContainer, ListContainer } from "./styles";
 import ConfirmModel from "../../../components/Models/confirmModel/confirmModel";
 import sadCat from "../../../assets/sad-cat-11.png";
@@ -10,13 +10,6 @@ import MovieItem from "../../../components/movieListItem/MovieItem";
 import { useSelector } from "react-redux";
 import { RootReducer } from "../../../store";
 import { useQuery } from "@tanstack/react-query";
-
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  DropResult,
-} from "@hello-pangea/dnd";
 
 export type movieType = {
   movieId: string;
@@ -36,10 +29,6 @@ export default function ListPage() {
   const { id } = useParams();
   const { user } = useSelector((state: RootReducer) => state.user);
   const { night } = useSelector((state: RootReducer) => state.navBar);
-
-  //estado de movie
-  const [movies, setMovies] = useState<movieType[]>([]);
-
   //estado delete filme
   const [movieModelDelete, setMovieModelDelete] = useState(false);
 
@@ -179,43 +168,6 @@ export default function ListPage() {
     refetchOnWindowFocus: true,
   });
 
-  // Função de Drag
-  function onDragEnd(result: DropResult) {
-    const { source, destination } = result;
-    if (!destination || source.index === destination.index) return;
-
-    const updated = Array.from(movies);
-    const [moved] = updated.splice(source.index, 1);
-    updated.splice(destination.index, 0, moved);
-    setMovies(updated);
-
-    // Só manda os IDs
-    const movieIds = updated.map((m) => m.movieId);
-
-    axios
-      .put(`${bancoDeDados}/movie/reorderlist/${id}`, { movieIds })
-      .then(() => refetch())
-      .catch((err) => console.error("Erro ao reordenar:", err));
-  }
-
-  // Estilo do item no DND
-  const getItemStyle = (
-    isDragging: boolean,
-    draggableStyle: React.CSSProperties
-  ): React.CSSProperties => ({
-    userSelect: "none",
-    padding: 8,
-    margin: "0 0 8px 0",
-    background: isDragging ? "#ececec1d" : "transparent",
-    borderRadius: 4,
-    boxShadow: isDragging ? "0 2px 8px rgba(0,0,0,0.2)" : "none",
-    ...draggableStyle,
-  });
-
-  useEffect(() => {
-    if (data) setMovies(data);
-  }, [data]);
-
   return (
     <ListContainer night={night} ModelDelete={movieModelDelete}>
       <div className="navegacao">
@@ -288,52 +240,25 @@ export default function ListPage() {
       </div>
       {data && data?.length > 0 && (
         <div className="container-movies">
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="movieList">
-              {(provided) => (
-                <div
-                  className="tabela"
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                >
-                  {movies.map((movie, index) => (
-                    <Draggable
-                      key={movie.movieId}
-                      draggableId={movie.movieId}
-                      index={index}
-                    >
-                      {(prov, snapshot) => (
-                        <div
-                          ref={prov.innerRef}
-                          {...prov.draggableProps}
-                          {...prov.dragHandleProps}
-                          style={getItemStyle(
-                            snapshot.isDragging,
-                            prov.draggableProps.style || {}
-                          )}
-                        >
-                          <MovieItem
-                            night={night}
-                            Mark={setMark}
-                            deleteModel={setMovieModelDelete}
-                            movie={movie}
-                          />
-                          {movieModelDelete && (
-                            <ConfirmModel
-                              closeModel={() => setMovieModelDelete(false)}
-                              text={`Deseja apagar o filme ${movie.title}?`}
-                              confirm={() => deleteMovie(movie.movieId)}
-                            />
-                          )}
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </DragDropContext>
+          <div className="tabela">
+            {data!.map((movie, index) => (
+              <div className="item" key={index}>
+                <MovieItem
+                  night={night}
+                  Mark={setMark}
+                  deleteModel={setMovieModelDelete}
+                  movie={movie}
+                />
+                {movieModelDelete === true && (
+                  <ConfirmModel
+                    closeModel={() => setMovieModelDelete(false)}
+                    text={"Deseja apagar o filme " + movie.title}
+                    confirm={() => deleteMovie(movie.movieId)}
+                  />
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       )}
       {data?.length === 0 && (
