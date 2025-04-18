@@ -1,13 +1,21 @@
 import styled from "styled-components";
 import { shadow } from "../../../GlobalStyles";
 
-export const ContainerListModel = styled.div`
+type props = {
+  night: boolean;
+};
+
+export const ContainerListModel = styled.div<props>`
   /* max-height: 100%; */
   background-color: rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(0, 0, 0, 0.25);
   color: white;
   display: flex;
   flex-direction: column;
+  @media screen and (max-width: 431px) {
+    justify-content: center;
+    height: 300px;
+  }
   justify-content: space-between;
 
   align-items: center;
@@ -19,6 +27,11 @@ export const ContainerListModel = styled.div`
   width: 500px;
   height: 375px;
   z-index: 2;
+  h4,
+  p,
+  h2 {
+    color: ${(props) => (props.night === true ? "white" : "black")};
+  }
   @media screen and (max-width: 431px) {
     position: relative;
     top: 0;
@@ -106,15 +119,12 @@ export const ContainerListModel = styled.div`
       width: 100%;
       color: white;
       padding: 14px;
-      border: none;
-      /* border-radius: 8px; */
       background-color: transparent;
       transition: all 0.2s ease-in-out;
+      border: none;
     }
     .add-playlist:hover {
       background-color: rgba(0, 0, 0, 0.1);
-      /* border: 1px solid white;
-      border-radius: 8px; */
       cursor: pointer;
     }
   }

@@ -32,6 +32,6 @@ router.post("/markmovie", MooviesController.markMovie);
 router.post("/movieinlists", MooviesController.returnListsWhereMovieIsPresent);
 
 // reorderna lista de filmes
-router.post("/reorderlist", MooviesController.reorderMovies);
+router.put("/reorderlist/:id", MooviesController.reorderList);
 
 module.exports = router;

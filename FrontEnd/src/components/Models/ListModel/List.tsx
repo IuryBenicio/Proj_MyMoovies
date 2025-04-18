@@ -4,6 +4,8 @@ import { ContainerListModel } from "./styles";
 import { moovieType } from "../../../store/reducers/search";
 import { bancoDeDados } from "../../../helpers/getApi";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { RootReducer } from "../../../store";
 
 type Props = {
   closeModal: () => void;
@@ -23,6 +25,8 @@ export default function ListModel({
   openCriarLIst,
 }: Props) {
   // retorna descrição formatada
+
+  const { night } = useSelector((state: RootReducer) => state.navBar);
 
   function returnDescription(description: string) {
     return description.slice(0, 50) + " ...";
@@ -85,7 +89,7 @@ export default function ListModel({
   }
 
   return (
-    <ContainerListModel>
+    <ContainerListModel night={night}>
       <i onClick={() => closeModal()} className="close bi bi-x-lg"></i>
       <h2>Minhas Listas</h2>
       {lists!.length > 0 ? (
@@ -115,7 +119,11 @@ export default function ListModel({
       )}
       <div className="buttons">
         <hr />
-        <button className="add-playlist" onClick={openCriarLIst}>
+        <button
+          style={{ border: "none" }}
+          className="add-playlist"
+          onClick={openCriarLIst}
+        >
           Criar PlayList
         </button>
       </div>

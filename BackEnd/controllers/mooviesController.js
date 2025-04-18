@@ -409,42 +409,21 @@ module.exports = class MoovieListController {
   }
 
   // Reordenar filmes na lista
-  static async reorderMovies(req, res) {
-    const { listId, newOrder } = req.body;
-
-    if (!listId || !Array.isArray(newOrder)) {
-      return res
-        .status(400)
-        .json({ message: "Faltam informações ou formato inválido" });
-    }
+  static async reorderList(req, res) {
+    const { movieIds } = req.body;
+    const listId = req.params.id;
 
     try {
-      const list = await MoovieList.findById(listId);
+      const list = await List.findById(listId);
+      if (!list) return res.status(404).json({ error: "Lista não encontrada" });
 
-      if (!list) {
-        return res.status(404).json({ message: "Lista não encontrada" });
-      }
-
-      const updatedList = newOrder
-        .map((movie, index) => {
-          const movieToUpdate = list.moovieList.find(
-            (m) => String(m.movieId) === String(movie.movieId)
-          );
-          if (movieToUpdate) {
-            return { ...movieToUpdate.toObject(), order: index };
-          }
-          return null;
-        })
-        .filter(Boolean); // remove os valores que são nulos e que o não foram achandos no find corrigindo assim o array
-
-      list.moovieList = updatedList;
-
+      list.movies = movieIds; // assume que list.movies é um array de ObjectIds
       await list.save();
-      return res
-        .status(200)
-        .json({ message: "Listas reordenadas com sucesso", data: updatedList });
-    } catch {
-      return res.status(500).json({ message: "Erro ao reordenar as listas" });
+
+      res.status(200).json({ success: true });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Erro ao reordenar lista" });
     }
   }
 };
