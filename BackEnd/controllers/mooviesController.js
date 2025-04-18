@@ -416,7 +416,7 @@ module.exports = class MoovieListController {
     if (!Array.isArray(movieIds)) {
       return res
         .status(400)
-        .json({ error: "newOrder precisa ser um array de IDs" });
+        .json({ error: "movieIds precisa ser um array de IDs" });
     }
 
     try {
@@ -425,16 +425,24 @@ module.exports = class MoovieListController {
         return res.status(404).json({ error: "Lista não encontrada" });
       }
 
-      // Recria o moovieList só com base nos IDs recebidos:
-      list.moovieList = movieIds
-        .map((id) => ({ movieId: id }))
-        .filter((item) => item.movieId); // só pra garantir
+      list.moovieList = movieIds.map((id) => {
+        const movieId = mongoose.Types.ObjectId(id);
+
+        const old = list.moovieList.find((item) =>
+          item.movieId.equals(movieId)
+        );
+        return old
+          ? { ...old.toObject() } // preserva `mark`, etc
+          : { movieId };
+      });
 
       await list.save();
       return res.status(200).json({ success: true, data: list.moovieList });
     } catch (err) {
-      console.error(err);
-      return res.status(500).json({ error: "Erro ao reordenar lista" });
+      console.error("Erro em reorderList:", err);
+      return res
+        .status(500)
+        .json({ error: "Erro ao reordenar lista", details: err.message });
     }
   }
 };
