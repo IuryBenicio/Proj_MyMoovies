@@ -240,8 +240,8 @@ export default function ListPage() {
           )}
         </div>
       </div>
-      <div className="container-movies">
-        {data && (
+      {data && data?.length > 0 && (
+        <div className="container-movies">
           <div className="tabela">
             {data!.map((movie, index) => (
               <div className="item" key={index}>
@@ -261,17 +261,17 @@ export default function ListPage() {
               </div>
             ))}
           </div>
-        )}
-        {data?.length === 0 && (
-          <div className="empty">
-            <img src={sadCat} alt="" />
-            <div className="text">
-              <span className="d-flex justify-content-center">Lista vazia</span>
-              <p>adicione filmes, procurando-os na barra de busca</p>
-            </div>
+        </div>
+      )}
+      {data?.length === 0 && (
+        <div className="empty">
+          <img src={sadCat} alt="" />
+          <div className="text">
+            <span className="d-flex justify-content-center">Lista vazia</span>
+            <p>adicione filmes, procurando-os na barra de busca</p>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </ListContainer>
   );
 }

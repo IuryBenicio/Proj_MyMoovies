@@ -71,6 +71,9 @@ export const PerfilComponent = styled.div<props>`
             props.night === true ? "1px solid white" : "transparent"};
           position: relative;
           border-radius: 50%;
+          @media screen and (max-width: 431px) {
+            margin-bottom: 15px;
+          }
           input {
             width: 100%;
             position: absolute;
@@ -145,6 +148,7 @@ export const PerfilComponent = styled.div<props>`
           flex-direction: column;
           align-items: center;
           width: auto;
+
           .buttons {
             display: flex;
             justify-content: center;
@@ -161,7 +165,7 @@ export const PerfilComponent = styled.div<props>`
               border: 1px solid green;
               color: green;
               &:hover {
-                background-color: grey;
+                background-color: green;
                 color: white;
               }
             }
@@ -178,6 +182,29 @@ export const PerfilComponent = styled.div<props>`
           }
         }
       }
+    }
+  }
+  .container-search {
+    margin: 0 auto;
+    margin-top: 32px;
+    border-radius: 8px;
+    background-color: ${(props) =>
+      props.night === true ? cores.card : "white"};
+    color: ${(props) => (props.night === true ? "white" : "black")};
+    box-shadow: ${shadow.sombra};
+    padding: 30px;
+    padding-top: 20px;
+    width: 50%;
+    text-align: center;
+    @media screen and (max-width: 431px) {
+      width: 100%;
+    }
+    label {
+      width: 100%;
+    }
+    form {
+      margin-top: 16px;
+      display: flex;
     }
   }
 `;
@@ -209,7 +236,10 @@ export const ListasContainer = styled.div<props>`
   }
   .add-div {
     position: absolute;
-    top: -40px;
+    @media screen and (max-width: 431px) {
+      top: -235px;
+    }
+    top: -220px;
     width: 100%;
     display: flex;
     justify-content: center;

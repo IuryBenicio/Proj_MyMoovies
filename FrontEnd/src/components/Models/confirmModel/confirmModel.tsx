@@ -1,4 +1,6 @@
+import { useSelector } from "react-redux";
 import { ConfirmModelContainer } from "./styles";
+import { RootReducer } from "../../../store";
 
 type PropsType = {
   text: string;
@@ -7,8 +9,9 @@ type PropsType = {
 };
 
 export default function ConfirmModel({ closeModel, text, confirm }: PropsType) {
+  const { night } = useSelector((state: RootReducer) => state.navBar);
   return (
-    <ConfirmModelContainer>
+    <ConfirmModelContainer night={night}>
       <div className="card">
         <p>{text}</p>
         <div className="actions">

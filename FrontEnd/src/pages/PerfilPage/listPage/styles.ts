@@ -141,10 +141,12 @@ export const ListContainer = styled.div<propsListContainer>`
     align-items: center;
     justify-content: center;
     height: 100%;
+    margin-top: 40px;
     img {
       width: 200px;
     }
     .text {
+      color: ${(props) => (props.night === true ? "white" : "black")};
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -153,10 +155,13 @@ export const ListContainer = styled.div<propsListContainer>`
         font-size: 4em;
         margin: 0;
         padding: 0;
+        line-height: 55px;
+        text-align: start;
+        margin-bottom: 16px;
       }
       p {
         font-size: 1.4em;
-        text-align: center;
+        text-align: start;
         margin: 0;
         padding: 0;
       }

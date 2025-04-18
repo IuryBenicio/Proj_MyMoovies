@@ -2,16 +2,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { HeaderContainer } from "./styles";
 import { RootReducer } from "../../store";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import PerfilModel from "../Models/perfilModel/Model";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { changeMode } from "../../store/reducers/navbar";
 
 export default function Header() {
   // estados
   const [search, setSearch] = useState("");
-  const [loginModel, setLoginModel] = useState(false);
   const [nightMode, setNightMode] = useState(false);
+
+  const location = useLocation();
 
   // função para navegar
   const navegar = useNavigate();
@@ -41,6 +41,10 @@ export default function Header() {
     setSearch("");
     navegar(`results/${search}`, { replace: true });
   }
+
+  useEffect(() => {
+    console.log(location.pathname);
+  });
 
   return (
     <HeaderContainer night={night}>
@@ -73,40 +77,31 @@ export default function Header() {
                   <i className="bi bi-sun-fill"></i>
                 )}
               </label>
-              {user.name.length === 0 && (
-                <div className="loginModel">
-                  {loginModel && (
-                    <div className="model-perfil">
-                      <PerfilModel />
-                    </div>
-                  )}
-                  <i
-                    onClick={() => setLoginModel(!loginModel)}
-                    className="avatar-icon bi bi-person-circle"
-                  ></i>
-                </div>
-              )}
             </div>
-            <form onSubmit={(e) => getSearch(e)}>
-              <input
-                onChange={(e) => setSearch(e.target.value)}
-                value={search}
-                className="form-control me-2 shadow-none"
-                type="text"
-                placeholder="Buscar filme"
-                aria-label="Search"
-                id="search-button"
-              />
-              <button
-                id="search-button"
-                className={
-                  !night ? "btn btn-outline-secondary" : "btn btn-outline-light"
-                }
-                type="submit"
-              >
-                <i className="bi bi-search"></i>
-              </button>
-            </form>
+            {location.pathname != "/" && user._id.length > 0 && (
+              <form onSubmit={(e) => getSearch(e)}>
+                <input
+                  onChange={(e) => setSearch(e.target.value)}
+                  value={search}
+                  className="form-control me-2 shadow-none"
+                  type="text"
+                  placeholder="Buscar filme"
+                  aria-label="Search"
+                  id="search-button"
+                />
+                <button
+                  id="search-button"
+                  className={
+                    !night
+                      ? "btn btn-outline-secondary"
+                      : "btn btn-outline-light"
+                  }
+                  type="submit"
+                >
+                  <i className="bi bi-search"></i>
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </nav>

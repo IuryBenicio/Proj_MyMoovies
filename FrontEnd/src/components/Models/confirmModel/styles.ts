@@ -1,6 +1,11 @@
 import styled from "styled-components";
+import { cores } from "../../../GlobalStyles";
 
-export const ConfirmModelContainer = styled.div`
+type props = {
+  night: boolean;
+};
+
+export const ConfirmModelContainer = styled.div<props>`
   position: absolute;
   z-index: 4;
   width: 100%;
@@ -16,7 +21,9 @@ export const ConfirmModelContainer = styled.div`
   .card {
     width: 300px;
     text-align: center;
-    background-color: white;
+    background-color: ${(props) =>
+      props.night === true ? cores.card : "white"};
+    color: ${(props) => (props.night === true ? "white" : "black")};
     border: 1px solid black;
     padding: 34px;
     display: flex;

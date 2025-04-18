@@ -13,6 +13,7 @@ import { updateImage } from "../../store/reducers/user";
 import { MoonLoader } from "react-spinners";
 import { useQuery } from "@tanstack/react-query";
 import { cores } from "../../GlobalStyles";
+import ConfirmModel from "../../components/Models/confirmModel/confirmModel";
 
 type ListTypes = {
   _id: string;
@@ -24,8 +25,14 @@ type ListTypes = {
 export default function PerfilPage() {
   const { user } = useSelector((state: RootReducer) => state.user);
   const { night } = useSelector((state: RootReducer) => state.navBar);
+
+  //states
+  const [search, setSearch] = useState("");
   const [editar, setEditar] = useState(false);
   const [addListModel, setAddListModel] = useState(false);
+  const [confirmDeleteList, setConfirmDeleteList] = useState<string | null>(
+    null
+  );
 
   //image states
 
@@ -141,6 +148,13 @@ export default function PerfilPage() {
       });
   }
 
+  async function getSearch(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!search.trim()) return;
+    setSearch("");
+    navegar(`results/${search}`, { replace: true });
+  }
+
   const { data, refetch } = useQuery<ListTypes[]>({
     queryKey: ["minhas-listas"],
     queryFn: handleGetLists,
@@ -241,6 +255,31 @@ export default function PerfilPage() {
             </div>
           </div>
         </div>
+        <div className="container-search">
+          <label htmlFor="search-button">
+            <span>PESQUISE AQUI SEUS FILMES PARA ADICIONA-LOS A UMA LISTA</span>
+            <form onSubmit={(e) => getSearch(e)}>
+              <input
+                onChange={(e) => setSearch(e.target.value)}
+                value={search}
+                className="form-control me-2 shadow-none"
+                type="text"
+                placeholder="Buscar filme"
+                aria-label="Search"
+                id="search-button"
+              />
+              <button
+                id="search-button"
+                className={
+                  !night ? "btn btn-outline-secondary" : "btn btn-outline-light"
+                }
+                type="submit"
+              >
+                <i className="bi bi-search"></i>
+              </button>
+            </form>
+          </label>
+        </div>
         {user.name.length > 0 && (
           <ListasContainer night={night}>
             <div>
@@ -288,11 +327,24 @@ export default function PerfilPage() {
                                     acessar lista
                                   </Link>
                                   <a
-                                    onClick={() => removeList(list._id)}
+                                    onClick={() =>
+                                      setConfirmDeleteList(list._id)
+                                    }
                                     className="link-danger btn"
                                   >
                                     apagar lista
                                   </a>
+                                  {confirmDeleteList === list._id && (
+                                    <ConfirmModel
+                                      text={`Deseja mesmo deletar a lista "${list.name}"`}
+                                      confirm={() => {
+                                        removeList(list._id);
+                                      }}
+                                      closeModel={() =>
+                                        setConfirmDeleteList(null)
+                                      }
+                                    />
+                                  )}
                                 </div>
                               </div>
                             </div>
