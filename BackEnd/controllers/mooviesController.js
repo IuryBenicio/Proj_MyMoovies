@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const MoovieList = require("../models/UserMoovies");
+const mongoose = require("mongoose");
 
 module.exports = class MoovieListController {
   // Edita nome de uma lista de um usuário
