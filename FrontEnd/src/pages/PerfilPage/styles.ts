@@ -205,6 +205,10 @@ export const PerfilComponent = styled.div<props>`
     form {
       margin-top: 16px;
       display: flex;
+      input {
+        border: 1px solid
+          ${(props) => (props.night === true ? "white" : "grey")};
+      }
     }
   }
 `;
