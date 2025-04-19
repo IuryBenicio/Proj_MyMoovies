@@ -1,4 +1,4 @@
-# 🎬 MyMovies - Sua Biblioteca de Filmes Personalizada
+# 🎬 MyMovies V01.1 - Sua Biblioteca de Filmes Personalizada
 
 Bem-vindo ao **MyMovies**, o site ideal para organizar e personalizar suas listas de filmes favoritos! Com ele, você pode criar uma conta, pesquisar títulos e montar coleções personalizadas.
 
