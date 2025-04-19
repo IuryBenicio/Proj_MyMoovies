@@ -2,6 +2,8 @@
 
 Bem-vindo ao **MyMovies**, o site ideal para organizar e personalizar suas listas de filmes favoritos! Com ele, você pode criar uma conta, pesquisar títulos e montar coleções personalizadas.
 
+Site: https://mymoovies.vercel.app/
+
 ## 🚀 Funcionalidades
 
 ✅ Criar e gerenciar sua conta de usuário  
