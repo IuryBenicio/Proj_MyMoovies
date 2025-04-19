@@ -170,14 +170,19 @@ export default function Register() {
                 type="checkbox"
                 name="image-checkbox"
                 id="image-checkbox"
-                onChange={(e) => setHasImage(e.target.checked)}
+                onChange={(e) => {
+                  setHasImage(e.target.checked);
+                  if (e.target.checked === false) {
+                    setImageFile(null);
+                    setPreview(null);
+                  }
+                }}
               />
-              <span id="image-checkbox">
-                você deseja adicionar imagem ao seu cadastro?
-              </span>
+              <span id="image-checkbox">adicionar imagem de perfil</span>
             </div>
             <p className="text">
-              *você poderá adicionar uma imagem posteriormente ao seu cadastro
+              *você poderá adicionar uma imagem de perfil posteriormente ao seu
+              cadastro
             </p>
           </label>
           <div className="packing">

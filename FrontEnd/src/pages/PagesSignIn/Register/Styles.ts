@@ -35,9 +35,17 @@ export const RegisterContainer = styled.div<props>`
     text-align: center;
     span {
       margin-left: 8px;
+      @media screen and (max-width: 431px) {
+        font-size: 15px;
+        /* width: 100%; */
+      }
     }
     p {
-      font-size: 14px;
+      font-size: 15px;
+      @media screen and (max-width: 431px) {
+        font-size: 13px;
+        /* width: 100%; */
+      }
       color: grey;
     }
   }
