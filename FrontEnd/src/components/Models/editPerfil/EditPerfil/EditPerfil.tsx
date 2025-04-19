@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { EditPerfilContainer } from "./styles";
 import { RootReducer } from "../../../../store";
-import { setAlert } from "../../../../store/reducers/alert";
 import { useState } from "react";
 import axios from "axios";
 import { bancoDeDados } from "../../../../helpers/getApi";
@@ -83,23 +82,13 @@ export default function EditPerfil(props: PropsType) {
         name: name,
       })
       .then((response) => {
-        dispatch(
-          setAlert({
-            messageText: response.data.message,
-            type: "success",
-          })
-        );
+        alert(response.data.message);
+
         dispatch(updateName(name));
         setEditName(false);
       })
       .catch((response) => {
-        console.log(response);
-        dispatch(
-          setAlert({
-            messageText: response.message,
-            type: "error",
-          })
-        );
+        console.error(response);
       });
   };
 
@@ -113,23 +102,12 @@ export default function EditPerfil(props: PropsType) {
         userName: userName,
       })
       .then((response) => {
-        dispatch(
-          setAlert({
-            messageText: response.data.message,
-            type: "success",
-          })
-        );
+        alert(response.data.message);
         dispatch(updateUsername(userName));
         setEditUserName(false);
       })
       .catch((response) => {
-        console.log(response);
-        dispatch(
-          setAlert({
-            messageText: response.data?.message,
-            type: "error",
-          })
-        );
+        console.error(response);
       });
   };
 
@@ -143,23 +121,12 @@ export default function EditPerfil(props: PropsType) {
         email: email,
       })
       .then((response) => {
-        dispatch(
-          setAlert({
-            messageText: response.data.message,
-            type: "success",
-          })
-        );
+        alert(response.data.message);
         dispatch(updateEmail(email));
         setEditEmail(false);
       })
       .catch((response) => {
-        console.log(response.message);
-        dispatch(
-          setAlert({
-            messageText: response.message,
-            type: "error",
-          })
-        );
+        console.error(response.message);
       });
     return;
   };
@@ -170,12 +137,8 @@ export default function EditPerfil(props: PropsType) {
       <>
         {editarSenha && <EditSenha closeModel={closeEditSenha} />}
         <div className="container">
-          <i
-            onClick={() => props.closeModel()}
-            className="close bi bi-x-lg"
-          ></i>
           <h2>Editar informações</h2>
-          <form>
+          <form onSubmit={(e) => e.preventDefault()}>
             <div className="form-group">
               <label htmlFor="nome">Nome:</label>
               <div className="input-div">
@@ -324,10 +287,11 @@ export default function EditPerfil(props: PropsType) {
               Apagar conta
             </button>
             <button
-              type="submit"
+              type="button"
               className="w-100 mt-5 btn btn-outline-success"
+              onClick={() => props.closeModel()}
             >
-              Salvar
+              Fechar
             </button>
           </form>
         </div>

@@ -1,11 +1,10 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { EditSenhaContainer } from "./styles";
 import { RootReducer } from "../../../../store";
 import { useState } from "react";
 import axios from "axios";
 import { bancoDeDados } from "../../../../helpers/getApi";
 import { ThreeDot } from "react-loading-indicators";
-import { setAlert } from "../../../../store/reducers/alert";
 import { useFormik } from "formik";
 import { editPassword } from "../../../../helpers/schemas";
 
@@ -15,7 +14,6 @@ type propsType = {
 
 export default function EditSenha(props: propsType) {
   const [actualPassword, setActualPassword] = useState("");
-  const dispatch = useDispatch();
 
   const [confirmedPassword, setConfirmedPassword] = useState(false);
 
@@ -31,25 +29,14 @@ export default function EditSenha(props: propsType) {
         .post(`${bancoDeDados}/user/confirmpassword/${user._id}`, {
           password: actualPassword,
         })
-        .then(() => {
+        .then((response) => {
+          alert(response.data.message);
           setConfirmedPassword(true);
-          dispatch(
-            setAlert({
-              messageText: "Senha confirmada com sucesso",
-              type: "success",
-            })
-          );
           setIsLoading(false);
         })
-        .catch(() => {
+        .catch((error) => {
           setConfirmedPassword(false);
-          alert("senha incorreta");
-          dispatch(
-            setAlert({
-              messageText: "Senha incorreta",
-              type: "error",
-            })
-          );
+          alert(error.response.data.message);
           setIsLoading(false);
         });
     } catch {
@@ -65,13 +52,7 @@ export default function EditSenha(props: propsType) {
         password: newPassword,
       })
       .then(() => {
-        console.log("FOI");
-        dispatch(
-          setAlert({
-            messageText: "Senha alterada com sucesso",
-            type: "success",
-          })
-        );
+        alert("Senha alterada");
         setIsLoading(false);
         props.closeModel();
       })
