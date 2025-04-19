@@ -155,6 +155,10 @@ export const PerfilComponent = styled.div<props>`
             align-items: center;
             button {
               color: ${(props) => props.night && "white"};
+              @media screen and (max-width: 431px) {
+                width: 49%;
+                height: 60px;
+              }
             }
             button:not(:first-child) {
               margin-left: 8px;
@@ -243,10 +247,15 @@ export const ListasContainer = styled.div<props>`
     @media screen and (max-width: 431px) {
       top: -235px;
     }
-    top: -220px;
+    top: -230px;
     width: 100%;
     display: flex;
     justify-content: center;
+    align-items: center;
+    span {
+      color: ${(props) => (props.night === true ? "white" : "black")};
+      font-size: 1.2em;
+    }
 
     #add-button {
       border: 1px solid rgba(0, 0, 0, 0.3);

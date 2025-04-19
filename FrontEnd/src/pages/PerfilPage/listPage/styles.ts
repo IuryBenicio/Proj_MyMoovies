@@ -4,6 +4,7 @@ import { cores, minHeight, shadow } from "../../../GlobalStyles";
 type propsListContainer = {
   ModelDelete?: boolean;
   night: boolean;
+  width: number;
 };
 
 export const ListContainer = styled.div<propsListContainer>`
@@ -95,7 +96,10 @@ export const ListContainer = styled.div<propsListContainer>`
   .container-movies {
     margin: 0 auto;
     width: 90%;
+
     @media screen and (max-width: 431px) {
+      padding: 28px 14px;
+
       width: 100%;
     }
     height: 650px;

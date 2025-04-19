@@ -45,6 +45,9 @@ export default function ListPage() {
   const [loadinDescription, setLoadinDescription] = useState(false);
   const [description, setDescription] = useState("");
 
+  //pegar resolução da tela
+  const { innerWidth: width } = window;
+
   ////estados dos filmes
   const [loading, setLoading] = useState<loadingType[]>([]);
 
@@ -169,7 +172,7 @@ export default function ListPage() {
   });
 
   return (
-    <ListContainer night={night} ModelDelete={movieModelDelete}>
+    <ListContainer width={width} night={night} ModelDelete={movieModelDelete}>
       <div className="navegacao">
         <Link to={"/"}>
           <i className="bi bi-chevron-double-left"></i>Inicio
@@ -189,7 +192,7 @@ export default function ListPage() {
               </i>
             </>
           ) : (
-            <EditContainer night={night}>
+            <EditContainer width={width} night={night}>
               <input
                 onChange={(e) => setName(e.target.value)}
                 className="name-input"
@@ -220,7 +223,7 @@ export default function ListPage() {
               </i>
             </>
           ) : (
-            <EditContainer night={night}>
+            <EditContainer width={width} night={night}>
               <textarea
                 onChange={(e) => setDescription(e.target.value)}
                 className="description-input"

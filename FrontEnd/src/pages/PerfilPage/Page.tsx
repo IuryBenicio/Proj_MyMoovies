@@ -290,10 +290,7 @@ export default function PerfilPage() {
                   className="btn btn"
                   style={{ backgroundColor: night ? cores.card : "white" }}
                 >
-                  <i
-                    style={{ color: night ? "white" : "black" }}
-                    className="add-list-i bi fs-3 bi-plus-lg"
-                  ></i>
+                  <span>adicionar lista</span>
                 </a>
               </div>
               <div className="container text-center">

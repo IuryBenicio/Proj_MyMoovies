@@ -14,19 +14,13 @@ export const ContainerMovie = styled.div<props>`
     display: flex;
     align-items: center;
     cursor: grab;
-    @media screen and (max-width: 431px) {
-      &:active .bi-trash {
-        width: 30%;
+    @media screen and (min-width: 431px) {
+      &:hover .bi-trash {
+        width: 6%;
       }
-      &:active .table-item {
-        width: 70%;
+      &:hover .table-item {
+        width: 94%;
       }
-    }
-    &:hover .bi-trash {
-      width: 4%;
-    }
-    &:hover .table-item {
-      width: 96%;
     }
     .bi-trash {
       transition: width 0.4s ease-in-out;
@@ -35,6 +29,9 @@ export const ContainerMovie = styled.div<props>`
       width: 0;
       overflow: hidden;
       cursor: pointer;
+      @media screen and (max-width: 431px) {
+        width: 10%;
+      }
     }
 
     .table-item {
