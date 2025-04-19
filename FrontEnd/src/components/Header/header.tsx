@@ -55,7 +55,7 @@ export default function Header() {
             onClick={() => navegar("/", { state: { atualizou: true } })}
             className="navbar-brand"
           >
-            My Moovies
+            My Movies
           </a>
 
           <div className="collapse navbar-collapse ms-4" id="navbarNav">
