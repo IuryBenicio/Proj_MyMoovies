@@ -19,6 +19,10 @@ export const RegisterContainer = styled.div<props>`
   background-color: ${(props) =>
     props.night === true ? cores.fundo : cores.fundoGray};
   color: ${(props) => (props.night === true ? "white" : "black")};
+  .oculted {
+    height: 0;
+    overflow: hidden;
+  }
   .image-checkbox {
     margin: 0 auto;
     /* margin-bottom: 16px; */
@@ -86,6 +90,7 @@ export const RegisterContainer = styled.div<props>`
     .packing {
       display: flex;
       justify-content: space-between;
+      transition: all 0.4s ease-in-out;
       @media screen and (max-width: 431px) {
         width: 90%;
         display: flex;

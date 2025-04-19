@@ -131,40 +131,38 @@ export default function Register() {
       <div className="container">
         <h2>Registrar-se</h2>
         <form onSubmit={handleSubmit}>
-          <div className="packing">
-            {hasImage && (
-              <div className="image-div">
-                <label className="image-card" htmlFor="image">
-                  <span>Escolher imagem de perfil</span>
-                  <input
-                    id="image"
-                    className="image-input"
-                    name="image"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                  />
-                  {preview && (
-                    <>
-                      <img
-                        className="image-preview"
-                        src={preview}
-                        alt="Preview"
-                      />
-                    </>
-                  )}
-                </label>
+          <div className={hasImage ? "packing" : "packing oculted"}>
+            <div className="image-div">
+              <label className="image-card" htmlFor="image">
+                <span>Escolher imagem de perfil</span>
+                <input
+                  id="image"
+                  className="image-input"
+                  name="image"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                />
                 {preview && (
-                  <i
-                    onClick={() => {
-                      setPreview(null);
-                      setImageFile(null);
-                    }}
-                    className="bi bi-trash"
-                  ></i>
+                  <>
+                    <img
+                      className="image-preview"
+                      src={preview}
+                      alt="Preview"
+                    />
+                  </>
                 )}
-              </div>
-            )}
+              </label>
+              {preview && (
+                <i
+                  onClick={() => {
+                    setPreview(null);
+                    setImageFile(null);
+                  }}
+                  className="bi bi-trash"
+                ></i>
+              )}
+            </div>
           </div>
           <label className="image-checkbox" htmlFor="image-checkbox">
             <div className="text-container">
