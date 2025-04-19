@@ -14,6 +14,13 @@ export const ContainerMovie = styled.div<props>`
     display: flex;
     align-items: center;
     cursor: grab;
+    .bi-trash {
+      color: white;
+      &:hover {
+        transition: all ease-in-out 0.4s;
+        color: red;
+      }
+    }
     @media screen and (min-width: 431px) {
       &:hover .bi-trash {
         width: 6%;
@@ -21,6 +28,14 @@ export const ContainerMovie = styled.div<props>`
       &:hover .table-item {
         width: 94%;
       }
+    }
+    &:hover .bi-trash {
+      transition: all ease-in-out 0.4s;
+      font-size: 34px;
+      width: 4%;
+    }
+    &:hover .table-item {
+      width: 96%;
     }
     .bi-trash {
       transition: width 0.4s ease-in-out;
@@ -77,13 +92,13 @@ export const ContainerMovie = styled.div<props>`
             ${(props) => (props.night ? "white" : "black")};
           cursor: zoom-in;
         }
-        .img:active .img_zoom {
+        /* .img:active .img_zoom {
           display: block;
           width: 100%;
           height: auto;
           object-fit: contain;
           cursor: zoom-out;
-        }
+        } */
         /* .img_zoom {
           display: none;
           position: absolute;
