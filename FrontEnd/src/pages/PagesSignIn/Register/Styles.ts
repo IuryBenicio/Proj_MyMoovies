@@ -21,9 +21,20 @@ export const RegisterContainer = styled.div<props>`
   color: ${(props) => (props.night === true ? "white" : "black")};
   .image-checkbox {
     margin: 0 auto;
-    margin-bottom: 16px;
+    /* margin-bottom: 16px; */
+    .text-container {
+      display: flex;
+      justify-content: center;
+    }
+    display: flex;
+    flex-direction: column;
+    text-align: center;
     span {
       margin-left: 8px;
+    }
+    p {
+      font-size: 14px;
+      color: grey;
     }
   }
   .email_container {

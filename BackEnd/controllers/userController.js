@@ -8,17 +8,17 @@ module.exports = class UserController {
   //register
   static async registerUser(req, res) {
     const { userName, email, password } = req.body;
-    var { name } = req.body;
-    const { path, filename } = req.file;
+    let { name } = req.body;
 
-    // confere se tem imagem de profile
-
-    if (!path || path.length === 0) {
-      return res.status(400).json({ message: "Imagem obrigatória" });
-    }
-    if (!path || path.length === 0) {
+    // Verifica se veio uma imagem
+    let path, filename;
+    if (req.file) {
+      path = req.file.path;
+      filename = req.file.filename;
+    } else {
       path =
         "https://res.cloudinary.com/doszmbyx4/image/upload/v1745071231/istockphoto-1222357475-612x612_kqblw6.jpg";
+      filename = "default-profile-image";
     }
 
     // formatar nome

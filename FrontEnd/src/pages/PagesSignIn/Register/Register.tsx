@@ -74,11 +74,11 @@ export default function Register() {
           imageFile
         );
       } else {
-        dispatch(
-          setAlert({
-            messageText: "Por favor, escolha uma imagem de perfil.",
-            type: "error",
-          })
+        postRegister(
+          values.userName,
+          values.name,
+          values.email,
+          values.password
         );
       }
     },
@@ -90,7 +90,7 @@ export default function Register() {
     name: string,
     email: string,
     password: string,
-    image: File
+    image?: File
   ) => {
     const formData = new FormData(); // FormData auxilia na construção de um objeto próprio para envio HTML
     formData.append("userName", userName);
@@ -114,8 +114,7 @@ export default function Register() {
         navegar("/login");
       })
       .catch((error) => {
-        console.log(error.response);
-        alert(error.response.data.message);
+        console.error(error);
       });
   };
 
@@ -168,15 +167,20 @@ export default function Register() {
             )}
           </div>
           <label className="image-checkbox" htmlFor="image-checkbox">
-            <input
-              type="checkbox"
-              name="image-checkbox"
-              id="image-checkbox"
-              onChange={(e) => setHasImage(e.target.checked)}
-            />
-            <span id="image-checkbox">
-              você deseja adicionar imagem ao seu cadastro?
-            </span>
+            <div className="text-container">
+              <input
+                type="checkbox"
+                name="image-checkbox"
+                id="image-checkbox"
+                onChange={(e) => setHasImage(e.target.checked)}
+              />
+              <span id="image-checkbox">
+                você deseja adicionar imagem ao seu cadastro?
+              </span>
+            </div>
+            <p className="text">
+              *você poderá adicionar uma imagem posteriormente ao seu cadastro
+            </p>
           </label>
           <div className="packing">
             <div className="packing-card mb-3">
