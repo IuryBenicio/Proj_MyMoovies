@@ -19,6 +19,13 @@ export const RegisterContainer = styled.div<props>`
   background-color: ${(props) =>
     props.night === true ? cores.fundo : cores.fundoGray};
   color: ${(props) => (props.night === true ? "white" : "black")};
+  .image-checkbox {
+    margin: 0 auto;
+    margin-bottom: 16px;
+    span {
+      margin-left: 8px;
+    }
+  }
   .email_container {
     @media screen and (max-width: 431px) {
       width: 90%;

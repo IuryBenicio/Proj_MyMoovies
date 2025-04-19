@@ -16,6 +16,10 @@ module.exports = class UserController {
     if (!path || path.length === 0) {
       return res.status(400).json({ message: "Imagem obrigatória" });
     }
+    if (!path || path.length === 0) {
+      path =
+        "https://res.cloudinary.com/doszmbyx4/image/upload/v1745071231/istockphoto-1222357475-612x612_kqblw6.jpg";
+    }
 
     // formatar nome
     function nomeFormatado(nameRaw) {

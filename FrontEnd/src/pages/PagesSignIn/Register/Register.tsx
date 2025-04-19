@@ -20,6 +20,8 @@ export default function Register() {
 
   const dispatch = useDispatch();
 
+  const [hasImage, setHasImage] = useState(false);
+
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
 
@@ -95,7 +97,9 @@ export default function Register() {
     formData.append("name", name);
     formData.append("email", email);
     formData.append("password", password);
-    formData.append("image", image);
+    if (image) {
+      formData.append("image", image);
+    }
     axios
       .post(`${bancoDeDados}/user/register`, formData, {
         headers: {
@@ -129,38 +133,51 @@ export default function Register() {
         <h2>Registrar-se</h2>
         <form onSubmit={handleSubmit}>
           <div className="packing">
-            <div className="image-div">
-              <label className="image-card" htmlFor="image">
-                <span>Escolher imagem de perfil</span>
-                <input
-                  id="image"
-                  className="image-input"
-                  name="image"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                />
+            {hasImage && (
+              <div className="image-div">
+                <label className="image-card" htmlFor="image">
+                  <span>Escolher imagem de perfil</span>
+                  <input
+                    id="image"
+                    className="image-input"
+                    name="image"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                  />
+                  {preview && (
+                    <>
+                      <img
+                        className="image-preview"
+                        src={preview}
+                        alt="Preview"
+                      />
+                    </>
+                  )}
+                </label>
                 {preview && (
-                  <>
-                    <img
-                      className="image-preview"
-                      src={preview}
-                      alt="Preview"
-                    />
-                  </>
+                  <i
+                    onClick={() => {
+                      setPreview(null);
+                      setImageFile(null);
+                    }}
+                    className="bi bi-trash"
+                  ></i>
                 )}
-              </label>
-              {preview && (
-                <i
-                  onClick={() => {
-                    setPreview(null);
-                    setImageFile(null);
-                  }}
-                  className="bi bi-trash"
-                ></i>
-              )}
-            </div>
+              </div>
+            )}
           </div>
+          <label className="image-checkbox" htmlFor="image-checkbox">
+            <input
+              type="checkbox"
+              name="image-checkbox"
+              id="image-checkbox"
+              onChange={(e) => setHasImage(e.target.checked)}
+            />
+            <span id="image-checkbox">
+              você deseja adicionar imagem ao seu cadastro?
+            </span>
+          </label>
           <div className="packing">
             <div className="packing-card mb-3">
               <label htmlFor="exampleInputName1" className="form-label">
