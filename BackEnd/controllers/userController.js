@@ -167,7 +167,7 @@ module.exports = class UserController {
       if (err) return next(err);
       req.session.destroy((err) => {
         if (err) return next(err);
-        res.clearCookie("connect.sid"); // clear session cookie
+        res.clearCookie("connect.sid");
 
         return res.json({ message: "Deslogado com sucesso" });
       });

@@ -2,7 +2,7 @@ export const urlDefault: string = "https://api.themoviedb.org/3";
 export const apiKeyNumber: string = "19044a28396587997ecdb0f5aa825cea";
 
 export const bancoDeDados: string =
-  "https://projmymoovies-production.up.railway.app";
+  "https://backend-lively-darkness-6479.fly.dev";
 // export const bancoDeDados: string = "http://localhost:8000";
 
 // projmymoovies-production.up.railway.app

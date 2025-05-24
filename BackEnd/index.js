@@ -8,7 +8,7 @@ const authConfig = require("./config/auth");
 const UserRoutes = require("./routes/userRoutes");
 const MovieRoutes = require("./routes/moviesRoutes");
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 3000;
 
 authConfig(passport); // Configura Passport
 
@@ -31,6 +31,7 @@ app.use(passport.session());
 app.use(flash());
 
 app.use(cors());
+
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
