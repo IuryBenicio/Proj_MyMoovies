@@ -30,7 +30,6 @@ app.use(passport.session());
 
 app.use(flash());
 
-const cors = require("cors");
 
 app.use(
   cors({
