@@ -30,8 +30,6 @@ app.use(passport.session());
 
 app.use(flash());
 
-const cors = require("cors");
-
 app.use(
   cors({
     origin: "*", // libera tudo (em produção, depois, pode restringir pro domínio do frontend)
