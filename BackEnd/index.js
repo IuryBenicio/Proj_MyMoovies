@@ -29,7 +29,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(flash());
-
 app.use(
   cors({
     origin: "*", // libera tudo (em produção, depois, pode restringir pro domínio do frontend)
